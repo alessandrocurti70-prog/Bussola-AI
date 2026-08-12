@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Area riservata — Bussola AI</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .modal-back{position:fixed;inset:0;background:rgba(8,17,31,.55);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:40px 16px;overflow:auto}
+  .modal-back.open{display:flex}
+  .modal{background:#fff;border-radius:14px;max-width:680px;width:100%;padding:26px 28px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+  .modal h2{font-size:22px;margin-bottom:2px}
+  .modal .sub{font-family:var(--sans);font-size:14px;color:var(--hint);margin-bottom:8px}
+  .field{margin:14px 0}
+  .field label{display:block;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .field input[type=text],.field select,.field textarea{width:100%;font-family:var(--sans);font-size:15px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--tint)}
+  .field textarea{min-height:200px;line-height:1.6;resize:vertical;font-family:var(--sans)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .drop{border:1.5px dashed #c9d3e0;border-radius:10px;padding:18px;text-align:center;font-family:var(--sans);color:var(--hint);font-size:14px;cursor:pointer;display:block}
+  .drop:hover{border-color:var(--blue)}
+  .drop img{max-height:130px;border-radius:8px;margin-top:10px;display:inline-block}
+  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+  .note{font-family:var(--sans);font-size:13px;color:var(--muted);background:var(--tint);border-radius:8px;padding:12px 14px;margin-top:16px;line-height:1.6}
+  .rowlink{color:var(--blue);font-family:var(--sans);font-weight:600;font-size:13px}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><img class="rose" src="immagini/Elementi/logo-bussola.png" alt="Bussola AI"> Bussola AI</a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="archivio.html">Archivio</a>
+      <a href="formazioni.html">Formazioni</a>
+    </nav>
+    <a class="nav-lock" href="index.html" style="border-color:var(--blue);color:#fff" title="Esci">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      Esci
+    </a>
+  </div>
+</header>
+
+<div class="dash-head">
+  <div class="wrap">
+    <span class="dash-tag">🔒 Area riservata</span>
+    <span class="sans" style="color:var(--muted);font-size:14px">Ciao Ale — questa vista la vedi solo tu.</span>
+  </div>
+</div>
+
+<main>
+  <section class="section" style="border-top:none;padding-top:34px">
+    <div class="wrap">
+      <h1 style="font-size:32px;margin-bottom:4px">Cruscotto</h1>
+      <p class="sans" style="color:var(--hint);margin-bottom:6px">Panoramica del progetto e gestione dei contenuti.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="n">3</div><div class="l">Articoli pubblicati</div></div>
+        <div class="stat"><div class="n">—</div><div class="l">Iscritti newsletter</div><div class="l" style="margin-top:6px">da collegare</div></div>
+        <div class="stat"><div class="n">4</div><div class="l">Formazioni attive</div><div class="l" style="margin-top:6px">1 gratis · 2 a pagamento</div></div>
+        <div class="stat"><div class="n">—</div><div class="l">Visite (30gg)</div><div class="l" style="margin-top:6px">da collegare</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h">Articoli pubblicati <button class="btn" id="openNew" style="font-size:13px;padding:8px 14px">+ Nuova uscita</button></div>
+        <table>
+          <tr><th>Titolo</th><th>Categoria</th><th>Data</th><th></th></tr>
+          <tr><td>Primi passi: come iniziare con l'AI senza paura</td><td>Per iniziare</td><td>8 ago 2026</td><td style="text-align:right"><a class="rowlink" href="articolo-primi-passi.html">Apri →</a></td></tr>
+          <tr><td>Far lavorare l'AI per te: 3 automazioni per iniziare</td><td>Automazioni</td><td>5 ago 2026</td><td style="text-align:right"><a class="rowlink" href="articolo-automazioni.html">Apri →</a></td></tr>
+          <tr><td>Come scrivere un buon prompt (senza essere un tecnico)</td><td>Strumenti</td><td>1 ago 2026</td><td style="text-align:right"><a class="rowlink" href="articolo-prompt.html">Apri →</a></td></tr>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h">Gestione routine</div>
+        <div style="padding:20px">
+          <p class="sans" style="font-size:14px;color:var(--muted);margin-bottom:16px">Le attività ricorrenti del progetto: pubblicazione settimanale, invio email, backup.</p>
+          <a class="btn" href="#" style="display:inline-block">Apri gestione routine ↗</a>
+          <a class="btn ghost" href="#" style="display:inline-block">Impostazioni automazioni</a>
+        </div>
+      </div>
+
+      <p class="sans" style="color:var(--hint);font-size:13px;margin-top:22px">Nota: anteprima dimostrativa. Online, l'accesso sarà protetto da password, i dati "—" saranno reali e la pubblicazione sarà automatica.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <span>© 2026 Bussola AI — Area riservata</span>
+    <span>Solo per l'amministratore</span>
+  </div>
+</footer>
+
+<div class="modal-back" id="modal">
+  <div class="modal">
+    <h2>Nuova uscita</h2>
+    <p class="sub">Scrivi il titolo, il testo e carica l'immagine di copertina.</p>
+
+    <div class="field">
+      <label>Titolo</label>
+      <input type="text" id="f-titolo" placeholder="Il titolo dell'articolo">
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Categoria</label>
+        <select id="f-cat">
+          <option value="iniziare">Per iniziare</option>
+          <option value="automazioni">Automazioni</option>
+          <option value="strumenti">Strumenti</option>
+          <option value="novita">Novità</option>
+          <option value="imprese">Imprese</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Minuti di lettura</label>
+        <input type="text" id="f-minuti" placeholder="4" value="4">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Frase di apertura (lead)</label>
+      <input type="text" id="f-lead" placeholder="La frase introduttiva in cima all'articolo">
+    </div>
+
+    <div class="field">
+      <label>Estratto (per le anteprime)</label>
+      <input type="text" id="f-estratto" placeholder="Una frase breve che appare nelle card">
+    </div>
+
+    <div class="field">
+      <label>Testo dell'articolo</label>
+      <textarea id="f-testo" placeholder="Scrivi qui. Usa ## per i sottotitoli, - per gli elenchi, **grassetto** e *corsivo*. Lascia una riga vuota tra i paragrafi."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Immagine di copertina</label>
+      <label class="drop" for="f-img">
+        <span id="dropText">Clicca per caricare l'immagine (16:9 consigliato)</span>
+        <div id="preview"></div>
+      </label>
+      <input type="file" id="f-img" accept="image/*" style="display:none">
+    </div>
+
+    <div class="note" id="howto" style="display:none"></div>
+
+    <div class="modal-actions">
+      <button class="btn ghost" id="cancelNew">Annulla</button>
+      <button class="btn" id="saveNew">Salva articolo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('modal');
+  const imgInput = document.getElementById('f-img');
+  let imgName = '';
+
+  document.getElementById('openNew').onclick = () => modal.classList.add('open');
+  document.getElementById('cancelNew').onclick = () => modal.classList.remove('open');
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+
+  imgInput.addEventListener('change', () => {
+    const f = imgInput.files[0]; if (!f) return;
+    imgName = f.name;
+    document.getElementById('dropText').textContent = f.name;
+    const r = new FileReader();
+    r.onload = e => { document.getElementById('preview').innerHTML = '<img src="' + e.target.result + '" alt="anteprima">'; };
+    r.readAsDataURL(f);
+  });
+
+  function slugify(s){
+    return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+      .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  }
+
+  document.getElementById('saveNew').onclick = () => {
+    const titolo = document.getElementById('f-titolo').value.trim();
+    const testo = document.getElementById('f-testo').value.trim();
+    if (!titolo || !testo) { alert('Aggiungi almeno il titolo e il testo.'); return; }
+    const catSel = document.getElementById('f-cat');
+    const cat = catSel.value, categoria = catSel.options[catSel.selectedIndex].text;
+    const lead = document.getElementById('f-lead').value.trim();
+    const estratto = document.getElementById('f-estratto').value.trim();
+    const minuti = document.getElementById('f-minuti').value.trim() || '4';
+    const slug = slugify(titolo);
+    const ext = imgName.includes('.') ? imgName.split('.').pop() : 'jpg';
+    const coverName = imgName ? imgName : (slug + '.' + ext);
+    const oggi = new Date().toISOString().slice(0, 10);
+    const md = `---
+titolo: ${titolo}
+slug: ${slug}
+data: ${oggi}
+categoria: ${categoria}
+cat: ${cat}
+copertina: Copertine/${coverName}
+minuti: ${minuti}
+estratto: ${estratto || lead}
+lead: ${lead}
+---
+${testo}
+`;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([md], { type: 'text/markdown' }));
+    a.download = slug + '.md';
+    a.click();
+    const howto = document.getElementById('howto');
+    howto.style.display = 'block';
+    howto.innerHTML = `✅ Articolo salvato come <strong>${slug}.md</strong>.<br>1) Mettilo in <strong>Sito/contenuti/articoli/</strong>.<br>2) Salva l'immagine <strong>${coverName}</strong> in <strong>Immagini/Copertine/</strong>.<br>3) Online la pubblicazione sarà automatica.`;
+  };
+</script>
+
+</body>
+</html>
