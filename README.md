@@ -1,54 +1,42 @@
-# Come funziona il sito Bussola AI
+# Bussola AI
 
-Questo sito è **auto-generato**: non si scrivono pagine HTML a mano. C'è **un solo modello** e gli articoli sono **contenuti** separati. Aggiungere un articolo = aggiungere un file, non toccare il codice. È pensato per essere gestito facilmente anche dagli **agenti AI**.
+Blog + newsletter settimanale sull'intelligenza artificiale, spiegata semplice, per il mercato ticinese. Volto del brand: **Alessandro** (avatar illustrato). Tagline: *La tua direzione nell'intelligenza artificiale*.
 
-## Struttura
+Questo repository è la **source of truth** del progetto (GitHub → deploy Netlify).
 
+## Direzione del progetto
+Il sito evolve da generatore statico a **prodotto editoriale dinamico** (backend Supabase + Admin Centre sicuro + newsletter automatica + SEO + Assistente Editoriale AI), secondo il **Blueprint Operativo v2.1** in `docs/`. Ordine: **prima l'infrastruttura, poi la grafica**. Non si riscrive da zero: si costruisce sopra a quanto esiste.
+
+Lo sviluppo tecnico avviene in **Claude Code**. Prima di iniziare, leggi `CLAUDE.md`.
+
+## Struttura del repository
 ```
-Sito/
-├─ contenuti/
-│   └─ articoli/        → un file .md per ogni articolo (il CONTENUTO)
-├─ build.js             → il generatore (il MOTORE)
-├─ style.css            → il design
-├─ index.html           ┐
-├─ archivio.html        │ generati da build.js — NON modificare a mano
-├─ articolo-*.html      ┘
-├─ formazioni.html      → pagina statica (per ora)
-└─ dashboard.html       → area riservata (mock)
-```
-
-## Aggiungere un articolo (in 2 passi)
-
-1. Crea un file in `contenuti/articoli/`, es. `nuovo-articolo.md`, con questa intestazione (front-matter) + il testo:
-
-```markdown
----
-titolo: Il titolo dell'articolo
-slug: nuovo-articolo
-data: 2026-08-15
-categoria: Novità
-cat: novita
-copertina: 03_yacht-schermo.png
-minuti: 4
-estratto: Una frase breve che appare nelle anteprime.
-lead: La frase introduttiva in corsivo in cima all'articolo.
----
-Qui il testo. Usa ## per i sottotitoli, - per gli elenchi,
-**grassetto** e *corsivo*. Lascia una riga vuota tra i paragrafi.
+Sito/  (repo)
+├─ CLAUDE.md            → regole per Claude Code (leggere per prime)
+├─ README.md
+├─ .env.example        → template variabili ambiente (senza segreti)
+├─ docs/               → blueprint, architettura, registro decisioni
+│   ├─ Bussola_AI_Blueprint_Operativo_v2.1.docx
+│   ├─ architecture.md
+│   └─ decisions.md
+├─ knowledge/          → base di conoscenza versionata (brand, design, editoriale, SEO, AI)
+├─ supabase/
+│   └─ migrations/     → migrazioni DB versionate (in arrivo)
+├─ contenuti/articoli/ → articoli attuali (.md) — stato di partenza
+├─ build.js            → generatore statico attuale
+├─ style.css
+├─ index.html · archivio.html · articolo-*.html · formazioni.html · dashboard.html
+└─ netlify.toml
 ```
 
-2. Lancia il generatore: `node build.js`
-   → il sito si rigenera da solo (home, archivio, pagina articolo, link, filtri).
+## Stato attuale (generatore statico)
+Il sito oggi è generato da `build.js` (Node, zero dipendenze): legge `contenuti/articoli/*.md` e produce le pagine HTML. Per aggiungere un articolo: crei un file `.md` con front-matter (`titolo, slug, data, categoria, cat, copertina, minuti, estratto, lead` + testo) in `contenuti/articoli/`, poi `node build.js`. Questo meccanismo resta valido finché il CMS su Supabase non lo sostituisce.
 
-La `copertina` è un nome file dentro `../Immagini/Riferimenti/` (o `../Immagini/Copertine/` quando avrai le copertine dedicate — in quel caso aggiorna il percorso in `build.js`).
+## Deploy
+GitHub + Netlify (build command `node build.js`, publish `.`). Aggiornamento: commit + push → Netlify ricostruisce.
 
-## Per gli agenti AI
+## Sicurezza
+Nessun segreto o API key nel frontend o nel repository. Il file `.env` reale è ignorato da Git; usa `.env.example` come riferimento. La `service_role` di Supabase e la `OPENAI_API_KEY` vivono solo lato server.
 
-Per pubblicare un articolo: (1) genera testo + metadati, (2) scrivi UN file `.md` in `contenuti/articoli/` col front-matter sopra, (3) esegui `node build.js`. Non serve toccare l'HTML. Le regole di brand (voce in prima persona, stile immagini, ecc.) sono in `00_Sistema/`.
-
-## Prossimi passi (quando andiamo online)
-
-- Mettere il sito su **Netlify** (build automatico: esegue `node build.js` a ogni modifica).
-- Collegare un **pannello di scrittura** (Decap CMS) per pubblicare dal web senza codice.
-- Rendere anche **formazioni** e le **pagine** dei contenuti (come gli articoli).
-- Collegare **Kit** per iscritti e newsletter, e la **dashboard** completa.
+## Primo passo con Claude Code
+Aprire questo repository in Claude Code e chiedere **solo un audit** (nessuna modifica): framework, routing, dati hardcoded, config Netlify, stato Admin, rischi di sicurezza; poi gap analysis contro il blueprint. Dettagli in `CLAUDE.md`.

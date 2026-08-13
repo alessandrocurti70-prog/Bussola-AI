@@ -1,2 +1,7 @@
 node_modules
 .DS_Store
+
+# Segreti — MAI in Git
+.env
+.env.*
+!.env.example
