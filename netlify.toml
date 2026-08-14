@@ -3,3 +3,23 @@
 [build]
   command = "node build.js"
   publish = "."
+
+# --- Header di sicurezza (Fase 1.1) ---
+# Applicati a TUTTE le pagine del sito. Impostano una linea di base di sicurezza
+# senza cambiare il funzionamento del sito. La CSP (Content-Security-Policy) è
+# tarata su ciò che il sito usa davvero oggi:
+#   - font da Google Fonts (fonts.googleapis.com + fonts.gstatic.com)
+#   - <style> e <script> inline, attributi onsubmit/onclick, e immagini "data:" nel cruscotto
+# NOTA: 'unsafe-inline' è un compromesso temporaneo perché le pagine attuali usano
+# script/stili inline. Andrà rimosso in una fase di hardening successiva, quando gli
+# script saranno spostati in file esterni. Vedi docs/decisions.md.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self'"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Cross-Origin-Opener-Policy = "same-origin"
