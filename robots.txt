@@ -1,0 +1,7 @@
+# Bussola AI — regole per i motori di ricerca
+# Le pagine pubbliche (Home, Archivio, Formazioni, articoli) sono indicizzabili.
+# L'area riservata (cruscotto) NON deve comparire nei risultati di ricerca.
+
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
