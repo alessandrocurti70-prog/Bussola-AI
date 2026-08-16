@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Accesso — Bussola AI</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .login-wrap{max-width:420px;margin:60px auto;padding:0 24px}
+  .login-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px 28px;box-shadow:0 10px 40px rgba(8,17,31,.06)}
+  .login-card h1{font-size:26px;margin-bottom:4px}
+  .login-card .sub{font-family:var(--sans);font-size:14px;color:var(--hint);margin-bottom:22px}
+  .field{margin:14px 0}
+  .field label{display:block;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .field input{width:100%;font-family:var(--sans);font-size:15px;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff}
+  .field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--tint)}
+  .login-card .btn{width:100%;text-align:center;justify-content:center;margin-top:8px}
+  .msg{font-family:var(--sans);font-size:14px;border-radius:8px;padding:10px 12px;margin-top:16px;display:none;line-height:1.5}
+  .msg.err{background:#fdecec;color:#b02525;display:block}
+  .msg.ok{background:var(--tint);color:var(--blue-deep);display:block}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><img class="rose" src="immagini/Elementi/logo-bussola.png" alt="Bussola AI"> Bussola AI</a>
+    <nav class="nav-links">
+      <a href="index.html">← Torna al sito</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1>Area riservata</h1>
+      <p class="sub">Accedi con le tue credenziali di amministratore.</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn" type="submit" id="submitBtn">Entra</button>
+      </form>
+      <div class="msg" id="msg"></div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <span>© 2026 Bussola AI — Area riservata</span>
+    <span>Solo per l'amministratore</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+  const form = document.getElementById('loginForm');
+  const msg = document.getElementById('msg');
+  const btn = document.getElementById('submitBtn');
+
+  function show(text, kind){ msg.className = 'msg ' + kind; msg.textContent = text; }
+
+  // Se sei già autenticato, vai dritto al cruscotto.
+  sb.auth.getSession().then(({ data }) => {
+    if (data.session) window.location.replace('dashboard.html');
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    show('Accesso in corso…', 'ok');
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) {
+      btn.disabled = false;
+      show('Accesso non riuscito. Controlla email e password e riprova.', 'err');
+      return;
+    }
+    window.location.replace('dashboard.html');
+  });
+</script>
+
+</body>
+</html>

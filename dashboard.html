@@ -28,6 +28,15 @@
 </head>
 <body>
 
+<!-- Guardiano di accesso: carica Supabase e, se non sei autenticato, torna al login. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+  sb.auth.getSession().then(({ data }) => {
+    if (!data.session) window.location.replace('login.html');
+  });
+</script>
+
 <header class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="index.html"><img class="rose" src="immagini/Elementi/logo-bussola.png" alt="Bussola AI"> Bussola AI</a>
@@ -36,7 +45,7 @@
       <a href="archivio.html">Archivio</a>
       <a href="formazioni.html">Formazioni</a>
     </nav>
-    <a class="nav-lock" href="index.html" style="border-color:var(--blue);color:#fff" title="Esci">
+    <a class="nav-lock" href="#" id="logout" style="border-color:var(--blue);color:#fff" title="Esci">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
       Esci
     </a>
@@ -211,6 +220,14 @@ ${testo}
     howto.style.display = 'block';
     howto.innerHTML = `✅ Articolo salvato come <strong>${slug}.md</strong>.<br>1) Mettilo in <strong>Sito/contenuti/articoli/</strong>.<br>2) Salva l'immagine <strong>${coverName}</strong> in <strong>Immagini/Copertine/</strong>.<br>3) Online la pubblicazione sarà automatica.`;
   };
+
+  // Esci: chiude la sessione e torna alla pagina di login.
+  const logout = document.getElementById('logout');
+  if (logout) logout.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await sb.auth.signOut();
+    window.location.replace('login.html');
+  });
 </script>
 
 </body>
