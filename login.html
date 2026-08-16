@@ -7,15 +7,19 @@
 <title>Accesso — Bussola AI</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  .login-wrap{max-width:420px;margin:60px auto;padding:0 24px}
+  .login-wrap{max-width:440px;margin:60px auto;padding:0 24px}
   .login-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px 28px;box-shadow:0 10px 40px rgba(8,17,31,.06)}
   .login-card h1{font-size:26px;margin-bottom:4px}
-  .login-card .sub{font-family:var(--sans);font-size:14px;color:var(--hint);margin-bottom:22px}
+  .login-card .sub{font-family:var(--sans);font-size:14px;color:var(--hint);margin-bottom:22px;line-height:1.5}
   .field{margin:14px 0}
   .field label{display:block;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
   .field input{width:100%;font-family:var(--sans);font-size:15px;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff}
   .field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--tint)}
   .login-card .btn{width:100%;text-align:center;justify-content:center;margin-top:8px}
+  .qr{display:flex;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;margin:6px 0 14px}
+  .qr svg,.qr img{width:200px;height:200px;display:block}
+  .secret{font-family:var(--sans);font-size:13px;color:var(--hint);line-height:1.6;margin-bottom:6px}
+  .secret code{font-family:monospace;font-size:13px;color:var(--ink);background:var(--tint);padding:3px 6px;border-radius:6px;word-break:break-all}
   .msg{font-family:var(--sans);font-size:14px;border-radius:8px;padding:10px 12px;margin-top:16px;display:none;line-height:1.5}
   .msg.err{background:#fdecec;color:#b02525;display:block}
   .msg.ok{background:var(--tint);color:var(--blue-deep);display:block}
@@ -35,19 +39,52 @@
 <main>
   <div class="login-wrap">
     <div class="login-card">
-      <h1>Area riservata</h1>
-      <p class="sub">Accedi con le tue credenziali di amministratore.</p>
-      <form id="loginForm">
-        <div class="field">
-          <label for="email">Email</label>
-          <input type="email" id="email" autocomplete="username" required>
-        </div>
-        <div class="field">
-          <label for="password">Password</label>
-          <input type="password" id="password" autocomplete="current-password" required>
-        </div>
-        <button class="btn" type="submit" id="submitBtn">Entra</button>
-      </form>
+
+      <!-- Passo 1: email + password -->
+      <div id="step-login">
+        <h1>Area riservata</h1>
+        <p class="sub">Accedi con le tue credenziali di amministratore.</p>
+        <form id="loginForm">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" autocomplete="username" required>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" autocomplete="current-password" required>
+          </div>
+          <button class="btn" type="submit" id="submitBtn">Entra</button>
+        </form>
+      </div>
+
+      <!-- Passo 2: codice a 6 cifre (MFA già attivo) -->
+      <div id="step-code" style="display:none">
+        <h1>Codice di verifica</h1>
+        <p class="sub">Apri Google Authenticator sul telefono e inserisci il codice a 6 cifre di Bussola AI.</p>
+        <form id="codeForm">
+          <div class="field">
+            <label for="code">Codice a 6 cifre</label>
+            <input type="text" id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" required>
+          </div>
+          <button class="btn" type="submit" id="codeBtn">Verifica</button>
+        </form>
+      </div>
+
+      <!-- Passo 3: attivazione MFA la prima volta (QR) -->
+      <div id="step-enroll" style="display:none">
+        <h1>Attiva la verifica a due fattori</h1>
+        <p class="sub">Inquadra questo QR con Google Authenticator, poi inserisci il codice a 6 cifre che compare nell'app.</p>
+        <div id="qr" class="qr"></div>
+        <p class="secret">Non riesci a inquadrare? Inserisci a mano questo codice nell'app:<br><code id="secret"></code></p>
+        <form id="enrollForm">
+          <div class="field">
+            <label for="enrollCode">Codice a 6 cifre dall'app</label>
+            <input type="text" id="enrollCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" required>
+          </div>
+          <button class="btn" type="submit" id="enrollBtn">Attiva ed entra</button>
+        </form>
+      </div>
+
       <div class="msg" id="msg"></div>
     </div>
   </div>
@@ -63,30 +100,101 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
 <script>
-  const form = document.getElementById('loginForm');
   const msg = document.getElementById('msg');
-  const btn = document.getElementById('submitBtn');
+  function show(text, kind){ msg.className = 'msg ' + (kind || ''); msg.textContent = text || ''; }
+  function showStep(id){
+    ['step-login','step-code','step-enroll'].forEach(s => {
+      document.getElementById(s).style.display = (s === id) ? '' : 'none';
+    });
+  }
+  function goDashboard(){ window.location.replace('dashboard.html'); }
 
-  function show(text, kind){ msg.className = 'msg ' + kind; msg.textContent = text; }
+  let enrollFactorId = null;
 
-  // Se sei già autenticato, vai dritto al cruscotto.
-  sb.auth.getSession().then(({ data }) => {
-    if (data.session) window.location.replace('dashboard.html');
-  });
+  // Dopo la password: decide se chiedere il codice o attivare l'MFA.
+  async function routeAfterPassword(){
+    const { data: aal, error } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (error){ show('Errore nel controllo della verifica. Riprova.', 'err'); return; }
+    if (aal.currentLevel === 'aal2'){ goDashboard(); return; }
+    if (aal.nextLevel === 'aal2'){
+      showStep('step-code'); show('');
+      document.getElementById('code').focus();
+    } else {
+      await startEnroll();
+    }
+  }
 
-  form.addEventListener('submit', async (e) => {
+  // Passo 1: login con password
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    btn.disabled = true;
-    show('Accesso in corso…', 'ok');
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; show('Accesso in corso…', 'ok');
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const { error } = await sb.auth.signInWithPassword({ email, password });
-    if (error) {
-      btn.disabled = false;
-      show('Accesso non riuscito. Controlla email e password e riprova.', 'err');
-      return;
+    if (error){ btn.disabled = false; show('Accesso non riuscito. Controlla email e password.', 'err'); return; }
+    await routeAfterPassword();
+  });
+
+  // Passo 2: verifica del codice (MFA già attivo)
+  document.getElementById('codeForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('codeBtn');
+    btn.disabled = true; show('Verifica in corso…', 'ok');
+    const { data: factors } = await sb.auth.mfa.listFactors();
+    const totp = factors && factors.totp && factors.totp[0];
+    if (!totp){ btn.disabled = false; show('Nessun dispositivo trovato.', 'err'); return; }
+    const { data: ch, error: chErr } = await sb.auth.mfa.challenge({ factorId: totp.id });
+    if (chErr){ btn.disabled = false; show('Errore. Riprova.', 'err'); return; }
+    const code = document.getElementById('code').value.trim();
+    const { error } = await sb.auth.mfa.verify({ factorId: totp.id, challengeId: ch.id, code });
+    if (error){ btn.disabled = false; show('Codice non valido. Controlla l\'app e riprova.', 'err'); return; }
+    goDashboard();
+  });
+
+  // Passo 3: attivazione MFA (mostra il QR)
+  async function startEnroll(){
+    showStep('step-enroll');
+    show('Preparazione…', 'ok');
+    // Rimuove eventuali attivazioni incomplete rimaste in sospeso.
+    const { data: factors } = await sb.auth.mfa.listFactors();
+    if (factors && factors.all){
+      for (const f of factors.all){
+        if (f.status !== 'verified'){ await sb.auth.mfa.unenroll({ factorId: f.id }); }
+      }
     }
-    window.location.replace('dashboard.html');
+    const { data: enrolled, error } = await sb.auth.mfa.enroll({ factorType: 'totp' });
+    if (error){ show('Impossibile avviare l\'attivazione. Riprova.', 'err'); return; }
+    enrollFactorId = enrolled.id;
+    const qc = enrolled.totp.qr_code || '';
+    const qr = document.getElementById('qr');
+    qr.innerHTML = '';
+    if (qc.trim().startsWith('<svg') || qc.trim().startsWith('<?xml')){
+      qr.innerHTML = qc;
+    } else {
+      const img = document.createElement('img');
+      img.src = qc; img.alt = 'QR code';
+      qr.appendChild(img);
+    }
+    document.getElementById('secret').textContent = enrolled.totp.secret;
+    show('');
+  }
+
+  document.getElementById('enrollForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('enrollBtn');
+    btn.disabled = true; show('Attivazione in corso…', 'ok');
+    const { data: ch, error: chErr } = await sb.auth.mfa.challenge({ factorId: enrollFactorId });
+    if (chErr){ btn.disabled = false; show('Errore. Riprova.', 'err'); return; }
+    const code = document.getElementById('enrollCode').value.trim();
+    const { error } = await sb.auth.mfa.verify({ factorId: enrollFactorId, challengeId: ch.id, code });
+    if (error){ btn.disabled = false; show('Codice non valido. Controlla l\'app e riprova.', 'err'); return; }
+    goDashboard();
+  });
+
+  // All'apertura: se sei già loggato, riprende dal punto giusto.
+  sb.auth.getSession().then(({ data }) => {
+    if (data.session) routeAfterPassword();
   });
 </script>
 
