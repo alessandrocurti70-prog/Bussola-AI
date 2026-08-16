@@ -5,3 +5,5 @@
 User-agent: *
 Allow: /
 Disallow: /dashboard.html
+
+Sitemap: https://bussolaai.netlify.app/sitemap.xml

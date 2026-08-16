@@ -13,6 +13,9 @@ const path = require('path');
 
 const DIR = __dirname;
 const ART_DIR = path.join(DIR, 'contenuti', 'articoli');
+// URL pubblico canonico del sito. Su Netlify arriva da process.env.URL;
+// in locale usa il fallback. Serve per generare la sitemap con link assoluti.
+const SITE = (process.env.URL || 'https://bussolaai.netlify.app').replace(/\/$/, '');
 
 // ---------- utilità ----------
 function parseFrontMatter(raw) {
@@ -258,6 +261,20 @@ ${FOOTER}
 </html>`;
 }
 
+// ---------- sitemap (solo URL pubblici; l'area riservata è esclusa) ----------
+function sitemapXml(arts) {
+  const pages = [
+    { loc: SITE + '/', lastmod: arts[0] && arts[0].data },
+    { loc: SITE + '/archivio.html', lastmod: arts[0] && arts[0].data },
+    { loc: SITE + '/formazioni.html' }
+  ];
+  arts.forEach(a => pages.push({ loc: `${SITE}/articolo-${a.slug}.html`, lastmod: a.data }));
+  const urls = pages.map(p =>
+    `  <url><loc>${p.loc}</loc>${p.lastmod ? `<lastmod>${p.lastmod}</lastmod>` : ''}</url>`
+  ).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+}
+
 // ---------- esecuzione ----------
 const files = fs.readdirSync(ART_DIR).filter(f => f.endsWith('.md'));
 const arts = files.map(f => {
@@ -271,6 +288,7 @@ const arts = files.map(f => {
 arts.forEach(a => fs.writeFileSync(path.join(DIR, `articolo-${a.slug}.html`), articlePage(a)));
 fs.writeFileSync(path.join(DIR, 'index.html'), homePage(arts));
 fs.writeFileSync(path.join(DIR, 'archivio.html'), archivioPage(arts));
+fs.writeFileSync(path.join(DIR, 'sitemap.xml'), sitemapXml(arts));
 
-console.log(`Generati: ${arts.length} articoli + index.html + archivio.html`);
+console.log(`Generati: ${arts.length} articoli + index.html + archivio.html + sitemap.xml`);
 arts.forEach(a => console.log('  - articolo-' + a.slug + '.html  (' + a.titolo + ')'));
