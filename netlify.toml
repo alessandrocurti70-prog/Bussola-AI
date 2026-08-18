@@ -24,6 +24,15 @@
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
     Cross-Origin-Opener-Policy = "same-origin"
 
+# --- Ingresso area riservata (Fase 2.5) ---
+# /gestione apre la pagina di login SENZA cambiare l'URL nella barra (rewrite 200).
+# Il pulsante pubblico "Area riservata" è stato rimosso: questo è l'ingresso
+# discreto per l'admin. NON va messo in robots.txt (lo rivelerebbe).
+[[redirects]]
+  from = "/gestione"
+  to = "/login.html"
+  status = 200
+
 # --- Blocco file interni (Fase 1.4) ---
 # Netlify pubblica l'intera cartella del progetto. Queste regole fanno rispondere
 # 404 ("non trovato") ai file/cartelle interni, così non sono raggiungibili dal
