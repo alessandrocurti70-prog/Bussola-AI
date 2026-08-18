@@ -7,16 +7,6 @@
 <title>Gestione — Bussola AI</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  .adminbar{background:var(--navy)}
-  .adminbar .wrap{display:flex; align-items:center; justify-content:space-between; height:64px}
-  .adminbar .brand{display:flex; align-items:center; gap:10px; color:#fff; font-family:var(--serif); font-weight:700; font-size:20px}
-  .adminbar .brand img{width:26px; height:26px}
-  .adminbar .actions{display:flex; align-items:center; gap:16px; font-family:var(--sans); font-size:14px}
-  .adminbar .actions a{color:#c7d2e2; text-decoration:none}
-  .adminbar .actions a:hover{color:#fff}
-  .adminbar .exit{display:inline-flex; align-items:center; gap:7px; border:1px solid #2b3a52; color:#fff; padding:7px 13px; border-radius:9px}
-  .adminbar .exit svg{width:16px; height:16px}
-
   .layout{max-width:1180px; margin:0 auto; padding:26px 24px; display:grid; grid-template-columns:232px 1fr; gap:30px}
   .side .hello{font-family:var(--sans); font-size:13px; color:var(--hint); padding:4px 12px 14px}
   .side nav{display:flex; flex-direction:column; gap:4px}
@@ -62,16 +52,16 @@
   });
 </script>
 
-<header class="adminbar">
-  <div class="wrap">
-    <a class="brand" href="index.html"><img src="immagini/Elementi/logo-bussola.png" alt="Bussola AI"> Bussola AI</a>
-    <div class="actions">
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><img class="rose" src="immagini/Elementi/logo-bussola.png" alt="Bussola AI"> Bussola AI</a>
+    <nav class="nav-links">
       <a href="index.html" target="_blank" rel="noopener">Vedi il sito ↗</a>
-      <a class="exit" href="#" id="logout" title="Esci">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-        Esci
-      </a>
-    </div>
+    </nav>
+    <a class="nav-lock" href="#" id="logout" title="Esci">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      Esci
+    </a>
   </div>
 </header>
 
@@ -95,7 +85,7 @@
       </button>
       <button data-sec="agenti">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="8" width="14" height="11" rx="2"/><path d="M12 8V4M9 13h.01M15 13h.01"/></svg>
-        Agenti
+        Agenti AI
       </button>
     </nav>
   </aside>
@@ -145,7 +135,7 @@
 
     <section class="section" id="sec-agenti">
       <div class="sec-h">
-        <h1>Agenti</h1>
+        <h1>Agenti AI</h1>
         <p>Da qui vivranno i tuoi assistenti AI, che ti aiuteranno passo dopo passo.</p>
       </div>
       <div class="ph">
