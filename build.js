@@ -65,10 +65,6 @@ function nav(active) {
       ${link('archivio.html', 'Archivio')}
       ${link('formazioni.html', 'Formazioni')}
     </nav>
-    <a class="nav-lock" href="dashboard.html" title="Area riservata">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-      Area riservata
-    </a>
   </div>
 </header>`;
 }
