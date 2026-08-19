@@ -1,12 +1,6 @@
-# Redirect/blocchi per Cloudflare Pages (equivale ai [[redirects]] di netlify.toml).
-# /gestione apre la pagina di login (rewrite, l'URL resta /gestione).
-# I file/cartelle interni restituiscono 404 (non raggiungibili dal pubblico).
-/gestione        /login.html    200
-/build.js        /404.html      404
-/package.json    /404.html      404
-/CLAUDE.md       /404.html      404
-/README.md       /404.html      404
-/docs/*          /404.html      404
-/knowledge/*     /404.html      404
-/contenuti/*     /404.html      404
-/supabase/*      /404.html      404
+# Ingresso discreto dell'area riservata: /gestione apre la pagina di login
+# (rewrite, l'URL nella barra resta /gestione). Cloudflare usa indirizzi "puliti"
+# senza .html, quindi il target è /login (non /login.html).
+# I file interni non hanno più bisogno di regole 404: NON vengono pubblicati
+# (build.js mette in dist/ solo i file pubblici).
+/gestione   /login   200
