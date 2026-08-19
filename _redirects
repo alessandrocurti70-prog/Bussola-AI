@@ -1,0 +1,12 @@
+# Redirect/blocchi per Cloudflare Pages (equivale ai [[redirects]] di netlify.toml).
+# /gestione apre la pagina di login (rewrite, l'URL resta /gestione).
+# I file/cartelle interni restituiscono 404 (non raggiungibili dal pubblico).
+/gestione        /login.html    200
+/build.js        /404.html      404
+/package.json    /404.html      404
+/CLAUDE.md       /404.html      404
+/README.md       /404.html      404
+/docs/*          /404.html      404
+/knowledge/*     /404.html      404
+/contenuti/*     /404.html      404
+/supabase/*      /404.html      404
