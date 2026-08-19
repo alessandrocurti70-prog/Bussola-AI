@@ -1,6 +1,9 @@
 node_modules
 .DS_Store
 
+# Output del generatore (rigenerato a ogni build, non va versionato)
+dist/
+
 # Segreti — MAI in Git
 .env
 .env.*

@@ -15,7 +15,7 @@ const DIR = __dirname;
 const ART_DIR = path.join(DIR, 'contenuti', 'articoli');
 // URL pubblico canonico del sito. Su Netlify arriva da process.env.URL;
 // in locale usa il fallback. Serve per generare la sitemap con link assoluti.
-const SITE = (process.env.URL || 'https://bussolaai.netlify.app').replace(/\/$/, '');
+const SITE = (process.env.SITE_URL || process.env.URL || process.env.CF_PAGES_URL || 'https://bussolaai.netlify.app').replace(/\/$/, '');
 
 // ---------- utilità ----------
 function parseFrontMatter(raw) {
@@ -272,6 +272,12 @@ function sitemapXml(arts) {
 }
 
 // ---------- esecuzione ----------
+// Tutto l'output pubblico va in dist/. I file interni (docs/, knowledge/, build.js,
+// contenuti/, supabase/, CLAUDE.md, ecc.) NON vengono inclusi → non finiscono online.
+const DIST = path.join(DIR, 'dist');
+fs.rmSync(DIST, { recursive: true, force: true });
+fs.mkdirSync(DIST, { recursive: true });
+
 const files = fs.readdirSync(ART_DIR).filter(f => f.endsWith('.md'));
 const arts = files.map(f => {
   const { meta, body } = parseFrontMatter(fs.readFileSync(path.join(ART_DIR, f), 'utf8'));
@@ -281,10 +287,23 @@ const arts = files.map(f => {
   return meta;
 }).sort((a, b) => (a.data < b.data ? 1 : -1));
 
-arts.forEach(a => fs.writeFileSync(path.join(DIR, `articolo-${a.slug}.html`), articlePage(a)));
-fs.writeFileSync(path.join(DIR, 'index.html'), homePage(arts));
-fs.writeFileSync(path.join(DIR, 'archivio.html'), archivioPage(arts));
-fs.writeFileSync(path.join(DIR, 'sitemap.xml'), sitemapXml(arts));
+// Pagine generate → dist/
+arts.forEach(a => fs.writeFileSync(path.join(DIST, `articolo-${a.slug}.html`), articlePage(a)));
+fs.writeFileSync(path.join(DIST, 'index.html'), homePage(arts));
+fs.writeFileSync(path.join(DIST, 'archivio.html'), archivioPage(arts));
+fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml(arts));
 
-console.log(`Generati: ${arts.length} articoli + index.html + archivio.html + sitemap.xml`);
+// File pubblici scritti a mano → copiati in dist/ (elenco esplicito: SOLO il pubblico).
+const PUBLIC_FILES = ['style.css', 'robots.txt', 'formazioni.html', 'dashboard.html', 'login.html', '404.html', 'supabase-client.js', '_headers', '_redirects'];
+PUBLIC_FILES.forEach(f => {
+  const src = path.join(DIR, f);
+  if (fs.existsSync(src)) fs.copyFileSync(src, path.join(DIST, f));
+});
+// Cartella immagini (ricorsiva) → dist/immagini/
+if (fs.existsSync(path.join(DIR, 'immagini'))) {
+  fs.cpSync(path.join(DIR, 'immagini'), path.join(DIST, 'immagini'), { recursive: true });
+}
+
+console.log(`Generati in dist/: ${arts.length} articoli + index.html + archivio.html + sitemap.xml`);
+console.log(`Copiati in dist/: ${PUBLIC_FILES.join(', ')} + immagini/`);
 arts.forEach(a => console.log('  - articolo-' + a.slug + '.html  (' + a.titolo + ')'));

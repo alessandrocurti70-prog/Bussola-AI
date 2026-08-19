@@ -2,7 +2,7 @@
 # Netlify eseguirà il generatore a ogni modifica e pubblicherà il sito.
 [build]
   command = "node build.js"
-  publish = "."
+  publish = "dist"
 
 # --- Header di sicurezza (Fase 1.1) ---
 # Applicati a TUTTE le pagine del sito. Impostano una linea di base di sicurezza
