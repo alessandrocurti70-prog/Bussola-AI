@@ -107,6 +107,20 @@
     return { w, m };
   }
 
+  // Inserisce un marcatore (es. "::pratica ") al punto del cursore, andando a capo se serve.
+  function insertAtCursor(text) {
+    const ta = $('f-corpo');
+    const start = ta.selectionStart, end = ta.selectionEnd;
+    const before = ta.value.slice(0, start), after = ta.value.slice(end);
+    const prefix = (before.length > 0 && !before.endsWith('\n')) ? '\n' : '';
+    const ins = prefix + text;
+    ta.value = before + ins + after;
+    const pos = start + ins.length;
+    ta.focus();
+    ta.setSelectionRange(pos, pos);
+    updateStats();
+  }
+
   // ---------- Tag ----------
   function renderSelectedTags() {
     const box = $('f-tags-selected');
@@ -273,6 +287,11 @@
       const r = new FileReader(); r.onload = (ev) => ($('f-cover-preview').innerHTML = `<img src="${ev.target.result}" alt="">`); r.readAsDataURL(f);
     });
     document.querySelectorAll('[data-close]').forEach((b) => (b.onclick = () => hideModal(b.dataset.close)));
+    // Barra pulsanti: inserisce i marcatori nel testo
+    document.querySelectorAll('.a-toolbar [data-ins]').forEach((b) => (b.onclick = () => insertAtCursor(b.dataset.ins)));
+    // Tastino ingrandisci / riduci l'area di testo
+    const exp = $('f-corpo-expand');
+    if (exp) exp.onclick = () => $('f-corpo').classList.toggle('big');
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

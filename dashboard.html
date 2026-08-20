@@ -86,6 +86,15 @@
   .et-row code{color:var(--hint)}
   .et-state{font-size:12px}
   .et-state.on{color:#0b7a54} .et-state.off{color:var(--hint)}
+  .a-toolbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center}
+  .a-toolbar button{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--blue-deep);background:var(--tint);border:1px solid #dbe7fb;border-radius:7px;padding:5px 9px;cursor:pointer}
+  .a-toolbar button:hover{background:#dbe7fb}
+  .a-tb-sep{width:1px;height:18px;background:var(--line);margin:0 3px}
+  .a-ta-wrap{position:relative}
+  .a-expand{position:absolute;bottom:10px;right:10px;background:#fff;border:1px solid var(--line);border-radius:7px;width:30px;height:30px;font-size:16px;color:var(--muted);cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center}
+  .a-expand:hover{border-color:var(--blue);color:var(--blue)}
+  #f-corpo.big{min-height:65vh}
+  .a-hint{font-family:var(--sans);font-size:12px;color:var(--hint);margin-top:6px}
 
   @media (max-width:820px){
     .layout{grid-template-columns:1fr; gap:18px}
@@ -228,7 +237,26 @@
       <div class="a-field"><label>Occhiello (opzionale)</label><input type="text" id="f-occhiello"></div>
       <div class="a-field"><label>Frase di apertura (lead)</label><input type="text" id="f-lead"></div>
       <div class="a-field"><label>Estratto (per le anteprime)</label><input type="text" id="f-estratto"></div>
-      <div class="a-field"><label>Testo dell'articolo</label><textarea id="f-corpo" rows="10" placeholder="Scrivi qui. Usa ## per i sottotitoli, - per gli elenchi, **grassetto**."></textarea></div>
+      <div class="a-field">
+        <label>Testo dell'articolo</label>
+        <div class="a-toolbar">
+          <button type="button" data-ins="## ">Titolo</button>
+          <button type="button" data-ins="### ">Sottotitolo</button>
+          <button type="button" data-ins="- ">Elenco</button>
+          <span class="a-tb-sep"></span>
+          <button type="button" data-ins="::pratica ">In pratica</button>
+          <button type="button" data-ins="::nota ">Nota</button>
+          <button type="button" data-ins="::esempio ">Esempio</button>
+          <button type="button" data-ins="::attenzione ">Attenzione</button>
+          <button type="button" data-ins="::prompt ">Prompt</button>
+          <button type="button" data-ins="::citazione ">Citazione</button>
+        </div>
+        <div class="a-ta-wrap">
+          <textarea id="f-corpo" rows="10" placeholder="Scrivi normale. Per un box (In pratica, Nota, Prompt…) clicca il pulsante qui sopra e scrivi il contenuto."></textarea>
+          <button type="button" class="a-expand" id="f-corpo-expand" title="Ingrandisci / riduci l'area">⤢</button>
+        </div>
+        <p class="a-hint">Scrivi normale: i pulsanti inseriscono i box, il ⤢ ingrandisce l'area di scrittura.</p>
+      </div>
       <div class="a-stats" id="f-stats"></div>
       <div class="a-field">
         <label>Copertina (obbligatoria per pubblicare)</label>
