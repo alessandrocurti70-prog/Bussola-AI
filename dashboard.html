@@ -66,6 +66,7 @@
   .a-field label{display:block; font-family:var(--sans); font-size:13px; font-weight:600; color:var(--muted); margin-bottom:6px}
   .a-field input, .a-field select, .a-field textarea{width:100%; font-family:var(--sans); font-size:15px; border:1px solid var(--line); border-radius:10px; padding:10px 12px; background:#fff}
   .a-field textarea{line-height:1.6; resize:vertical; min-height:180px}
+  .a-field textarea.a-sm{min-height:56px}
   .a-field input:focus, .a-field select:focus, .a-field textarea:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px var(--tint)}
   .a-row2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
   .a-chips{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:8px}
@@ -225,18 +226,16 @@
     </div>
     <div class="a-dialog-body">
       <div class="a-field"><label>Titolo</label><input type="text" id="f-titolo"></div>
-      <div class="a-row2">
-        <div class="a-field"><label>Etichetta</label><select id="f-etichetta"></select></div>
-        <div class="a-field"><label>Slug (indirizzo)</label><input type="text" id="f-slug" placeholder="auto dal titolo"></div>
-      </div>
+      <div class="a-field"><label>Etichetta</label><select id="f-etichetta"></select></div>
+      <input type="hidden" id="f-slug">
       <div class="a-field">
         <label>Tag (max 4)</label>
         <div id="f-tags-selected" class="a-chips"></div>
         <input type="text" id="f-tag-input" placeholder="Scrivi un tag e premi Invio">
       </div>
-      <div class="a-field"><label>Occhiello (opzionale)</label><input type="text" id="f-occhiello"></div>
-      <div class="a-field"><label>Frase di apertura (lead)</label><input type="text" id="f-lead"></div>
-      <div class="a-field"><label>Estratto (per le anteprime)</label><input type="text" id="f-estratto"></div>
+      <div class="a-field"><label>Occhiello (opzionale)</label><input type="text" id="f-occhiello" autocomplete="off"></div>
+      <div class="a-field"><label>Frase di apertura (lead)</label><textarea id="f-lead" class="a-sm" rows="2" autocomplete="off"></textarea></div>
+      <div class="a-field"><label>Estratto (per le anteprime)</label><textarea id="f-estratto" class="a-sm" rows="2" autocomplete="off"></textarea></div>
       <div class="a-field">
         <label>Testo dell'articolo</label>
         <div class="a-toolbar">
@@ -251,11 +250,8 @@
           <button type="button" data-ins="::prompt ">Prompt</button>
           <button type="button" data-ins="::citazione ">Citazione</button>
         </div>
-        <div class="a-ta-wrap">
-          <textarea id="f-corpo" rows="10" placeholder="Scrivi normale. Per un box (In pratica, Nota, Prompt…) clicca il pulsante qui sopra e scrivi il contenuto."></textarea>
-          <button type="button" class="a-expand" id="f-corpo-expand" title="Ingrandisci / riduci l'area">⤢</button>
-        </div>
-        <p class="a-hint">Scrivi normale: i pulsanti inseriscono i box, il ⤢ ingrandisce l'area di scrittura.</p>
+        <textarea id="f-corpo" rows="10" autocomplete="off" placeholder="Scrivi normale. Per un box (In pratica, Nota, Prompt…) clicca il pulsante qui sopra e scrivi il contenuto."></textarea>
+        <p class="a-hint">Scrivi normale: i pulsanti inseriscono i box. Trascina l'angolo in basso a destra del riquadro per ingrandirlo.</p>
       </div>
       <div class="a-stats" id="f-stats"></div>
       <div class="a-field">
