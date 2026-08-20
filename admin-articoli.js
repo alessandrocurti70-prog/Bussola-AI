@@ -3,6 +3,9 @@
 (function () {
   const $ = (id) => document.getElementById(id);
   const WPM = 220;
+  // Deploy hook di Cloudflare: ricostruisce il sito alla pubblicazione.
+  // Da compilare con l'URL generato in Cloudflare (Settings → Build → Deploy hooks).
+  const DEPLOY_HOOK_URL = '';
 
   let etichette = [];     // categories
   let tagsCache = [];     // tags
@@ -209,8 +212,12 @@
     }
     const { error } = await sb.from('articles').update({ stato: 'pubblicato', numero_editoriale: numero, published_at: new Date().toISOString() }).eq('id', id);
     if (error) { alert('Errore: ' + error.message); return; }
-    alert('Pubblicato! Numero ' + num3(numero) + '.');
     await loadArticoli();
+    let extra = '\n\nPer mostrarlo sul sito serve ricostruire (te lo configuro col deploy hook).';
+    if (DEPLOY_HOOK_URL) {
+      try { await fetch(DEPLOY_HOOK_URL, { method: 'POST' }); extra = '\n\nSito in ricostruzione (~1-2 min): tra poco sarà online.'; } catch (e) {}
+    }
+    alert('Pubblicato! Numero ' + num3(numero) + '.' + extra);
   }
   async function elimina(id) {
     if (!confirm('Eliminare definitivamente questo articolo?')) return;

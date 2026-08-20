@@ -17,6 +17,11 @@ const ART_DIR = path.join(DIR, 'contenuti', 'articoli');
 // in locale usa il fallback. Serve per generare la sitemap con link assoluti.
 const SITE = (process.env.SITE_URL || process.env.URL || process.env.CF_PAGES_URL || 'https://bussolaai.netlify.app').replace(/\/$/, '');
 
+// Backend Supabase — chiave PUBBLICA: grazie alle regole RLS, legge SOLO gli
+// articoli pubblicati. Il sito resta statico (SSG) ma i contenuti vengono dal DB.
+const SUPABASE_URL = 'https://jfygkymkzkvzknzfsnfv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_CtNKSg_12cJlbh0X1um-MQ_vZygjHhd';
+
 // ---------- utilità ----------
 function parseFrontMatter(raw) {
   const meta = {};
@@ -39,11 +44,33 @@ function inline(t) {
     .replace(/\*(.+?)\*/g, '<em>$1</em>');
 }
 
+function escapeText(t) { return (t || '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
+
+// Box editoriali. Nel testo si scrivono così (una riga vuota prima e dopo):
+//   ::pratica  Questo è un box "In pratica".
+//   ::nota  Un richiamo.   ::attenzione  Un avviso.   ::esempio  Un esempio.
+//   ::citazione  Una frase in evidenza.
+//   ::prompt  Testo del prompt da copiare (può andare a capo).
+const BOX_LABEL = { esempio: 'Esempio', pratica: 'In pratica', nota: 'Nota', attenzione: 'Attenzione', ricorda: 'Da ricordare' };
+function renderBox(tipo, text) {
+  if (tipo === 'citazione') return `<blockquote class="ed-quote"><p>${inline(text)}</p></blockquote>`;
+  if (tipo === 'prompt') return `<div class="ed-prompt"><div class="ed-prompt-h"><span>Prompt da copiare</span><button class="ed-copy" type="button">Copia</button></div><pre>${escapeText(text)}</pre></div>`;
+  return `<div class="ed-box ed-${tipo}"><div class="ed-box-h">${BOX_LABEL[tipo] || tipo}</div><p>${inline(text)}</p></div>`;
+}
+
 function mdToHtml(body) {
   const blocks = body.trim().split(/\n\s*\n/);
   return blocks.map(b => {
     const lines = b.split('\n');
-    if (lines[0].startsWith('## ')) return `<h2>${inline(lines[0].slice(3).trim())}</h2>`;
+    const first = lines[0].trim();
+    const boxM = first.match(/^::(esempio|pratica|nota|attenzione|ricorda|prompt|citazione)\b\s*(.*)$/i);
+    if (boxM) {
+      const tipo = boxM[1].toLowerCase();
+      const rest = [boxM[2], ...lines.slice(1)].map(s => s.trim()).filter(Boolean).join(tipo === 'prompt' ? '\n' : ' ');
+      return renderBox(tipo, rest);
+    }
+    if (first.startsWith('### ')) return `<h3>${inline(first.slice(4).trim())}</h3>`;
+    if (first.startsWith('## ')) return `<h2>${inline(first.slice(3).trim())}</h2>`;
     if (lines.every(l => l.startsWith('- '))) {
       return '<ul>' + lines.map(l => `<li>${inline(l.slice(2).trim())}</li>`).join('') + '</ul>';
     }
@@ -97,9 +124,18 @@ function dateIt(iso) {
 
 function card(a) {
   const href = `articolo-${a.slug}.html`;
-  return `        <article class="card" data-cat="${a.cat}" data-title="${(a.titolo + ' ' + a.categoria).toLowerCase()}">
-          <a href="${href}"><div class="card-cover"><img src="${IMG}${a.copertina}" alt=""></div></a>
-          <div class="card-body"><div class="card-meta"><span class="tag">${a.categoria}</span><span>${dateIt(a.data)}</span></div><h3><a href="${href}">${a.titolo}</a></h3><p>${a.estratto}</p></div>
+  const badge = a.categoria ? `<span class="lab" style="--c:${a.colore}">${a.categoria}</span>` : '';
+  const tags = (a.tags || []).slice(0, 2).map(t => `<span class="tg">${t.name}</span>`).join('');
+  const num = a.numero ? `#${String(a.numero).padStart(3, '0')}` : '';
+  const tagsHash = (a.tags || []).map(t => t.slug).join(' ');
+  return `        <article class="card" data-cat="${a.cat}" data-title="${(a.titolo + ' ' + a.categoria + ' ' + tagsHash).toLowerCase()}">
+          <a href="${href}"><div class="card-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || ''}"></div></a>
+          <div class="card-body">
+            <div class="card-labels">${badge}${tags}</div>
+            <h3><a href="${href}">${a.titolo}</a></h3>
+            <p>${a.estratto}</p>
+            <div class="card-meta">${num ? `<span>${num}</span>` : ''}<span>${a.minuti} min di lettura</span></div>
+          </div>
         </article>`;
 }
 
@@ -112,13 +148,15 @@ ${nav('')}
 <main>
   <article class="article read">
     <a class="back" href="archivio.html">← Torna all'archivio</a>
-    <div class="article-meta"><span class="tag">${a.categoria}</span><span>${dateIt(a.data)} · ${a.minuti} min di lettura</span></div>
+    ${a.occhiello ? `<span class="kicker">${a.occhiello}</span>` : ''}
+    <div class="article-meta"><span class="lab" style="--c:${a.colore}">${a.categoria}</span><span>${a.numero ? '#' + String(a.numero).padStart(3, '0') + ' · ' : ''}${a.minuti} min di lettura</span></div>
     <h1>${a.titolo}</h1>
     <p class="lead">${a.lead}</p>
-    <div class="article-cover"><img src="${IMG}${a.copertina}" alt="${a.titolo}"></div>
+    <div class="article-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || a.titolo}"></div>
     <div class="article-body">
       ${a.bodyHtml}
     </div>
+    ${(a.tags && a.tags.length) ? `<div class="article-tags"><span class="tags-label">Tag:</span>${a.tags.map(t => `<span class="tg">${t.name}</span>`).join('')}</div>` : ''}
     <div class="end-cta">
       <h3>Non perdere la rotta della settimana</h3>
       <p>Ogni settimana una dose di AI spiegata semplice, con una cosa concreta da fare subito.</p>
@@ -129,6 +167,14 @@ ${nav('')}
     </div>
   </article>
 </main>
+
+<script>
+  document.querySelectorAll('.ed-copy').forEach(btn => btn.addEventListener('click', () => {
+    const pre = btn.closest('.ed-prompt').querySelector('pre');
+    try { navigator.clipboard.writeText(pre.innerText); } catch (e) {}
+    const t = btn.textContent; btn.textContent = 'Copiato ✓'; setTimeout(() => (btn.textContent = t), 1500);
+  }));
+</script>
 
 ${FOOTER}
 </body>
@@ -226,6 +272,19 @@ ${cards}
       <p id="empty" class="sans" style="display:none;color:var(--hint);padding:20px 0">Nessuna uscita trovata per questa ricerca.</p>
     </div>
   </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="end-cta" style="margin:0">
+        <h3>Non perdere la rotta della settimana</h3>
+        <p>Ogni settimana una dose di AI spiegata semplice, con una cosa concreta da fare subito.</p>
+        <form class="subscribe" onsubmit="return false">
+          <input type="email" placeholder="La tua email" aria-label="La tua email">
+          <button type="submit">Iscriviti</button>
+        </form>
+      </div>
+    </div>
+  </section>
 </main>
 
 ${FOOTER}
@@ -271,39 +330,57 @@ function sitemapXml(arts) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
-// ---------- esecuzione ----------
-// Tutto l'output pubblico va in dist/. I file interni (docs/, knowledge/, build.js,
-// contenuti/, supabase/, CLAUDE.md, ecc.) NON vengono inclusi → non finiscono online.
-const DIST = path.join(DIR, 'dist');
-fs.rmSync(DIST, { recursive: true, force: true });
-fs.mkdirSync(DIST, { recursive: true });
+// ---------- lettura articoli dal database (Supabase) ----------
+function coverSrc(a) { return a.copertina && /^https?:\/\//.test(a.copertina) ? a.copertina : IMG + a.copertina; }
 
-const files = fs.readdirSync(ART_DIR).filter(f => f.endsWith('.md'));
-const arts = files.map(f => {
-  const { meta, body } = parseFrontMatter(fs.readFileSync(path.join(ART_DIR, f), 'utf8'));
-  meta.slug = meta.slug || f.replace(/\.md$/, '');
-  meta.minuti = meta.minuti || '4';
-  meta.bodyHtml = mdToHtml(body);
-  return meta;
-}).sort((a, b) => (a.data < b.data ? 1 : -1));
-
-// Pagine generate → dist/
-arts.forEach(a => fs.writeFileSync(path.join(DIST, `articolo-${a.slug}.html`), articlePage(a)));
-fs.writeFileSync(path.join(DIST, 'index.html'), homePage(arts));
-fs.writeFileSync(path.join(DIST, 'archivio.html'), archivioPage(arts));
-fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml(arts));
-
-// File pubblici scritti a mano → copiati in dist/ (elenco esplicito: SOLO il pubblico).
-const PUBLIC_FILES = ['style.css', 'robots.txt', 'formazioni.html', 'dashboard.html', 'login.html', '404.html', 'supabase-client.js', 'admin-articoli.js', '_headers', '_redirects'];
-PUBLIC_FILES.forEach(f => {
-  const src = path.join(DIR, f);
-  if (fs.existsSync(src)) fs.copyFileSync(src, path.join(DIST, f));
-});
-// Cartella immagini (ricorsiva) → dist/immagini/
-if (fs.existsSync(path.join(DIR, 'immagini'))) {
-  fs.cpSync(path.join(DIR, 'immagini'), path.join(DIST, 'immagini'), { recursive: true });
+async function fetchArticoli() {
+  const select = 'titolo,slug,occhiello,lead,estratto,corpo,copertina,copertina_alt,minuti,numero_editoriale,published_at,categories(nome,slug,colore),article_tags(tags(name,slug))';
+  const url = `${SUPABASE_URL}/rest/v1/articles?select=${select}&order=published_at.desc`;
+  const res = await fetch(url, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+  if (!res.ok) throw new Error('Supabase ' + res.status + ': ' + (await res.text()));
+  const rows = await res.json();
+  return rows.map(r => ({
+    titolo: r.titolo || '',
+    slug: r.slug,
+    occhiello: r.occhiello || '',
+    lead: r.lead || '',
+    estratto: r.estratto || '',
+    bodyHtml: mdToHtml(r.corpo || ''),
+    copertina: r.copertina || '',
+    copertinaAlt: r.copertina_alt || '',
+    minuti: r.minuti || 4,
+    numero: r.numero_editoriale || null,
+    data: r.published_at,
+    categoria: (r.categories && r.categories.nome) || '',
+    cat: (r.categories && r.categories.slug) || '',
+    colore: (r.categories && r.categories.colore) || '#64748B',
+    tags: (r.article_tags || []).map(x => x.tags).filter(Boolean)
+  }));
 }
 
-console.log(`Generati in dist/: ${arts.length} articoli + index.html + archivio.html + sitemap.xml`);
-console.log(`Copiati in dist/: ${PUBLIC_FILES.join(', ')} + immagini/`);
-arts.forEach(a => console.log('  - articolo-' + a.slug + '.html  (' + a.titolo + ')'));
+// ---------- esecuzione ----------
+(async () => {
+  const DIST = path.join(DIR, 'dist');
+  fs.rmSync(DIST, { recursive: true, force: true });
+  fs.mkdirSync(DIST, { recursive: true });
+
+  const arts = await fetchArticoli();
+
+  arts.forEach(a => fs.writeFileSync(path.join(DIST, `articolo-${a.slug}.html`), articlePage(a)));
+  fs.writeFileSync(path.join(DIST, 'index.html'), homePage(arts));
+  fs.writeFileSync(path.join(DIST, 'archivio.html'), archivioPage(arts));
+  fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml(arts));
+
+  // File pubblici scritti a mano → copiati in dist/ (elenco esplicito: SOLO il pubblico).
+  const PUBLIC_FILES = ['style.css', 'robots.txt', 'formazioni.html', 'dashboard.html', 'login.html', '404.html', 'supabase-client.js', 'admin-articoli.js', '_headers', '_redirects'];
+  PUBLIC_FILES.forEach(f => {
+    const src = path.join(DIR, f);
+    if (fs.existsSync(src)) fs.copyFileSync(src, path.join(DIST, f));
+  });
+  if (fs.existsSync(path.join(DIR, 'immagini'))) {
+    fs.cpSync(path.join(DIR, 'immagini'), path.join(DIST, 'immagini'), { recursive: true });
+  }
+
+  console.log(`Generati in dist/ da Supabase: ${arts.length} articoli pubblicati + index + archivio + sitemap`);
+  arts.forEach(a => console.log('  - articolo-' + a.slug + '.html  (' + a.titolo + ')'));
+})().catch(e => { console.error('BUILD FALLITO:', e.message || e); process.exit(1); });
