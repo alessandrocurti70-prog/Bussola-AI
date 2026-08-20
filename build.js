@@ -294,7 +294,7 @@ fs.writeFileSync(path.join(DIST, 'archivio.html'), archivioPage(arts));
 fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml(arts));
 
 // File pubblici scritti a mano → copiati in dist/ (elenco esplicito: SOLO il pubblico).
-const PUBLIC_FILES = ['style.css', 'robots.txt', 'formazioni.html', 'dashboard.html', 'login.html', '404.html', 'supabase-client.js', '_headers', '_redirects'];
+const PUBLIC_FILES = ['style.css', 'robots.txt', 'formazioni.html', 'dashboard.html', 'login.html', '404.html', 'supabase-client.js', 'admin-articoli.js', '_headers', '_redirects'];
 PUBLIC_FILES.forEach(f => {
   const src = path.join(DIR, f);
   if (fs.existsSync(src)) fs.copyFileSync(src, path.join(DIST, f));
