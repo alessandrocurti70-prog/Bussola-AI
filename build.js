@@ -17,6 +17,11 @@ const ART_DIR = path.join(DIR, 'contenuti', 'articoli');
 // in locale usa il fallback. Serve per generare la sitemap con link assoluti.
 const SITE = (process.env.SITE_URL || process.env.URL || process.env.CF_PAGES_URL || 'https://bussolaai.netlify.app').replace(/\/$/, '');
 
+// Backend Supabase — chiave PUBBLICA: grazie alle regole RLS, legge SOLO gli
+// articoli pubblicati. Il sito resta statico (SSG) ma i contenuti vengono dal DB.
+const SUPABASE_URL = 'https://jfygkymkzkvzknzfsnfv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_CtNKSg_12cJlbh0X1um-MQ_vZygjHhd';
+
 // ---------- utilità ----------
 function parseFrontMatter(raw) {
   const meta = {};
@@ -98,7 +103,7 @@ function dateIt(iso) {
 function card(a) {
   const href = `articolo-${a.slug}.html`;
   return `        <article class="card" data-cat="${a.cat}" data-title="${(a.titolo + ' ' + a.categoria).toLowerCase()}">
-          <a href="${href}"><div class="card-cover"><img src="${IMG}${a.copertina}" alt=""></div></a>
+          <a href="${href}"><div class="card-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || ''}"></div></a>
           <div class="card-body"><div class="card-meta"><span class="tag">${a.categoria}</span><span>${dateIt(a.data)}</span></div><h3><a href="${href}">${a.titolo}</a></h3><p>${a.estratto}</p></div>
         </article>`;
 }
@@ -115,7 +120,7 @@ ${nav('')}
     <div class="article-meta"><span class="tag">${a.categoria}</span><span>${dateIt(a.data)} · ${a.minuti} min di lettura</span></div>
     <h1>${a.titolo}</h1>
     <p class="lead">${a.lead}</p>
-    <div class="article-cover"><img src="${IMG}${a.copertina}" alt="${a.titolo}"></div>
+    <div class="article-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || a.titolo}"></div>
     <div class="article-body">
       ${a.bodyHtml}
     </div>
@@ -271,39 +276,57 @@ function sitemapXml(arts) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
-// ---------- esecuzione ----------
-// Tutto l'output pubblico va in dist/. I file interni (docs/, knowledge/, build.js,
-// contenuti/, supabase/, CLAUDE.md, ecc.) NON vengono inclusi → non finiscono online.
-const DIST = path.join(DIR, 'dist');
-fs.rmSync(DIST, { recursive: true, force: true });
-fs.mkdirSync(DIST, { recursive: true });
+// ---------- lettura articoli dal database (Supabase) ----------
+function coverSrc(a) { return a.copertina && /^https?:\/\//.test(a.copertina) ? a.copertina : IMG + a.copertina; }
 
-const files = fs.readdirSync(ART_DIR).filter(f => f.endsWith('.md'));
-const arts = files.map(f => {
-  const { meta, body } = parseFrontMatter(fs.readFileSync(path.join(ART_DIR, f), 'utf8'));
-  meta.slug = meta.slug || f.replace(/\.md$/, '');
-  meta.minuti = meta.minuti || '4';
-  meta.bodyHtml = mdToHtml(body);
-  return meta;
-}).sort((a, b) => (a.data < b.data ? 1 : -1));
-
-// Pagine generate → dist/
-arts.forEach(a => fs.writeFileSync(path.join(DIST, `articolo-${a.slug}.html`), articlePage(a)));
-fs.writeFileSync(path.join(DIST, 'index.html'), homePage(arts));
-fs.writeFileSync(path.join(DIST, 'archivio.html'), archivioPage(arts));
-fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml(arts));
-
-// File pubblici scritti a mano → copiati in dist/ (elenco esplicito: SOLO il pubblico).
-const PUBLIC_FILES = ['style.css', 'robots.txt', 'formazioni.html', 'dashboard.html', 'login.html', '404.html', 'supabase-client.js', 'admin-articoli.js', '_headers', '_redirects'];
-PUBLIC_FILES.forEach(f => {
-  const src = path.join(DIR, f);
-  if (fs.existsSync(src)) fs.copyFileSync(src, path.join(DIST, f));
-});
-// Cartella immagini (ricorsiva) → dist/immagini/
-if (fs.existsSync(path.join(DIR, 'immagini'))) {
-  fs.cpSync(path.join(DIR, 'immagini'), path.join(DIST, 'immagini'), { recursive: true });
+async function fetchArticoli() {
+  const select = 'titolo,slug,occhiello,lead,estratto,corpo,copertina,copertina_alt,minuti,numero_editoriale,published_at,categories(nome,slug,colore),article_tags(tags(name,slug))';
+  const url = `${SUPABASE_URL}/rest/v1/articles?select=${select}&order=published_at.desc`;
+  const res = await fetch(url, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+  if (!res.ok) throw new Error('Supabase ' + res.status + ': ' + (await res.text()));
+  const rows = await res.json();
+  return rows.map(r => ({
+    titolo: r.titolo || '',
+    slug: r.slug,
+    occhiello: r.occhiello || '',
+    lead: r.lead || '',
+    estratto: r.estratto || '',
+    bodyHtml: mdToHtml(r.corpo || ''),
+    copertina: r.copertina || '',
+    copertinaAlt: r.copertina_alt || '',
+    minuti: r.minuti || 4,
+    numero: r.numero_editoriale || null,
+    data: r.published_at,
+    categoria: (r.categories && r.categories.nome) || '',
+    cat: (r.categories && r.categories.slug) || '',
+    colore: (r.categories && r.categories.colore) || '#64748B',
+    tags: (r.article_tags || []).map(x => x.tags).filter(Boolean)
+  }));
 }
 
-console.log(`Generati in dist/: ${arts.length} articoli + index.html + archivio.html + sitemap.xml`);
-console.log(`Copiati in dist/: ${PUBLIC_FILES.join(', ')} + immagini/`);
-arts.forEach(a => console.log('  - articolo-' + a.slug + '.html  (' + a.titolo + ')'));
+// ---------- esecuzione ----------
+(async () => {
+  const DIST = path.join(DIR, 'dist');
+  fs.rmSync(DIST, { recursive: true, force: true });
+  fs.mkdirSync(DIST, { recursive: true });
+
+  const arts = await fetchArticoli();
+
+  arts.forEach(a => fs.writeFileSync(path.join(DIST, `articolo-${a.slug}.html`), articlePage(a)));
+  fs.writeFileSync(path.join(DIST, 'index.html'), homePage(arts));
+  fs.writeFileSync(path.join(DIST, 'archivio.html'), archivioPage(arts));
+  fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml(arts));
+
+  // File pubblici scritti a mano → copiati in dist/ (elenco esplicito: SOLO il pubblico).
+  const PUBLIC_FILES = ['style.css', 'robots.txt', 'formazioni.html', 'dashboard.html', 'login.html', '404.html', 'supabase-client.js', 'admin-articoli.js', '_headers', '_redirects'];
+  PUBLIC_FILES.forEach(f => {
+    const src = path.join(DIR, f);
+    if (fs.existsSync(src)) fs.copyFileSync(src, path.join(DIST, f));
+  });
+  if (fs.existsSync(path.join(DIR, 'immagini'))) {
+    fs.cpSync(path.join(DIR, 'immagini'), path.join(DIST, 'immagini'), { recursive: true });
+  }
+
+  console.log(`Generati in dist/ da Supabase: ${arts.length} articoli pubblicati + index + archivio + sitemap`);
+  arts.forEach(a => console.log('  - articolo-' + a.slug + '.html  (' + a.titolo + ')'));
+})().catch(e => { console.error('BUILD FALLITO:', e.message || e); process.exit(1); });
