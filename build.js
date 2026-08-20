@@ -58,24 +58,38 @@ function renderBox(tipo, text) {
   return `<div class="ed-box ed-${tipo}"><div class="ed-box-h">${BOX_LABEL[tipo] || tipo}</div><p>${inline(text)}</p></div>`;
 }
 
+const BOXRE = /^::(esempio|pratica|nota|attenzione|ricorda|prompt|citazione)\b\s*(.*)$/i;
+// Lettura riga-per-riga (robusta: funziona con o senza righe vuote tra i blocchi).
+// Ogni riga di testo = un paragrafo; ## e ### = titoli; - = elenco; ::tipo = box.
 function mdToHtml(body) {
-  const blocks = body.trim().split(/\n\s*\n/);
-  return blocks.map(b => {
-    const lines = b.split('\n');
-    const first = lines[0].trim();
-    const boxM = first.match(/^::(esempio|pratica|nota|attenzione|ricorda|prompt|citazione)\b\s*(.*)$/i);
+  const lines = (body || '').replace(/\r\n/g, '\n').split('\n');
+  const out = [];
+  let list = [];
+  const flushList = () => { if (list.length) { out.push('<ul>' + list.map(li => `<li>${inline(li)}</li>`).join('') + '</ul>'); list = []; } };
+  for (let i = 0; i < lines.length; i++) {
+    const t = lines[i].trim();
+    if (!t) { flushList(); continue; }
+    const boxM = t.match(BOXRE);
     if (boxM) {
+      flushList();
       const tipo = boxM[1].toLowerCase();
-      const rest = [boxM[2], ...lines.slice(1)].map(s => s.trim()).filter(Boolean).join(tipo === 'prompt' ? '\n' : ' ');
-      return renderBox(tipo, rest);
+      const content = [boxM[2]];
+      if (tipo === 'prompt') {
+        while (i + 1 < lines.length && lines[i + 1].trim() && !/^(##\s|###\s|-\s)/.test(lines[i + 1].trim()) && !BOXRE.test(lines[i + 1].trim())) {
+          content.push(lines[i + 1]); i++;
+        }
+      }
+      out.push(renderBox(tipo, content.map(s => s.trim()).filter(Boolean).join(tipo === 'prompt' ? '\n' : ' ')));
+      continue;
     }
-    if (first.startsWith('### ')) return `<h3>${inline(first.slice(4).trim())}</h3>`;
-    if (first.startsWith('## ')) return `<h2>${inline(first.slice(3).trim())}</h2>`;
-    if (lines.every(l => l.startsWith('- '))) {
-      return '<ul>' + lines.map(l => `<li>${inline(l.slice(2).trim())}</li>`).join('') + '</ul>';
-    }
-    return `<p>${inline(lines.join(' ').trim())}</p>`;
-  }).join('\n      ');
+    if (t.startsWith('### ')) { flushList(); out.push(`<h3>${inline(t.slice(4).trim())}</h3>`); continue; }
+    if (t.startsWith('## ')) { flushList(); out.push(`<h2>${inline(t.slice(3).trim())}</h2>`); continue; }
+    if (t.startsWith('- ')) { list.push(t.slice(2).trim()); continue; }
+    flushList();
+    out.push(`<p>${inline(t)}</p>`);
+  }
+  flushList();
+  return out.join('\n      ');
 }
 
 // ---------- pezzi comuni (definiti UNA volta) ----------
