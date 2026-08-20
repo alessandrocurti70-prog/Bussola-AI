@@ -5,7 +5,7 @@
   const WPM = 220;
   // Deploy hook di Cloudflare: ricostruisce il sito alla pubblicazione.
   // Da compilare con l'URL generato in Cloudflare (Settings → Build → Deploy hooks).
-  const DEPLOY_HOOK_URL = '';
+  const DEPLOY_HOOK_URL = 'https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/ec443777-12df-4f43-9643-9495f260dec6';
 
   let etichette = [];     // categories
   let tagsCache = [];     // tags
@@ -229,7 +229,7 @@
     await loadArticoli();
     let extra = '\n\nPer mostrarlo sul sito serve ricostruire (te lo configuro col deploy hook).';
     if (DEPLOY_HOOK_URL) {
-      try { await fetch(DEPLOY_HOOK_URL, { method: 'POST' }); extra = '\n\nSito in ricostruzione (~1-2 min): tra poco sarà online.'; } catch (e) {}
+      try { await fetch(DEPLOY_HOOK_URL, { method: 'POST', mode: 'no-cors' }); extra = '\n\nSito in ricostruzione (~1-2 min): tra poco sarà online.'; } catch (e) {}
     }
     alert('Pubblicato! Numero ' + num3(numero) + '.' + extra);
   }
