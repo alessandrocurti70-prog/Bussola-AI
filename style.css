@@ -171,6 +171,37 @@ tr:last-child td{border-bottom:none}
 .end-cta p{font-family:var(--sans);font-size:15px;color:var(--muted);margin-bottom:18px}
 .end-cta .subscribe{margin:0 auto}
 
+/* ---------- Etichette e tag (CMS) ---------- */
+.card-labels{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.lab{font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:.02em;color:#fff;background:var(--c,#64748B);padding:4px 10px;border-radius:6px}
+.tg{font-family:var(--sans);font-weight:600;font-size:11.5px;color:var(--muted);background:#fff;border:1px solid var(--line);padding:3px 9px;border-radius:20px}
+.card-body .card-meta{margin:12px 0 0}
+.article-tags{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:26px 0 0}
+.article-tags .tags-label{font-family:var(--sans);font-size:13px;color:var(--hint);font-weight:600}
+
+/* ---------- Box editoriali (corpo articolo) ---------- */
+.article-body h3{font-size:20px;margin:26px 0 10px}
+.ed-box{border:1px solid var(--line);border-left-width:4px;border-radius:10px;padding:16px 18px;margin:26px 0;font-size:17px}
+.ed-box .ed-box-h{font-family:var(--sans);font-weight:800;font-size:12px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+.ed-box p{margin:0}
+.ed-esempio{background:#f4f8ff;border-left-color:var(--blue)}
+.ed-esempio .ed-box-h{color:var(--blue)}
+.ed-pratica{background:#eefaf4;border-left-color:#0e9f6e}
+.ed-pratica .ed-box-h{color:#0b7a54}
+.ed-nota{background:#fdf6e6;border-left-color:var(--gold)}
+.ed-nota .ed-box-h{color:#9a6b12}
+.ed-attenzione{background:#fdecec;border-left-color:#e0533b}
+.ed-attenzione .ed-box-h{color:#b02525}
+.ed-ricorda{background:var(--tint);border-left-color:var(--blue-deep)}
+.ed-ricorda .ed-box-h{color:var(--blue-deep)}
+.ed-quote{border:none;border-left:4px solid var(--blue);padding:6px 0 6px 24px;margin:30px 0}
+.ed-quote p{font-size:23px;line-height:1.4;font-style:italic;color:var(--ink);margin:0}
+.ed-prompt{background:#0F172A;border-radius:12px;overflow:hidden;margin:26px 0}
+.ed-prompt-h{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:#0b1324;border-bottom:1px solid #1e293b;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#9fc0f7}
+.ed-copy{font-family:var(--sans);font-size:12px;font-weight:700;color:#0b1324;background:#9fc0f7;border:none;border-radius:7px;padding:5px 12px;cursor:pointer}
+.ed-copy:hover{background:#c3d8fb}
+.ed-prompt pre{margin:0;padding:15px 18px;overflow-x:auto;color:#e7edf6;font-family:ui-monospace,Consolas,monospace;font-size:14px;line-height:1.7;white-space:pre-wrap}
+
 /* ---------- Responsive ---------- */
 @media(max-width:860px){
   .hero-grid{grid-template-columns:1fr;gap:26px}

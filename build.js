@@ -44,11 +44,33 @@ function inline(t) {
     .replace(/\*(.+?)\*/g, '<em>$1</em>');
 }
 
+function escapeText(t) { return (t || '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
+
+// Box editoriali. Nel testo si scrivono così (una riga vuota prima e dopo):
+//   ::pratica  Questo è un box "In pratica".
+//   ::nota  Un richiamo.   ::attenzione  Un avviso.   ::esempio  Un esempio.
+//   ::citazione  Una frase in evidenza.
+//   ::prompt  Testo del prompt da copiare (può andare a capo).
+const BOX_LABEL = { esempio: 'Esempio', pratica: 'In pratica', nota: 'Nota', attenzione: 'Attenzione', ricorda: 'Da ricordare' };
+function renderBox(tipo, text) {
+  if (tipo === 'citazione') return `<blockquote class="ed-quote"><p>${inline(text)}</p></blockquote>`;
+  if (tipo === 'prompt') return `<div class="ed-prompt"><div class="ed-prompt-h"><span>Prompt da copiare</span><button class="ed-copy" type="button">Copia</button></div><pre>${escapeText(text)}</pre></div>`;
+  return `<div class="ed-box ed-${tipo}"><div class="ed-box-h">${BOX_LABEL[tipo] || tipo}</div><p>${inline(text)}</p></div>`;
+}
+
 function mdToHtml(body) {
   const blocks = body.trim().split(/\n\s*\n/);
   return blocks.map(b => {
     const lines = b.split('\n');
-    if (lines[0].startsWith('## ')) return `<h2>${inline(lines[0].slice(3).trim())}</h2>`;
+    const first = lines[0].trim();
+    const boxM = first.match(/^::(esempio|pratica|nota|attenzione|ricorda|prompt|citazione)\b\s*(.*)$/i);
+    if (boxM) {
+      const tipo = boxM[1].toLowerCase();
+      const rest = [boxM[2], ...lines.slice(1)].map(s => s.trim()).filter(Boolean).join(tipo === 'prompt' ? '\n' : ' ');
+      return renderBox(tipo, rest);
+    }
+    if (first.startsWith('### ')) return `<h3>${inline(first.slice(4).trim())}</h3>`;
+    if (first.startsWith('## ')) return `<h2>${inline(first.slice(3).trim())}</h2>`;
     if (lines.every(l => l.startsWith('- '))) {
       return '<ul>' + lines.map(l => `<li>${inline(l.slice(2).trim())}</li>`).join('') + '</ul>';
     }
@@ -102,9 +124,18 @@ function dateIt(iso) {
 
 function card(a) {
   const href = `articolo-${a.slug}.html`;
-  return `        <article class="card" data-cat="${a.cat}" data-title="${(a.titolo + ' ' + a.categoria).toLowerCase()}">
+  const badge = a.categoria ? `<span class="lab" style="--c:${a.colore}">${a.categoria}</span>` : '';
+  const tags = (a.tags || []).slice(0, 2).map(t => `<span class="tg">${t.name}</span>`).join('');
+  const num = a.numero ? `#${String(a.numero).padStart(3, '0')}` : '';
+  const tagsHash = (a.tags || []).map(t => t.slug).join(' ');
+  return `        <article class="card" data-cat="${a.cat}" data-title="${(a.titolo + ' ' + a.categoria + ' ' + tagsHash).toLowerCase()}">
           <a href="${href}"><div class="card-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || ''}"></div></a>
-          <div class="card-body"><div class="card-meta"><span class="tag">${a.categoria}</span><span>${dateIt(a.data)}</span></div><h3><a href="${href}">${a.titolo}</a></h3><p>${a.estratto}</p></div>
+          <div class="card-body">
+            <div class="card-labels">${badge}${tags}</div>
+            <h3><a href="${href}">${a.titolo}</a></h3>
+            <p>${a.estratto}</p>
+            <div class="card-meta">${num ? `<span>${num}</span>` : ''}<span>${a.minuti} min di lettura</span></div>
+          </div>
         </article>`;
 }
 
@@ -117,13 +148,15 @@ ${nav('')}
 <main>
   <article class="article read">
     <a class="back" href="archivio.html">← Torna all'archivio</a>
-    <div class="article-meta"><span class="tag">${a.categoria}</span><span>${dateIt(a.data)} · ${a.minuti} min di lettura</span></div>
+    ${a.occhiello ? `<span class="kicker">${a.occhiello}</span>` : ''}
+    <div class="article-meta"><span class="lab" style="--c:${a.colore}">${a.categoria}</span><span>${a.numero ? '#' + String(a.numero).padStart(3, '0') + ' · ' : ''}${a.minuti} min di lettura</span></div>
     <h1>${a.titolo}</h1>
     <p class="lead">${a.lead}</p>
     <div class="article-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || a.titolo}"></div>
     <div class="article-body">
       ${a.bodyHtml}
     </div>
+    ${(a.tags && a.tags.length) ? `<div class="article-tags"><span class="tags-label">Tag:</span>${a.tags.map(t => `<span class="tg">${t.name}</span>`).join('')}</div>` : ''}
     <div class="end-cta">
       <h3>Non perdere la rotta della settimana</h3>
       <p>Ogni settimana una dose di AI spiegata semplice, con una cosa concreta da fare subito.</p>
@@ -134,6 +167,14 @@ ${nav('')}
     </div>
   </article>
 </main>
+
+<script>
+  document.querySelectorAll('.ed-copy').forEach(btn => btn.addEventListener('click', () => {
+    const pre = btn.closest('.ed-prompt').querySelector('pre');
+    try { navigator.clipboard.writeText(pre.innerText); } catch (e) {}
+    const t = btn.textContent; btn.textContent = 'Copiato ✓'; setTimeout(() => (btn.textContent = t), 1500);
+  }));
+</script>
 
 ${FOOTER}
 </body>
@@ -229,6 +270,19 @@ ${cards}
 
       </div>
       <p id="empty" class="sans" style="display:none;color:var(--hint);padding:20px 0">Nessuna uscita trovata per questa ricerca.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="end-cta" style="margin:0">
+        <h3>Non perdere la rotta della settimana</h3>
+        <p>Ogni settimana una dose di AI spiegata semplice, con una cosa concreta da fare subito.</p>
+        <form class="subscribe" onsubmit="return false">
+          <input type="email" placeholder="La tua email" aria-label="La tua email">
+          <button type="submit">Iscriviti</button>
+        </form>
+      </div>
     </div>
   </section>
 </main>
