@@ -69,6 +69,7 @@ function mdToHtml(body) {
   for (let i = 0; i < lines.length; i++) {
     const t = lines[i].trim();
     if (!t) { flushList(); continue; }
+    if (/^-{3,}$/.test(t)) { flushList(); out.push('<hr class="ed-hr">'); continue; }
     const boxM = t.match(BOXRE);
     if (boxM) {
       flushList();
@@ -95,6 +96,19 @@ function mdToHtml(body) {
 // ---------- pezzi comuni (definiti UNA volta) ----------
 const LOGO = 'immagini/Elementi/logo-bussola.png';
 const IMG = 'immagini/';
+
+// Autore mostrato nelle schede. Il nome diventa un link cliccabile SOLO quando
+// qui sotto è presente l'URL del profilo LinkedIn. Finché è vuoto, resta testo.
+// ⬇️ INSERISCI QUI l'URL LinkedIn di Alessandro (es. https://www.linkedin.com/in/...)
+const AUTHOR = 'Alessandro Curti';
+const AUTHOR_LINKEDIN = '';
+function authorHtml() {
+  return AUTHOR_LINKEDIN
+    ? `<a class="by" href="${AUTHOR_LINKEDIN}" target="_blank" rel="noopener noreferrer">${AUTHOR}</a>`
+    : `<span class="by">${AUTHOR}</span>`;
+}
+// Numero editoriale a due cifre: 1 → #01
+function num2(n) { return '#' + String(n).padStart(2, '0'); }
 
 function nav(active) {
   const link = (href, label) => `<a href="${href}"${active === href ? ' class="active"' : ''}>${label}</a>`;
@@ -139,16 +153,17 @@ function dateIt(iso) {
 function card(a) {
   const href = `articolo-${a.slug}.html`;
   const badge = a.categoria ? `<span class="lab" style="--c:${a.colore}">${a.categoria}</span>` : '';
-  const tags = (a.tags || []).slice(0, 2).map(t => `<span class="tg">${t.name}</span>`).join('');
-  const num = a.numero ? `#${String(a.numero).padStart(3, '0')}` : '';
+  // In anteprima mostriamo al massimo UN tag, per schede più pulite.
+  const tag = (a.tags || []).slice(0, 1).map(t => `<span class="tg">${t.name}</span>`).join('');
+  const num = a.numero ? `${num2(a.numero)} | ` : '';
   const tagsHash = (a.tags || []).map(t => t.slug).join(' ');
   return `        <article class="card" data-cat="${a.cat}" data-title="${(a.titolo + ' ' + a.categoria + ' ' + tagsHash).toLowerCase()}">
-          <a href="${href}"><div class="card-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || ''}"></div></a>
+          <a class="card-cover-link" href="${href}"><div class="card-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || ''}"></div></a>
           <div class="card-body">
-            <div class="card-labels">${badge}${tags}</div>
-            <h3><a href="${href}">${a.titolo}</a></h3>
+            <div class="card-labels">${badge}${tag}</div>
+            <h3><a href="${href}">${num}${a.titolo}</a></h3>
             <p>${a.estratto}</p>
-            <div class="card-meta">${num ? `<span>${num}</span>` : ''}<span>${a.minuti} min di lettura</span></div>
+            <div class="card-meta"><span>${a.minuti} min di lettura</span><span class="sep">·</span>${authorHtml()}</div>
           </div>
         </article>`;
 }
@@ -163,7 +178,7 @@ ${nav('')}
   <article class="article read">
     <a class="back" href="archivio.html">← Torna all'archivio</a>
     ${a.occhiello ? `<span class="kicker">${a.occhiello}</span>` : ''}
-    <div class="article-meta"><span class="lab" style="--c:${a.colore}">${a.categoria}</span><span>${a.numero ? '#' + String(a.numero).padStart(3, '0') + ' · ' : ''}${a.minuti} min di lettura</span></div>
+    <div class="article-meta"><span class="lab" style="--c:${a.colore}">${a.categoria}</span><span>${a.numero ? num2(a.numero) + ' · ' : ''}${a.minuti} min di lettura · ${AUTHOR}</span></div>
     <h1>${a.titolo}</h1>
     <p class="lead">${a.lead}</p>
     <div class="article-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || a.titolo}"></div>
