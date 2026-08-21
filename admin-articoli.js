@@ -423,20 +423,38 @@
   let progId = null;
   const progMsg = (t, k) => { const m = $('prog-msg'); m.className = 'a-msg ' + (k || ''); m.textContent = t || ''; };
   function defaultSchedule() { const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(9, 0, 0, 0); return d; }
-  function openPrograma(id, tit, iso) {
+  async function openPrograma(id, tit, iso) {
     progId = id;
     $('prog-tit').textContent = 'Articolo: ' + (tit || '(senza titolo)');
     const d = iso ? new Date(iso) : defaultSchedule();
     $('prog-data').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     $('prog-ora').value = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
     progMsg(''); showModal('modal-programma');
+    // Numero editoriale proposto: quello già assegnato oppure il prossimo libero.
+    const { data: a } = await sb.from('articles').select('numero_editoriale').eq('id', id).single();
+    let proposto = a && a.numero_editoriale;
+    if (!proposto) {
+      const { data: mx } = await sb.from('articles').select('numero_editoriale').not('numero_editoriale', 'is', null).order('numero_editoriale', { ascending: false }).limit(1);
+      proposto = ((mx && mx[0] && mx[0].numero_editoriale) || 0) + 1;
+    }
+    $('prog-numero').value = proposto;
   }
   async function salvaProgramma() {
     const data = $('prog-data').value, ora = $('prog-ora').value || '09:00';
     if (!data) { progMsg('Scegli una data.', 'err'); return; }
     const dt = new Date(`${data}T${ora}`);
     if (isNaN(dt.getTime())) { progMsg('Data/ora non valide.', 'err'); return; }
-    const { error } = await sb.from('articles').update({ stato: 'programmato', scheduled_at: dt.toISOString() }).eq('id', progId);
+    const numero = parseInt($('prog-numero').value, 10);
+    if (!numero || numero < 1) { progMsg('Inserisci un numero editoriale valido.', 'err'); return; }
+    // L'articolo esce da solo all'orario: dev'essere già completo (come per la pubblicazione).
+    const { data: a } = await sb.from('articles').select('titolo, category_id, copertina, copertina_alt').eq('id', progId).single();
+    const manca = [];
+    if (!a || !a.titolo) manca.push('il titolo');
+    if (!a || !a.category_id) manca.push("l'etichetta");
+    if (!a || !a.copertina) manca.push('la copertina');
+    if (!a || !a.copertina_alt) manca.push('il testo alternativo della copertina');
+    if (manca.length) { progMsg('Prima di programmare manca: ' + manca.join(', ') + '.', 'err'); return; }
+    const { error } = await sb.from('articles').update({ stato: 'programmato', scheduled_at: dt.toISOString(), numero_editoriale: numero }).eq('id', progId);
     if (error) { progMsg('Errore: ' + error.message, 'err'); return; }
     hideModal('modal-programma');
     await refreshArticoli();
