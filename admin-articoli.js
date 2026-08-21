@@ -10,6 +10,7 @@
   let etichette = [];     // categories
   let tagsCache = [];     // tags
   let editingId = null;   // id articolo in modifica (null = nuovo)
+  let editingStato = null; // stato dell'articolo aperto in modifica
   let coverFile = null;   // File copertina selezionato
   let selectedTags = [];  // [{id?, name, slug}]
 
@@ -19,6 +20,12 @@
   const readingMin = (w) => Math.max(1, Math.ceil(w / WPM));
   const escapeHtml = (s) => (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const num3 = (n) => '#' + String(n).padStart(3, '0');
+
+  // Chiede a Cloudflare di rigenerare il sito pubblico (deploy hook).
+  async function triggerRebuild() {
+    if (!DEPLOY_HOOK_URL) return;
+    try { await fetch(DEPLOY_HOOK_URL, { method: 'POST', mode: 'no-cors' }); } catch (e) {}
+  }
 
   // ---------- Caricamento dati ----------
   async function loadEtichette() {
@@ -70,6 +77,7 @@
   // ---------- Form articolo ----------
   async function openForm(id) {
     editingId = id || null;
+    editingStato = null;
     coverFile = null; selectedTags = [];
     const sel = $('f-etichetta');
     sel.innerHTML = '<option value="">— scegli —</option>' +
@@ -78,6 +86,7 @@
     sel.value = ''; $('f-cover-preview').innerHTML = ''; $('f-cover-name').textContent = 'Nessun file scelto';
     $('f-cover').value = '';
     msg(''); $('form-title').textContent = id ? 'Modifica articolo' : 'Nuovo articolo';
+    $('f-salva').textContent = 'Salva bozza';
     renderSelectedTags(); updateStats();
 
     if (id) {
@@ -91,6 +100,8 @@
         const { data: links } = await sb.from('article_tags').select('tag_id, tags(name, slug)').eq('article_id', id);
         selectedTags = (links || []).map((l) => ({ id: l.tag_id, name: l.tags && l.tags.name, slug: l.tags && l.tags.slug }));
         renderSelectedTags();
+        editingStato = data.stato;
+        $('f-salva').textContent = (data.stato === 'pubblicato') ? 'Salva e aggiorna online' : 'Salva bozza';
       }
       updateStats();
     }
@@ -200,9 +211,14 @@
       await sb.from('article_tags').delete().eq('article_id', artId);
       if (tagIds.length) await sb.from('article_tags').insert(tagIds.map((tid) => ({ article_id: artId, tag_id: tid })));
       editingId = artId;
-      msg('Bozza salvata ✓', 'ok');
       await loadArticoli();
-      setTimeout(() => hideModal('modal-articolo'), 800);
+      if (editingStato === 'pubblicato') {
+        await triggerRebuild();
+        msg('Modifiche salvate. Sito in ricostruzione (~1-2 min): tra poco saranno online.', 'ok');
+      } else {
+        msg('Bozza salvata ✓', 'ok');
+      }
+      setTimeout(() => hideModal('modal-articolo'), 1400);
     } catch (e) { msg('Errore nel salvataggio: ' + (e.message || e), 'err'); }
     btn.disabled = false;
   }
@@ -230,11 +246,8 @@
     const { error } = await sb.from('articles').update({ stato: 'pubblicato', numero_editoriale: numero, published_at: new Date().toISOString() }).eq('id', id);
     if (error) { alert('Errore: ' + error.message); return; }
     await loadArticoli();
-    let extra = '\n\nPer mostrarlo sul sito serve ricostruire (te lo configuro col deploy hook).';
-    if (DEPLOY_HOOK_URL) {
-      try { await fetch(DEPLOY_HOOK_URL, { method: 'POST', mode: 'no-cors' }); extra = '\n\nSito in ricostruzione (~1-2 min): tra poco sarà online.'; } catch (e) {}
-    }
-    alert('Pubblicato! Numero ' + num3(numero) + '.' + extra);
+    await triggerRebuild();
+    alert('Pubblicato! Numero ' + num3(numero) + '.\n\nSito in ricostruzione (~1-2 min): tra poco sarà online.');
   }
   async function elimina(id) {
     if (!confirm('Eliminare definitivamente questo articolo?')) return;
@@ -278,6 +291,13 @@
 
     $('btn-nuovo').onclick = () => openForm(null);
     $('btn-etichette').onclick = () => { renderEtichette(); showModal('modal-etichette'); };
+    const btnAgg = $('btn-aggiorna');
+    if (btnAgg) btnAgg.onclick = async () => {
+      btnAgg.disabled = true; const t = btnAgg.textContent; btnAgg.textContent = 'In corso…';
+      await triggerRebuild();
+      alert('Sito in ricostruzione (~1-2 min). Ricarica la pagina pubblica tra poco per vedere gli aggiornamenti.');
+      btnAgg.textContent = t; btnAgg.disabled = false;
+    };
     $('f-salva').onclick = salvaBozza;
     $('et-add').onclick = addEtichetta;
     $('f-corpo').addEventListener('input', updateStats);
