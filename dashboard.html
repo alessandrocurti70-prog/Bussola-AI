@@ -87,15 +87,74 @@
   .et-row code{color:var(--hint)}
   .et-state{font-size:12px}
   .et-state.on{color:#0b7a54} .et-state.off{color:var(--hint)}
-  .a-toolbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center}
-  .a-toolbar button{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--blue-deep);background:var(--tint);border:1px solid #dbe7fb;border-radius:7px;padding:5px 9px;cursor:pointer}
-  .a-toolbar button:hover{background:#dbe7fb}
-  .a-tb-sep{width:1px;height:18px;background:var(--line);margin:0 3px}
-  .a-ta-wrap{position:relative}
-  .a-expand{position:absolute;bottom:10px;right:10px;background:#fff;border:1px solid var(--line);border-radius:7px;width:30px;height:30px;font-size:16px;color:var(--muted);cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center}
-  .a-expand:hover{border-color:var(--blue);color:var(--blue)}
+  /* Barra pulsanti raggruppata per categoria */
+  .a-toolbar{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+  .a-tb-group{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:7px 9px;border-radius:10px;border:1px solid var(--line)}
+  .a-tb-lab{font-family:var(--sans);font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#7a8aa3;margin-right:4px}
+  .a-tb-group button{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:7px;padding:5px 10px;cursor:pointer}
+  .a-tb-group button:hover{border-color:var(--blue);color:var(--blue-deep)}
+  .a-tb-group.g-struct{background:#f1f6ff;border-color:#dbe7fb}
+  .a-tb-group.g-box{background:#eefaf4;border-color:#c9ecdd}
+  .a-tb-group.g-spec{background:#fdf6e6;border-color:#f0e2bf}
   #f-corpo.big{min-height:65vh}
   .a-hint{font-family:var(--sans);font-size:12px;color:var(--hint);margin-top:6px}
+  /* Anteprima live */
+  .a-preview-wrap{margin-top:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .a-preview-h{display:flex;align-items:baseline;gap:8px;padding:8px 14px;background:#f6f8fb;border-bottom:1px solid var(--line);font-family:var(--sans)}
+  .a-preview-h span{font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--hint)}
+  .a-preview-h small{font-size:12px;color:var(--hint)}
+  .a-preview{padding:16px 18px;max-height:380px;overflow:auto;background:#fff}
+  .a-preview .pv-empty{font-family:var(--sans);font-size:14px;color:var(--hint)}
+  .a-preview .pv-kicker{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue)}
+  .a-preview h1.pv-title{font-size:25px;line-height:1.2;margin:6px 0 8px}
+  .a-preview .pv-lead{font-size:17px;color:var(--muted);line-height:1.55;margin-bottom:10px}
+  .a-preview h2{font-size:20px;margin:18px 0 8px}
+  .a-preview h3{font-size:17px;margin:16px 0 6px}
+  .a-preview p{font-size:16px;line-height:1.6;margin:10px 0}
+  .a-preview ul{margin:10px 0 10px 22px}
+  /* Sotto-sezioni Articoli (calendario, lavagna) */
+  .a-subsec{margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}
+  .a-subsec > h2{font-size:23px;font-weight:700}
+  .a-subsec > .sub-p{font-family:var(--sans);font-size:14.5px;color:var(--hint);margin:5px 0 16px;max-width:660px}
+  .a-note-info{font-family:var(--sans);font-size:12.5px;color:#9a6b12;background:#fdf6e6;border:1px solid #f0e2bf;border-radius:9px;padding:9px 13px;margin-bottom:16px;line-height:1.5}
+  /* Calendario */
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .cal-nav{display:flex;align-items:center;gap:10px}
+  .cal-nav button{width:32px;height:32px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;font-size:17px;color:var(--muted);line-height:1}
+  .cal-nav button:hover{border-color:var(--blue);color:var(--blue)}
+  .cal-title{font-family:var(--sans);font-weight:700;font-size:16px;min-width:150px;text-align:center;text-transform:capitalize}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .cal-dow{font-family:var(--sans);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--hint);text-align:center;padding:2px 0}
+  .cal-cell{min-height:74px;border:1px solid var(--line);border-radius:9px;padding:5px 6px;background:#fff}
+  .cal-cell.empty{background:#fafbfd;border-color:#f0f3f7}
+  .cal-cell.today{border-color:var(--blue);box-shadow:0 0 0 2px var(--tint)}
+  .cal-cell .d{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--muted)}
+  .cal-item{display:block;font-family:var(--sans);font-size:11px;line-height:1.2;margin-top:4px;padding:3px 5px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cal-item.prog{background:#fdf6e6;color:#9a6b12;border:1px solid #f0e2bf}
+  .cal-item.pub{background:#eafaf2;color:#0b7a54;border:1px solid #c9ecdd}
+  .cal-legend{display:flex;gap:18px;margin-top:12px;font-family:var(--sans);font-size:12px;color:var(--hint)}
+  .cal-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .cal-legend i.prog{background:#e6b34d}
+  .cal-legend i.pub{background:#2fae7a}
+  .pl-h{font-family:var(--sans);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--hint);margin:20px 0 6px}
+  .pl-list{display:flex;flex-direction:column;gap:8px}
+  .pl-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-family:var(--sans);font-size:14px}
+  .pl-when{font-weight:700;color:var(--blue-deep);white-space:nowrap}
+  .pl-tit{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pl-empty{font-family:var(--sans);font-size:13.5px;color:var(--hint);padding:6px 0}
+  /* Lavagna idee */
+  .idee-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+  .idea{background:#fffdf3;border:1px solid #f0e2bf;border-radius:12px;padding:14px 15px;box-shadow:0 2px 8px rgba(224,169,59,.08);display:flex;flex-direction:column;min-height:130px}
+  .idea h4{font-family:var(--serif);font-size:16.5px;line-height:1.3;margin-bottom:6px}
+  .idea p{font-family:var(--sans);font-size:13.5px;color:var(--muted);line-height:1.5;flex:1;white-space:pre-wrap}
+  .idea-actions{display:flex;flex-wrap:wrap;gap:2px;margin-top:10px}
+  .idea-actions button{font-family:var(--sans);font-size:12px;font-weight:600;background:none;border:none;cursor:pointer;padding:3px 6px;border-radius:6px}
+  .idea-actions button:hover{background:#fff}
+  .idea-actions .promote{color:#0b7a54}
+  .idea-actions .edit{color:var(--blue)}
+  .idea-actions .del{color:#b02525}
+  .idea-add{border:1.5px dashed #e0c98b;border-radius:12px;background:#fffef9;color:#9a6b12;font-family:var(--sans);font-weight:700;font-size:14px;cursor:pointer;min-height:130px;display:flex;align-items:center;justify-content:center}
+  .idea-add:hover{border-color:var(--gold);background:#fffdf3}
 
   @media (max-width:820px){
     .layout{grid-template-columns:1fr; gap:18px}
@@ -103,6 +162,10 @@
     .side .hello{display:none}
     .side button{white-space:nowrap}
     .a-row2{grid-template-columns:1fr}
+    .cal-cell{min-height:54px;padding:3px 4px}
+    .cal-item{font-size:10px;padding:2px 4px}
+    .cal-title{min-width:110px;font-size:14px}
+    .pl-row{flex-wrap:wrap;gap:6px 10px}
   }
 </style>
 </head>
@@ -173,6 +236,21 @@
         </div>
       </div>
       <div id="articoli-lista"><div class="a-empty">Caricamento…</div></div>
+
+      <!-- Calendario editoriale -->
+      <div class="a-subsec" id="blk-calendario">
+        <h2>Calendario editoriale</h2>
+        <p class="sub-p">Programma un articolo pronto per una data e un'ora: lo vedrai segnato sul calendario.</p>
+        <div class="a-note-info">Programma un articolo <strong>completo</strong> con data, ora e numero: all'orario scelto esce <strong>da solo</strong> e il sito si aggiorna. Puoi sempre anticipare con «Pubblica ora» o annullare la programmazione.</div>
+        <div id="cal-wrap"></div>
+      </div>
+
+      <!-- Lavagna delle idee -->
+      <div class="a-subsec" id="blk-lavagna">
+        <h2>Lavagna delle idee 💡</h2>
+        <p class="sub-p">Annota qui le idee di articoli da scrivere. Quando un'idea ti convince, trasformala in bozza con un clic.</p>
+        <div id="idee-lista"><div class="a-empty">Caricamento…</div></div>
+      </div>
     </section>
 
     <section class="section" id="sec-formazioni">
@@ -240,19 +318,32 @@
       <div class="a-field">
         <label>Testo dell'articolo</label>
         <div class="a-toolbar">
-          <button type="button" data-ins="## ">Titolo</button>
-          <button type="button" data-ins="### ">Sottotitolo</button>
-          <button type="button" data-ins="- ">Elenco</button>
-          <span class="a-tb-sep"></span>
-          <button type="button" data-ins="::pratica ">In pratica</button>
-          <button type="button" data-ins="::nota ">Nota</button>
-          <button type="button" data-ins="::esempio ">Esempio</button>
-          <button type="button" data-ins="::attenzione ">Attenzione</button>
-          <button type="button" data-ins="::prompt ">Prompt</button>
-          <button type="button" data-ins="::citazione ">Citazione</button>
+          <div class="a-tb-group g-struct">
+            <span class="a-tb-lab">Struttura</span>
+            <button type="button" data-ins="## ">Titolo</button>
+            <button type="button" data-ins="### ">Sottotitolo</button>
+            <button type="button" data-ins="- ">Elenco</button>
+            <button type="button" data-ins="---">Linea</button>
+          </div>
+          <div class="a-tb-group g-box">
+            <span class="a-tb-lab">Box informativi</span>
+            <button type="button" data-ins="::pratica ">In pratica</button>
+            <button type="button" data-ins="::nota ">Nota</button>
+            <button type="button" data-ins="::esempio ">Esempio</button>
+            <button type="button" data-ins="::attenzione ">Attenzione</button>
+          </div>
+          <div class="a-tb-group g-spec">
+            <span class="a-tb-lab">Contenuti speciali</span>
+            <button type="button" data-ins="::prompt ">Prompt</button>
+            <button type="button" data-ins="::citazione ">Citazione</button>
+          </div>
         </div>
         <textarea id="f-corpo" rows="10" autocomplete="off" placeholder="Scrivi normale. Per un box (In pratica, Nota, Prompt…) clicca il pulsante qui sopra e scrivi il contenuto."></textarea>
-        <p class="a-hint">Scrivi normale: i pulsanti inseriscono i box. Trascina l'angolo in basso a destra del riquadro per ingrandirlo.</p>
+        <p class="a-hint">Scrivi normale: i pulsanti inseriscono i box al punto del cursore. Trascina l'angolo in basso a destra per ingrandire.</p>
+        <div class="a-preview-wrap">
+          <div class="a-preview-h"><span>Anteprima</span><small>come apparirà nell'articolo · si aggiorna mentre scrivi</small></div>
+          <div class="a-preview" id="f-preview"></div>
+        </div>
       </div>
       <div class="a-stats" id="f-stats"></div>
       <div class="a-field">
@@ -284,6 +375,49 @@
         <div class="a-field"><label>Colore (#RRGGBB)</label><input type="text" id="et-colore" placeholder="#2E7DF6"></div>
       </div>
       <button class="a-btn" id="et-add">Aggiungi etichetta</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modale: programma pubblicazione -->
+<div class="a-modal" id="modal-programma">
+  <div class="a-dialog small">
+    <div class="a-dialog-h">
+      <h2>Programma pubblicazione</h2>
+      <button class="a-x" data-close="modal-programma" title="Chiudi">×</button>
+    </div>
+    <div class="a-dialog-body">
+      <p class="a-hint" id="prog-tit" style="margin-bottom:12px"></p>
+      <div class="a-row2">
+        <div class="a-field"><label>Data</label><input type="date" id="prog-data"></div>
+        <div class="a-field"><label>Ora</label><input type="time" id="prog-ora" value="09:00"></div>
+      </div>
+      <div class="a-field"><label>Numero editoriale</label><input type="number" id="prog-numero" min="1" step="1"></div>
+      <p class="a-hint">All'orario scelto l'articolo esce <strong>da solo</strong> e il sito si aggiorna. Dev'essere già completo: titolo, etichetta, copertina e testo alternativo.</p>
+      <div class="a-msg" id="prog-msg"></div>
+    </div>
+    <div class="a-dialog-f">
+      <button class="a-btn ghost" data-close="modal-programma">Annulla</button>
+      <button class="a-btn" id="prog-salva">Programma</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modale: idea (lavagna) -->
+<div class="a-modal" id="modal-idea">
+  <div class="a-dialog small">
+    <div class="a-dialog-h">
+      <h2 id="idea-h">Nuova idea</h2>
+      <button class="a-x" data-close="modal-idea" title="Chiudi">×</button>
+    </div>
+    <div class="a-dialog-body">
+      <div class="a-field"><label>Titolo dell'idea</label><input type="text" id="idea-tit" autocomplete="off" placeholder="Es. Come scrivere email più veloci con l'AI"></div>
+      <div class="a-field"><label>Nota (opzionale)</label><textarea id="idea-nota" class="a-sm" rows="3" autocomplete="off" placeholder="Appunti, angolo, spunti…"></textarea></div>
+      <div class="a-msg" id="idea-msg"></div>
+    </div>
+    <div class="a-dialog-f">
+      <button class="a-btn ghost" data-close="modal-idea">Annulla</button>
+      <button class="a-btn" id="idea-salva">Salva idea</button>
     </div>
   </div>
 </div>
