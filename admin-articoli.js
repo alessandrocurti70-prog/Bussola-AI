@@ -373,20 +373,21 @@
   async function loadPianificazione() {
     const { data } = await sb.from('articles')
       .select('id, titolo, stato, scheduled_at, published_at, numero_editoriale')
-      .in('stato', ['bozza', 'proposta', 'programmato', 'pubblicato'])
+      .in('stato', ['bozza', 'proposta', 'programmato', 'pubblicato', 'annullato'])
       .order('scheduled_at', { ascending: true });
     pianif = data || [];
   }
 
-  // "In ritardo": programmato per una data ormai passata ma mai pubblicato → rosso, da recuperare.
-  const isLate = (a) => a.stato === 'programmato' && a.scheduled_at && !a.published_at && new Date(a.scheduled_at) < new Date();
+  // "Da recuperare": articolo tolto dalla programmazione (parcheggiato). Rosso: da riprogrammare o eliminare.
+  const isRecupero = (a) => a.stato === 'annullato';
 
   function itemsForMonth(y, m) {
     const map = {};
     pianif.forEach((a) => {
       let d = null, cls = null;
       if (a.stato === 'pubblicato' && a.published_at) { d = new Date(a.published_at); cls = 'pub'; }
-      else if (a.stato === 'programmato' && a.scheduled_at) { d = new Date(a.scheduled_at); cls = isLate(a) ? 'late' : 'prog'; }
+      else if (a.stato === 'programmato' && a.scheduled_at) { d = new Date(a.scheduled_at); cls = 'prog'; }
+      else if (a.stato === 'annullato' && a.scheduled_at) { d = new Date(a.scheduled_at); cls = 'late'; }
       if (!d || isNaN(d.getTime())) return;
       if (d.getFullYear() === y && d.getMonth() === m) {
         const day = d.getDate();
@@ -444,8 +445,8 @@
 
   function renderProgrammazioneListe() {
     const wrap = $('pl-listwrap'); if (!wrap) return;
-    const late = pianif.filter(isLate);
-    const prog = pianif.filter((a) => a.stato === 'programmato' && !isLate(a));
+    const late = pianif.filter(isRecupero);
+    const prog = pianif.filter((a) => a.stato === 'programmato');
     const pronti = pianif.filter((a) => a.stato === 'bozza' || a.stato === 'proposta');
     const lateHtml = late.map((a) => `<div class="pl-row late">
         <span class="pl-when">${a.scheduled_at ? fmtWhen(a.scheduled_at) : '—'}</span>
@@ -512,8 +513,8 @@
     await refreshArticoli();
   }
   async function annullaProgramma(id) {
-    if (!confirm('Annullare la programmazione? L\'articolo torna in bozza.')) return;
-    const { error } = await sb.from('articles').update({ stato: 'bozza', scheduled_at: null }).eq('id', id);
+    if (!confirm('Togliere dalla programmazione? Finisce tra i «Da recuperare»: potrai poi riprogrammarlo o eliminarlo.')) return;
+    const { error } = await sb.from('articles').update({ stato: 'annullato' }).eq('id', id);
     if (error) { alert('Errore: ' + error.message); return; }
     await refreshArticoli();
   }
