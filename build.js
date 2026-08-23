@@ -155,7 +155,7 @@ function card(a) {
   const badge = a.categoria ? `<span class="lab" style="--c:${a.colore}">${a.categoria}</span>` : '';
   // In anteprima mostriamo al massimo UN tag, per schede più pulite.
   const tag = (a.tags || []).slice(0, 1).map(t => `<span class="tg">${t.name}</span>`).join('');
-  const num = a.numero ? `${num2(a.numero)} | ` : '';
+  const num = a.numero != null ? `${num2(a.numero)} | ` : '';
   const tagsHash = (a.tags || []).map(t => t.slug).join(' ');
   return `        <article class="card" data-cat="${a.cat}" data-title="${(a.titolo + ' ' + a.categoria + ' ' + tagsHash).toLowerCase()}">
           <a class="card-cover-link" href="${href}"><div class="card-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || ''}"></div></a>
@@ -177,7 +177,7 @@ ${nav('')}
 <main>
   <article class="article read">
     <a class="back" href="archivio.html">← Torna all'archivio</a>
-    <div class="article-meta"><span class="lab" style="--c:${a.colore}">${a.categoria}</span><span>${a.numero ? num2(a.numero) + ' · ' : ''}${a.minuti} min di lettura · ${AUTHOR}</span></div>
+    <div class="article-meta"><span class="lab" style="--c:${a.colore}">${a.categoria}</span><span>${a.numero != null ? num2(a.numero) + ' · ' : ''}${a.minuti} min di lettura · ${AUTHOR}</span></div>
     <h1>${a.titolo}</h1>
     <p class="lead">${a.lead}</p>
     <div class="article-cover"><img src="${coverSrc(a)}" alt="${a.copertinaAlt || a.titolo}"></div>
@@ -376,7 +376,7 @@ async function fetchArticoli() {
     copertina: r.copertina || '',
     copertinaAlt: r.copertina_alt || '',
     minuti: r.minuti || 4,
-    numero: r.numero_editoriale || null,
+    numero: r.numero_editoriale ?? null,
     data: r.published_at,
     categoria: (r.categories && r.categories.nome) || '',
     cat: (r.categories && r.categories.slug) || '',
