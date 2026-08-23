@@ -19,7 +19,7 @@
   const countWords = (t) => ((t || '').trim().match(/\S+/g) || []).length;
   const readingMin = (w) => Math.max(1, Math.ceil(w / WPM));
   const escapeHtml = (s) => (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const num3 = (n) => '#' + String(n).padStart(3, '0');
+  const num2 = (n) => '#' + String(n).padStart(2, '0');
 
   // Chiede a Cloudflare di rigenerare il sito pubblico (deploy hook).
   async function triggerRebuild() {
@@ -65,7 +65,7 @@
       const stato = a.stato === 'pubblicato'
         ? '<span class="a-stato pub">Pubblicato</span>'
         : `<span class="a-stato bozza">${escapeHtml(a.stato || 'bozza')}</span>`;
-      const meta = [a.numero_editoriale ? num3(a.numero_editoriale) : '', a.minuti ? a.minuti + ' min' : ''].filter(Boolean).join(' · ');
+      const meta = [a.numero_editoriale != null ? num2(a.numero_editoriale) : '', a.minuti ? a.minuti + ' min' : ''].filter(Boolean).join(' · ');
       return `<tr>
         <td>${badge}</td>
         <td class="a-tit">${escapeHtml(a.titolo || '(senza titolo)')}<div class="a-sub">${meta}</div></td>
@@ -335,6 +335,32 @@
   }
   const msg = (t, k) => { const m = $('f-msg'); m.className = 'a-msg ' + (k || ''); m.textContent = t || ''; };
 
+  // ---------- Numerazione editoriale (guidata: niente doppioni né salti) ----------
+  // Numeri già assegnati agli ALTRI articoli (escluso quello in corso).
+  async function numeriUsati(articleId) {
+    let q = sb.from('articles').select('id, numero_editoriale').not('numero_editoriale', 'is', null);
+    if (articleId) q = q.neq('id', articleId);
+    const { data } = await q;
+    return (data || []).map((r) => r.numero_editoriale);
+  }
+  // Numero proposto: quello già assegnato all'articolo, altrimenti il successivo libero (o 0 se è il primo).
+  async function proponiNumero(articleId, numeroAttuale) {
+    if (numeroAttuale != null) return numeroAttuale;
+    const usati = await numeriUsati(articleId);
+    return usati.length ? Math.max(...usati) + 1 : 0;
+  }
+  // Ritorna un messaggio d'errore se il numero è un doppione o un salto in avanti; null se va bene.
+  async function controllaNumero(numero, articleId) {
+    if (!Number.isInteger(numero) || numero < 0) return 'Inserisci un numero intero (anche 0).';
+    const usati = await numeriUsati(articleId);
+    if (usati.includes(numero)) return 'Il numero ' + num2(numero) + ' è già usato da un altro articolo. Scegline un altro.';
+    if (usati.length) {
+      const max = Math.max(...usati);
+      if (numero > max + 1) return 'Non saltare i numeri: dopo ' + num2(max) + ' il prossimo è ' + num2(max + 1) + '.';
+    }
+    return null;
+  }
+
   // ---------- Pubblica / Elimina ----------
   async function pubblica(id) {
     const { data: a } = await sb.from('articles').select('*').eq('id', id).single();
@@ -345,20 +371,17 @@
     if (!a.copertina) problemi.push('la copertina');
     if (!a.copertina_alt) problemi.push("l'alt della copertina");
     if (problemi.length) { alert('Prima di pubblicare manca: ' + problemi.join(', ') + '.'); return false; }
-    let proposto = a.numero_editoriale;
-    if (!proposto) {
-      const { data: mx } = await sb.from('articles').select('numero_editoriale').not('numero_editoriale', 'is', null).order('numero_editoriale', { ascending: false }).limit(1);
-      proposto = ((mx && mx[0] && mx[0].numero_editoriale) || 0) + 1;
-    }
-    const risposta = prompt('Pubblicare «' + a.titolo + '»?\n\nNumero editoriale (proposto: ' + proposto + ') — confermalo o cambialo:', String(proposto));
+    const proposto = await proponiNumero(id, a.numero_editoriale);
+    const risposta = prompt('Pubblicare «' + a.titolo + '»?\n\nNumero editoriale (proposto: ' + proposto + ') — conferma o cambia:', String(proposto));
     if (risposta === null) return false;
     const numero = parseInt(risposta, 10);
-    if (!numero || numero < 1) { alert('Numero non valido.'); return false; }
+    const errNum = await controllaNumero(numero, id);
+    if (errNum) { alert(errNum); return false; }
     const { error } = await sb.from('articles').update({ stato: 'pubblicato', numero_editoriale: numero, published_at: new Date().toISOString() }).eq('id', id);
     if (error) { alert('Errore: ' + error.message); return false; }
     await refreshArticoli();
     await triggerRebuild();
-    alert('Pubblicato! Numero ' + num3(numero) + '.\n\nSito in ricostruzione (~1-2 min): tra poco sarà online.');
+    alert('Pubblicato! Numero ' + num2(numero) + '.\n\nSito in ricostruzione (~1-2 min): tra poco sarà online.');
     return true;
   }
   async function elimina(id) {
@@ -377,20 +400,21 @@
   async function loadPianificazione() {
     const { data } = await sb.from('articles')
       .select('id, titolo, stato, scheduled_at, published_at, numero_editoriale')
-      .in('stato', ['bozza', 'proposta', 'programmato', 'pubblicato'])
+      .in('stato', ['bozza', 'proposta', 'programmato', 'pubblicato', 'annullato'])
       .order('scheduled_at', { ascending: true });
     pianif = data || [];
   }
 
-  // "In ritardo": programmato per una data ormai passata ma mai pubblicato → rosso, da recuperare.
-  const isLate = (a) => a.stato === 'programmato' && a.scheduled_at && !a.published_at && new Date(a.scheduled_at) < new Date();
+  // "Da recuperare": articolo tolto dalla programmazione (parcheggiato). Rosso: da riprogrammare o eliminare.
+  const isRecupero = (a) => a.stato === 'annullato';
 
   function itemsForMonth(y, m) {
     const map = {};
     pianif.forEach((a) => {
       let d = null, cls = null;
       if (a.stato === 'pubblicato' && a.published_at) { d = new Date(a.published_at); cls = 'pub'; }
-      else if (a.stato === 'programmato' && a.scheduled_at) { d = new Date(a.scheduled_at); cls = isLate(a) ? 'late' : 'prog'; }
+      else if (a.stato === 'programmato' && a.scheduled_at) { d = new Date(a.scheduled_at); cls = 'prog'; }
+      else if (a.stato === 'annullato' && a.scheduled_at) { d = new Date(a.scheduled_at); cls = 'late'; }
       if (!d || isNaN(d.getTime())) return;
       if (d.getFullYear() === y && d.getMonth() === m) {
         const day = d.getDate();
@@ -420,7 +444,7 @@
     for (let d = 1; d <= daysInMonth; d++) {
       const isToday = today.getFullYear() === y && today.getMonth() === m && today.getDate() === d;
       const dots = (map[d] || []).map((it) => {
-        const n = it.numero ? '#' + String(it.numero).padStart(3, '0') : '•';
+        const n = (it.numero != null) ? num2(it.numero) : '•';
         return `<span class="cal-dot ${it.cls}" data-openart="${it.id}" title="${escapeHtml(it.titolo)}">${escapeHtml(n)}</span>`;
       }).join('');
       const dotsWrap = dots ? `<div class="cal-dots">${dots}</div>` : '';
@@ -448,25 +472,25 @@
 
   function renderProgrammazioneListe() {
     const wrap = $('pl-listwrap'); if (!wrap) return;
-    const late = pianif.filter(isLate);
-    const prog = pianif.filter((a) => a.stato === 'programmato' && !isLate(a));
+    const late = pianif.filter(isRecupero);
+    const prog = pianif.filter((a) => a.stato === 'programmato');
     const pronti = pianif.filter((a) => a.stato === 'bozza' || a.stato === 'proposta');
     const lateHtml = late.map((a) => `<div class="pl-row late">
         <span class="pl-when">${a.scheduled_at ? fmtWhen(a.scheduled_at) : '—'}</span>
-        <span class="pl-tit">${escapeHtml(a.titolo || '(senza titolo)')}</span>
+        <span class="pl-tit">${a.numero_editoriale != null ? '<strong>' + num2(a.numero_editoriale) + '</strong> · ' : ''}${escapeHtml(a.titolo || '(senza titolo)')}</span>
         <button class="a-link pub" data-pubnow="${a.id}">Pubblica ora</button>
         <button class="a-link" data-reprog="${a.id}">Riprogramma</button>
         <button class="a-link del" data-del="${a.id}">Elimina</button>
       </div>`).join('');
     const progHtml = prog.length ? prog.map((a) => `<div class="pl-row">
         <span class="pl-when">${a.scheduled_at ? fmtWhen(a.scheduled_at) : '—'}</span>
-        <span class="pl-tit">${escapeHtml(a.titolo || '(senza titolo)')}</span>
+        <span class="pl-tit">${a.numero_editoriale != null ? '<strong>' + num2(a.numero_editoriale) + '</strong> · ' : ''}${escapeHtml(a.titolo || '(senza titolo)')}</span>
         <button class="a-link pub" data-pubnow="${a.id}">Pubblica ora</button>
         <button class="a-link" data-reprog="${a.id}">Cambia data</button>
         <button class="a-link del" data-unprog="${a.id}">Annulla</button>
       </div>`).join('') : '<div class="pl-empty">Nessun articolo programmato.</div>';
     const prontiHtml = pronti.length ? pronti.map((a) => `<div class="pl-row">
-        <span class="pl-tit">${escapeHtml(a.titolo || '(senza titolo)')}</span>
+        <span class="pl-tit">${a.numero_editoriale != null ? '<strong>' + num2(a.numero_editoriale) + '</strong> · ' : ''}${escapeHtml(a.titolo || '(senza titolo)')}</span>
         <button class="a-link" data-prog="${a.id}">Programma…</button>
       </div>`).join('') : '<div class="pl-empty">Nessuna bozza pronta. Crea o completa un articolo per programmarlo.</div>';
     wrap.innerHTML =
@@ -491,14 +515,9 @@
     $('prog-data').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     $('prog-ora').value = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
     progMsg(''); showModal('modal-programma');
-    // Numero editoriale proposto: quello già assegnato oppure il prossimo libero.
+    // Numero editoriale: proposto quello giusto (il successivo), modificabile ma senza doppioni né salti.
     const { data: a } = await sb.from('articles').select('numero_editoriale').eq('id', id).single();
-    let proposto = a && a.numero_editoriale;
-    if (!proposto) {
-      const { data: mx } = await sb.from('articles').select('numero_editoriale').not('numero_editoriale', 'is', null).order('numero_editoriale', { ascending: false }).limit(1);
-      proposto = ((mx && mx[0] && mx[0].numero_editoriale) || 0) + 1;
-    }
-    $('prog-numero').value = proposto;
+    $('prog-numero').value = await proponiNumero(id, a && a.numero_editoriale);
   }
   async function salvaProgramma() {
     const data = $('prog-data').value, ora = $('prog-ora').value || '09:00';
@@ -506,7 +525,8 @@
     const dt = new Date(`${data}T${ora}`);
     if (isNaN(dt.getTime())) { progMsg('Data/ora non valide.', 'err'); return; }
     const numero = parseInt($('prog-numero').value, 10);
-    if (!numero || numero < 1) { progMsg('Inserisci un numero editoriale valido.', 'err'); return; }
+    const errNum = await controllaNumero(numero, progId);
+    if (errNum) { progMsg(errNum, 'err'); return; }
     // L'articolo esce da solo all'orario: dev'essere già completo (come per la pubblicazione).
     const { data: a } = await sb.from('articles').select('titolo, category_id, copertina, copertina_alt').eq('id', progId).single();
     const manca = [];
@@ -521,8 +541,8 @@
     await refreshArticoli();
   }
   async function annullaProgramma(id) {
-    if (!confirm('Annullare la programmazione? L\'articolo torna in bozza.')) return;
-    const { error } = await sb.from('articles').update({ stato: 'bozza', scheduled_at: null }).eq('id', id);
+    if (!confirm('Togliere dalla programmazione? Finisce tra i «Da recuperare»: potrai poi riprogrammarlo o eliminarlo.')) return;
+    const { error } = await sb.from('articles').update({ stato: 'annullato' }).eq('id', id);
     if (error) { alert('Errore: ' + error.message); return; }
     await refreshArticoli();
   }
