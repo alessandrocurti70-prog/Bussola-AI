@@ -272,11 +272,11 @@ tr:last-child td{border-bottom:none}
   box-shadow:0 10px 34px rgba(3,8,20,.28)}
 @media(max-width:880px){.snav .hnav-links{display:none}}
 
-.hhero-in{flex:1;display:grid;grid-template-columns:1fr 1.05fr;gap:30px;align-items:center;
+.hhero-in{flex:1;display:grid;grid-template-columns:1.14fr .92fr;gap:28px;align-items:center;
   max-width:var(--wrap);margin:0 auto;width:100%;padding:96px 24px 84px;position:relative;z-index:5}
 .hkicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:600;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#bcd4fb;background:rgba(159,192,247,.08);border:1px solid rgba(159,192,247,.2);padding:7px 14px;border-radius:999px}
 .hkdot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
-.hhero h1{font-family:var(--serif);font-weight:700;font-size:clamp(38px,6.6vh,68px);line-height:1.04;letter-spacing:-.02em;color:#fff;margin:0}
+.hhero h1{font-family:var(--serif);font-weight:700;font-size:clamp(24px,3vw,37px);line-height:1.14;letter-spacing:-.02em;color:#fff;margin:0;white-space:nowrap}
 .hhero h1 .hadj{font-family:var(--sans);font-weight:600;letter-spacing:-.01em;
   background:linear-gradient(92deg,#8fbcff 0%,#cfe0ff 42%,#f4cf82 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#bcd4fb}
@@ -299,6 +299,7 @@ tr:last-child td{border-bottom:none}
   .hkicker{margin:0 auto}
   .hlead{margin-left:auto;margin-right:auto}
   .hcompass{width:min(84vw,420px)}
+  .hhero h1{white-space:normal;font-size:clamp(26px,7vw,40px)}
   .hnav-links{display:none}
 }
 @media(prefers-reduced-motion:reduce){.hcompass img{animation:none}}
