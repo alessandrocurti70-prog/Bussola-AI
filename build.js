@@ -242,7 +242,7 @@ function homePage(arts) {
   </div>
 
   <div class="hhero-curve" aria-hidden="true">
-    <svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,70 L0,34 C360,0 1080,0 1440,34 L1440,70 Z" fill="#ffffff"/></svg>
+    <svg viewBox="0 0 1440 72" preserveAspectRatio="none"><path d="M0,72 C430,18 1010,18 1440,72 Z" fill="#ffffff"/></svg>
   </div>
 </section>
 
