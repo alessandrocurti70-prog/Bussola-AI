@@ -304,14 +304,21 @@ function archivioPage(arts) {
   const cards = arts.map(card).join('\n\n');
   return `${head('Archivio — Bussola AI', 'Tutte le uscite settimanali di Bussola AI, filtrabili per tema.')}
 
-${nav('archivio.html')}
+<section class="page-head">
+  ${nav('archivio.html')}
+  <div class="wrap page-head-in">
+    <span class="kicker">Archivio</span>
+    <h1>Tutte le uscite</h1>
+    <p class="lead">Sfoglia lo storico delle uscite settimanali. Filtra per tema o cerca un argomento.</p>
+  </div>
+  <div class="hhero-curve" aria-hidden="true">
+    <svg viewBox="0 0 1440 72" preserveAspectRatio="none"><path d="M0,72 C430,18 1010,18 1440,72 Z" fill="#ffffff"/></svg>
+  </div>
+</section>
 
 <main>
-  <section class="section" style="border-top:none;padding-top:44px">
+  <section class="section" style="border-top:none;padding-top:12px">
     <div class="wrap">
-      <span class="kicker">Archivio</span>
-      <h1 style="font-size:40px;margin:8px 0 8px">Tutte le uscite</h1>
-      <p class="lead" style="margin-bottom:30px">Sfoglia lo storico delle uscite settimanali. Filtra per tema o cerca un argomento.</p>
 
       <div class="filters">
         <input type="text" id="search" placeholder="Cerca un argomento…">
