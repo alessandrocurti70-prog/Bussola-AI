@@ -231,7 +231,7 @@ function homePage(arts) {
   <div class="hhero-in">
     <div class="hhero-copy">
       <h1>Diffondo conoscenza AI,<br>in modo <span class="hadj">pratico, chiaro e utile.</span></h1>
-      <p class="hlead">Ogni settimana condivido articoli, risorse e percorsi formativi per capire e usare l'intelligenza artificiale, con consapevolezza e orientati al risultato.</p>
+      <p class="hlead">Ogni settimana ti do la rotta nell'intelligenza artificiale: articoli chiari, esempi pratici e formazione per capirla e usarla davvero, senza tecnicismi.</p>
     </div>
     <div class="hhero-visual">
       <div class="hcompass">
@@ -309,7 +309,7 @@ function archivioPage(arts) {
   <div class="wrap page-head-in">
     <span class="kicker">Archivio</span>
     <h1>Tutte le uscite</h1>
-    <p class="lead">Sfoglia lo storico delle uscite settimanali. Filtra per tema o cerca un argomento.</p>
+    <p class="lead">Sfoglia lo storico delle uscite settimanali.</p>
   </div>
   <div class="hhero-curve" aria-hidden="true">
     <svg viewBox="0 0 1440 72" preserveAspectRatio="none"><path d="M0,72 C430,18 1010,18 1440,72 Z" fill="#ffffff"/></svg>
@@ -317,14 +317,17 @@ function archivioPage(arts) {
 </section>
 
 <main>
-  <section class="section" style="border-top:none;padding-top:12px">
+  <section class="section" style="border-top:none;padding:46px 0">
     <div class="wrap">
-
       <div class="filters">
         <input type="text" id="search" placeholder="Cerca un argomento…">
         ${chips}
       </div>
+    </div>
+  </section>
 
+  <section class="section" style="padding-top:38px">
+    <div class="wrap">
       <div class="grid" id="archive">
 
 ${cards}

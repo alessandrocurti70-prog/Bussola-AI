@@ -31,10 +31,18 @@
 </section>
 
 <main>
-  <section class="section" style="border-top:none;padding-top:12px">
+  <section class="section" style="border-top:none;padding:46px 0">
+    <div class="wrap">
+      <div class="filters">
+        <input type="text" id="search-form" placeholder="Cerca una formazione…">
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:38px">
     <div class="wrap">
 
-      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))">
+      <div class="grid" id="corsi" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))">
 
         <article class="course">
           <div class="course-cover"><img src="immagini/Riferimenti/01_ritratto-faro.png" alt=""></div>
@@ -103,6 +111,18 @@
     <span>Ticino · Svizzera italiana</span>
   </div>
 </footer>
+
+<script>
+  (function(){
+    var q=document.getElementById('search-form');
+    if(!q) return;
+    var cards=[].slice.call(document.querySelectorAll('#corsi .course'));
+    q.addEventListener('input', function(){
+      var v=q.value.trim().toLowerCase();
+      cards.forEach(function(c){ c.style.display=(!v||c.textContent.toLowerCase().indexOf(v)>-1)?'':'none'; });
+    });
+  })();
+</script>
 
 </body>
 </html>
