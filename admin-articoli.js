@@ -335,6 +335,32 @@
   }
   const msg = (t, k) => { const m = $('f-msg'); m.className = 'a-msg ' + (k || ''); m.textContent = t || ''; };
 
+  // ---------- Numerazione editoriale (guidata: niente doppioni né salti) ----------
+  // Numeri già assegnati agli ALTRI articoli (escluso quello in corso).
+  async function numeriUsati(articleId) {
+    let q = sb.from('articles').select('id, numero_editoriale').not('numero_editoriale', 'is', null);
+    if (articleId) q = q.neq('id', articleId);
+    const { data } = await q;
+    return (data || []).map((r) => r.numero_editoriale);
+  }
+  // Numero proposto: quello già assegnato all'articolo, altrimenti il successivo libero (o 0 se è il primo).
+  async function proponiNumero(articleId, numeroAttuale) {
+    if (numeroAttuale != null) return numeroAttuale;
+    const usati = await numeriUsati(articleId);
+    return usati.length ? Math.max(...usati) + 1 : 0;
+  }
+  // Ritorna un messaggio d'errore se il numero è un doppione o un salto in avanti; null se va bene.
+  async function controllaNumero(numero, articleId) {
+    if (!Number.isInteger(numero) || numero < 0) return 'Inserisci un numero intero (anche 0).';
+    const usati = await numeriUsati(articleId);
+    if (usati.includes(numero)) return 'Il numero ' + num2(numero) + ' è già usato da un altro articolo. Scegline un altro.';
+    if (usati.length) {
+      const max = Math.max(...usati);
+      if (numero > max + 1) return 'Non saltare i numeri: dopo ' + num2(max) + ' il prossimo è ' + num2(max + 1) + '.';
+    }
+    return null;
+  }
+
   // ---------- Pubblica / Elimina ----------
   async function pubblica(id) {
     const { data: a } = await sb.from('articles').select('*').eq('id', id).single();
@@ -345,11 +371,12 @@
     if (!a.copertina) problemi.push('la copertina');
     if (!a.copertina_alt) problemi.push("l'alt della copertina");
     if (problemi.length) { alert('Prima di pubblicare manca: ' + problemi.join(', ') + '.'); return false; }
-    const attuale = (a.numero_editoriale != null) ? String(a.numero_editoriale) : '';
-    const risposta = prompt('Pubblicare «' + a.titolo + '»?\n\nScegli tu il numero editoriale (es. 0, 1, 2…):', attuale);
+    const proposto = await proponiNumero(id, a.numero_editoriale);
+    const risposta = prompt('Pubblicare «' + a.titolo + '»?\n\nNumero editoriale (proposto: ' + proposto + ') — conferma o cambia:', String(proposto));
     if (risposta === null) return false;
     const numero = parseInt(risposta, 10);
-    if (!Number.isInteger(numero) || numero < 0) { alert('Numero non valido: inserisci un numero intero (anche 0).'); return false; }
+    const errNum = await controllaNumero(numero, id);
+    if (errNum) { alert(errNum); return false; }
     const { error } = await sb.from('articles').update({ stato: 'pubblicato', numero_editoriale: numero, published_at: new Date().toISOString() }).eq('id', id);
     if (error) { alert('Errore: ' + error.message); return false; }
     await refreshArticoli();
@@ -488,9 +515,9 @@
     $('prog-data').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     $('prog-ora').value = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
     progMsg(''); showModal('modal-programma');
-    // Numero editoriale: lo scegli sempre tu (nessuna proposta automatica).
+    // Numero editoriale: proposto quello giusto (il successivo), modificabile ma senza doppioni né salti.
     const { data: a } = await sb.from('articles').select('numero_editoriale').eq('id', id).single();
-    $('prog-numero').value = (a && a.numero_editoriale != null) ? a.numero_editoriale : '';
+    $('prog-numero').value = await proponiNumero(id, a && a.numero_editoriale);
   }
   async function salvaProgramma() {
     const data = $('prog-data').value, ora = $('prog-ora').value || '09:00';
@@ -498,7 +525,8 @@
     const dt = new Date(`${data}T${ora}`);
     if (isNaN(dt.getTime())) { progMsg('Data/ora non valide.', 'err'); return; }
     const numero = parseInt($('prog-numero').value, 10);
-    if (!Number.isInteger(numero) || numero < 0) { progMsg('Inserisci un numero editoriale valido (intero, anche 0).', 'err'); return; }
+    const errNum = await controllaNumero(numero, progId);
+    if (errNum) { progMsg(errNum, 'err'); return; }
     // L'articolo esce da solo all'orario: dev'essere già completo (come per la pubblicazione).
     const { data: a } = await sb.from('articles').select('titolo, category_id, copertina, copertina_alt').eq('id', progId).single();
     const manca = [];
