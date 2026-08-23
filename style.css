@@ -225,10 +225,13 @@ tr:last-child td{border-bottom:none}
    ============================================================ */
 .hhero{position:relative;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;color:#fff;overflow:hidden;
   background:
-    radial-gradient(72% 50% at 72% 40%, rgba(46,125,246,.30), transparent 62%),
-    radial-gradient(44% 32% at 72% 40%, rgba(224,169,59,.10), transparent 60%),
-    linear-gradient(180deg,#132449 0%,#1b3b66 40%,#2c5c88 59%,#173d60 63%,#0e2c49 100%);}
-.hhero-stars{position:absolute;inset:0 0 42% 0;pointer-events:none;opacity:.85;
+    radial-gradient(80% 64% at 72% 42%, rgba(46,125,246,.42), transparent 60%),
+    radial-gradient(48% 38% at 72% 42%, rgba(224,169,59,.15), transparent 58%),
+    radial-gradient(62% 55% at 13% 8%, rgba(41,86,166,.40), transparent 60%),
+    radial-gradient(150% 120% at 50% -10%, transparent 56%, rgba(4,11,26,.55)),
+    radial-gradient(120% 95% at 50% 120%, rgba(6,14,30,.70), transparent 60%),
+    linear-gradient(180deg,#0e2249 0%,#173561 40%,#245a82 58%,#164062 64%,#0a1f39 100%);}
+.hhero-stars{position:absolute;inset:0 0 42% 0;pointer-events:none;opacity:.92;
   -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent);
   background-image:
     radial-gradient(1.5px 1.5px at 10% 20%,rgba(255,255,255,.85),transparent),
@@ -240,7 +243,10 @@ tr:last-child td{border-bottom:none}
     radial-gradient(1px 1px at 92% 40%,rgba(207,224,251,.6),transparent),
     radial-gradient(1px 1px at 48% 6%,rgba(255,255,255,.5),transparent),
     radial-gradient(1px 1px at 16% 34%,rgba(255,255,255,.5),transparent),
-    radial-gradient(1px 1px at 74% 44%,rgba(255,255,255,.5),transparent);}
+    radial-gradient(1px 1px at 74% 44%,rgba(255,255,255,.5),transparent),
+    radial-gradient(2.5px 2.5px at 20% 12%,rgba(255,255,255,.95),transparent),
+    radial-gradient(2px 2px at 58% 20%,rgba(200,222,255,.9),transparent),
+    radial-gradient(2px 2px at 88% 15%,rgba(255,255,255,.85),transparent);}
 .hhero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:40%;pointer-events:none;
   background:radial-gradient(60% 100% at 72% 0%, rgba(130,178,240,.20), transparent 70%);}
 
@@ -258,19 +264,28 @@ tr:last-child td{border-bottom:none}
 .hnav-links a.active{color:#fff;background:rgba(46,125,246,.18)}
 .hnav-cta{font-family:var(--sans);font-weight:600;font-size:14px;background:var(--blue);color:#fff;padding:10px 18px;border-radius:999px}
 .hnav-cta:hover{background:#1f66d6}
+/* Navbar flottante condivisa (Archivio, Formazioni, articoli) */
+.snav-wrap{position:sticky;top:0;z-index:60;padding:16px 24px}
+.snav{max-width:var(--wrap);margin:0 auto;display:flex;align-items:center;gap:18px;
+  padding:10px 12px 10px 18px;border-radius:999px;background:rgba(10,18,34,.82);
+  border:1px solid rgba(159,192,247,.16);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 10px 34px rgba(3,8,20,.28)}
+@media(max-width:880px){.snav .hnav-links{display:none}}
 
 .hhero-in{flex:1;display:grid;grid-template-columns:1fr 1.05fr;gap:30px;align-items:center;
   max-width:var(--wrap);margin:0 auto;width:100%;padding:96px 24px 84px;position:relative;z-index:5}
 .hkicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:600;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#bcd4fb;background:rgba(159,192,247,.08);border:1px solid rgba(159,192,247,.2);padding:7px 14px;border-radius:999px}
 .hkdot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
-.hhero h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5vh,52px);line-height:1.08;letter-spacing:-.015em;color:#fff;margin:16px 0 0}
-.hhero h1 .hu{color:#bcd4fb;font-style:italic;font-weight:400}
+.hhero h1{font-family:var(--serif);font-weight:700;font-size:clamp(38px,6.6vh,68px);line-height:1.04;letter-spacing:-.02em;color:#fff;margin:0}
+.hhero h1 .hadj{font-family:var(--sans);font-weight:600;letter-spacing:-.01em;
+  background:linear-gradient(92deg,#8fbcff 0%,#cfe0ff 42%,#f4cf82 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#bcd4fb}
 .hlead{font-family:var(--serif);font-size:clamp(17px,1.6vw,20px);color:rgba(233,240,252,.85);line-height:1.6;max-width:540px;margin:18px 0 0}
 
 .hhero-visual{position:relative;display:flex;justify-content:center}
 .hcompass{position:relative;width:min(112%,66vh,600px);aspect-ratio:1;margin:0 auto}
-.hcompass-glow{position:absolute;inset:-22%;z-index:0;pointer-events:none;filter:blur(12px);
-  background:radial-gradient(circle at 50% 48%,rgba(46,125,246,.42),rgba(224,169,59,.13) 40%,transparent 64%)}
+.hcompass-glow{position:absolute;inset:-26%;z-index:0;pointer-events:none;filter:blur(14px);
+  background:radial-gradient(circle at 50% 48%,rgba(46,125,246,.5),rgba(224,169,59,.16) 38%,transparent 62%)}
 .hcompass img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:2;
   filter:drop-shadow(0 18px 44px rgba(3,10,26,.55)) drop-shadow(0 0 38px rgba(46,125,246,.34));
   animation:hfloat 6.5s ease-in-out infinite}

@@ -112,16 +112,17 @@ function num2(n) { return '#' + String(n).padStart(2, '0'); }
 
 function nav(active) {
   const link = (href, label) => `<a href="${href}"${active === href ? ' class="active"' : ''}>${label}</a>`;
-  return `<header class="nav">
-  <div class="wrap nav-in">
-    <a class="brand" href="index.html"><img class="rose" src="${LOGO}" alt="Bussola AI"> Bussola AI</a>
-    <nav class="nav-links">
+  return `<div class="snav-wrap">
+  <nav class="snav" aria-label="Principale">
+    <a class="hbrand" href="index.html"><img src="${LOGO}" alt=""><span>Bussola AI<small>di Alessandro Curti</small></span></a>
+    <div class="hnav-links">
       ${link('index.html', 'Home')}
       ${link('archivio.html', 'Archivio')}
       ${link('formazioni.html', 'Formazioni')}
-    </nav>
-  </div>
-</header>`;
+    </div>
+    <a class="hnav-cta" href="index.html#iscriviti">Iscriviti</a>
+  </nav>
+</div>`;
 }
 
 const FOOTER = `<footer class="footer">
@@ -229,8 +230,7 @@ function homePage(arts) {
 
   <div class="hhero-in">
     <div class="hhero-copy">
-      <span class="hkicker"><span class="hkdot"></span>Conoscenza AI · Articoli · Formazione</span>
-      <h1>Diffondo conoscenza AI,<br>in modo pratico,<br><span class="hu">chiaro e utile.</span></h1>
+      <h1>Diffondo conoscenza AI,<br>in modo <span class="hadj">pratico, chiaro e utile.</span></h1>
       <p class="hlead">Ogni settimana condivido articoli, risorse e percorsi formativi per capire e usare l'intelligenza artificiale — con consapevolezza e orientati al risultato.</p>
     </div>
     <div class="hhero-visual">
