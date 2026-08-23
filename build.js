@@ -213,27 +213,40 @@ function homePage(arts) {
   const latest = arts.slice(0, 3).map(card).join('\n\n');
   return `${head("Bussola AI — La tua direzione nell'intelligenza artificiale", "La tua dose settimanale di AI, spiegata semplice, per capire e usare l'intelligenza artificiale nel tuo lavoro.")}
 
-${nav('index.html')}
-
-<main>
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <span class="kicker">Newsletter settimanale · Ticino</span>
-        <h1>La tua direzione nell'intelligenza artificiale</h1>
-        <p class="lead">Ogni settimana prendo il caos dell'AI e ti do la rotta: cosa conta davvero e come usarlo, spiegato semplice. Partiamo da zero, insieme.</p>
-        <form class="subscribe" onsubmit="return false">
-          <input type="email" placeholder="La tua email" aria-label="La tua email">
-          <button type="submit">Iscriviti</button>
-        </form>
-        <p class="subnote">Gratis, una email a settimana. Niente spam, disiscrizione con un clic.</p>
+<section class="hhero">
+  <div class="hhero-stars" aria-hidden="true"></div>
+  <div class="hhero-nav">
+    <nav class="hnav" aria-label="Principale">
+      <a class="hbrand" href="index.html"><img src="${LOGO}" alt=""><span>Bussola AI<small>di Alessandro Curti</small></span></a>
+      <div class="hnav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="archivio.html">Archivio</a>
+        <a href="formazioni.html">Formazioni</a>
       </div>
-      <div class="hero-figure">
-        <img src="${IMG}Riferimenti/01_ritratto-faro.png" alt="Alessandro con la bussola verso il faro">
+      <a class="hnav-cta" href="#iscriviti">Iscriviti</a>
+    </nav>
+  </div>
+
+  <div class="hhero-in">
+    <div class="hhero-copy">
+      <span class="hkicker"><span class="hkdot"></span>Conoscenza AI · Articoli · Formazione</span>
+      <h1>Diffondo conoscenza AI,<br>in modo pratico,<br><span class="hu">chiaro e utile.</span></h1>
+      <p class="hlead">Ogni settimana condivido articoli, risorse e percorsi formativi per capire e usare l'intelligenza artificiale — con consapevolezza e orientati al risultato.</p>
+    </div>
+    <div class="hhero-visual">
+      <div class="hcompass">
+        <div class="hcompass-glow" aria-hidden="true"></div>
+        <img src="${IMG}Elementi/compass-hero.png" alt="Bussola AI — rosa dei venti">
       </div>
     </div>
-  </section>
+  </div>
 
+  <div class="hhero-curve" aria-hidden="true">
+    <svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,70 L0,34 C360,0 1080,0 1440,34 L1440,70 Z" fill="#ffffff"/></svg>
+  </div>
+</section>
+
+<main>
   <section class="section">
     <div class="wrap">
       <div class="section-head">
@@ -260,6 +273,19 @@ ${latest}
         <div class="hero-figure" style="aspect-ratio:4/3">
           <img src="${IMG}Riferimenti/05_plancia-globo.png" alt="">
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="iscriviti">
+    <div class="wrap">
+      <div class="end-cta">
+        <h3>Non perdere la rotta della settimana</h3>
+        <p>Ogni settimana una dose di AI spiegata semplice, con una cosa concreta da fare subito.</p>
+        <form class="subscribe" onsubmit="return false">
+          <input type="email" placeholder="La tua email" aria-label="La tua email">
+          <button type="submit">Iscriviti</button>
+        </form>
       </div>
     </div>
   </section>

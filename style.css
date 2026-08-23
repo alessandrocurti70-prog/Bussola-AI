@@ -219,3 +219,71 @@ tr:last-child td{border-bottom:none}
   .subscribe button{width:100%}
   .nav-cta{display:none}
 }
+
+/* ============================================================
+   Home — hero immersiva (cielo stellato + bussola) — solo index
+   ============================================================ */
+.hhero{position:relative;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;color:#fff;overflow:hidden;
+  background:
+    radial-gradient(72% 50% at 72% 40%, rgba(46,125,246,.30), transparent 62%),
+    radial-gradient(44% 32% at 72% 40%, rgba(224,169,59,.10), transparent 60%),
+    linear-gradient(180deg,#132449 0%,#1b3b66 40%,#2c5c88 59%,#173d60 63%,#0e2c49 100%);}
+.hhero-stars{position:absolute;inset:0 0 42% 0;pointer-events:none;opacity:.85;
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent);
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 20%,rgba(255,255,255,.85),transparent),
+    radial-gradient(1.5px 1.5px at 24% 46%,rgba(207,224,251,.7),transparent),
+    radial-gradient(1px 1px at 38% 14%,rgba(255,255,255,.6),transparent),
+    radial-gradient(1.5px 1.5px at 55% 30%,rgba(255,255,255,.7),transparent),
+    radial-gradient(1px 1px at 66% 10%,rgba(207,224,251,.6),transparent),
+    radial-gradient(1.5px 1.5px at 82% 24%,rgba(255,255,255,.7),transparent),
+    radial-gradient(1px 1px at 92% 40%,rgba(207,224,251,.6),transparent),
+    radial-gradient(1px 1px at 48% 6%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1px 1px at 16% 34%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1px 1px at 74% 44%,rgba(255,255,255,.5),transparent);}
+.hhero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:40%;pointer-events:none;
+  background:radial-gradient(60% 100% at 72% 0%, rgba(130,178,240,.20), transparent 70%);}
+
+.hhero-nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:18px 24px}
+.hnav{max-width:var(--wrap);margin:0 auto;display:flex;align-items:center;gap:18px;
+  padding:10px 12px 10px 18px;border-radius:999px;background:rgba(11,20,38,.5);
+  border:1px solid rgba(159,192,247,.18);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 10px 40px rgba(3,8,20,.35)}
+.hbrand{display:flex;align-items:center;gap:10px;color:#fff;font-family:var(--serif);font-weight:700;font-size:19px}
+.hbrand img{height:34px;width:auto;flex:none}
+.hbrand small{display:block;font-family:var(--sans);font-weight:500;font-size:11px;color:#9fc0f7;margin-top:-3px}
+.hnav-links{display:flex;gap:4px;margin:0 auto;font-family:var(--sans);font-weight:500;font-size:14.5px}
+.hnav-links a{color:rgba(255,255,255,.74);padding:8px 14px;border-radius:999px}
+.hnav-links a:hover{color:#fff;background:rgba(159,192,247,.1)}
+.hnav-links a.active{color:#fff;background:rgba(46,125,246,.18)}
+.hnav-cta{font-family:var(--sans);font-weight:600;font-size:14px;background:var(--blue);color:#fff;padding:10px 18px;border-radius:999px}
+.hnav-cta:hover{background:#1f66d6}
+
+.hhero-in{flex:1;display:grid;grid-template-columns:1fr 1.05fr;gap:30px;align-items:center;
+  max-width:var(--wrap);margin:0 auto;width:100%;padding:96px 24px 84px;position:relative;z-index:5}
+.hkicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:600;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#bcd4fb;background:rgba(159,192,247,.08);border:1px solid rgba(159,192,247,.2);padding:7px 14px;border-radius:999px}
+.hkdot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.hhero h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5vh,52px);line-height:1.08;letter-spacing:-.015em;color:#fff;margin:16px 0 0}
+.hhero h1 .hu{color:#bcd4fb;font-style:italic;font-weight:400}
+.hlead{font-family:var(--serif);font-size:clamp(17px,1.6vw,20px);color:rgba(233,240,252,.85);line-height:1.6;max-width:540px;margin:18px 0 0}
+
+.hhero-visual{position:relative;display:flex;justify-content:center}
+.hcompass{position:relative;width:min(112%,66vh,600px);aspect-ratio:1;margin:0 auto}
+.hcompass-glow{position:absolute;inset:-22%;z-index:0;pointer-events:none;filter:blur(12px);
+  background:radial-gradient(circle at 50% 48%,rgba(46,125,246,.42),rgba(224,169,59,.13) 40%,transparent 64%)}
+.hcompass img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:2;
+  filter:drop-shadow(0 18px 44px rgba(3,10,26,.55)) drop-shadow(0 0 38px rgba(46,125,246,.34));
+  animation:hfloat 6.5s ease-in-out infinite}
+@keyframes hfloat{0%,100%{transform:translateY(-7px)}50%{transform:translateY(7px)}}
+
+.hhero-curve{position:absolute;left:0;right:0;bottom:-1px;z-index:6;line-height:0}
+.hhero-curve svg{width:100%;height:70px;display:block}
+
+@media(max-width:880px){
+  .hhero-in{grid-template-columns:1fr;gap:18px;padding-top:92px;text-align:center}
+  .hkicker{margin:0 auto}
+  .hlead{margin-left:auto;margin-right:auto}
+  .hcompass{width:min(84vw,420px)}
+  .hnav-links{display:none}
+}
+@media(prefers-reduced-motion:reduce){.hcompass img{animation:none}}
