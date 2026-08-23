@@ -91,7 +91,7 @@
     const sel = $('f-etichetta');
     sel.innerHTML = '<option value="">— scegli —</option>' +
       etichette.filter((e) => e.is_active).map((e) => `<option value="${e.id}">${escapeHtml(e.nome)}</option>`).join('');
-    ['f-titolo', 'f-slug', 'f-occhiello', 'f-lead', 'f-estratto', 'f-corpo', 'f-alt'].forEach((k) => ($(k).value = ''));
+    ['f-titolo', 'f-slug', 'f-lead', 'f-estratto', 'f-corpo', 'f-alt'].forEach((k) => ($(k).value = ''));
     sel.value = ''; $('f-cover-preview').innerHTML = ''; $('f-cover-name').textContent = 'Nessun file scelto';
     $('f-cover').value = '';
     msg(''); $('form-title').textContent = id ? 'Modifica articolo' : 'Nuovo articolo';
@@ -102,7 +102,7 @@
       const { data } = await sb.from('articles').select('*').eq('id', id).single();
       if (data) {
         $('f-titolo').value = data.titolo || ''; $('f-slug').value = data.slug || '';
-        $('f-occhiello').value = data.occhiello || ''; $('f-lead').value = data.lead || '';
+        $('f-lead').value = data.lead || '';
         $('f-estratto').value = data.estratto || ''; $('f-corpo').value = data.corpo || '';
         $('f-alt').value = data.copertina_alt || ''; sel.value = data.category_id || '';
         if (data.copertina) $('f-cover-preview').innerHTML = `<img src="${data.copertina}" alt="">`;
@@ -114,8 +114,17 @@
       }
       updateStats();
     }
+    updateEditorActions();
     updatePreview();
     showModal('modal-articolo');
+  }
+
+  // I comandi "Pubblica ora" e "Programma" non hanno senso su un articolo già pubblicato.
+  function updateEditorActions() {
+    const isPub = editingStato === 'pubblicato';
+    const bP = $('f-pubblica'), bG = $('f-programma');
+    if (bP) bP.style.display = isPub ? 'none' : '';
+    if (bG) bG.style.display = isPub ? 'none' : '';
   }
 
   function updateStats() {
@@ -190,13 +199,11 @@
   }
   function updatePreview() {
     const box = $('f-preview'); if (!box) return;
-    const occh = $('f-occhiello').value.trim();
     const tit = $('f-titolo').value.trim();
     const lead = $('f-lead').value.trim();
     const bodyHtml = mdPreview($('f-corpo').value);
     if (!tit && !lead && !bodyHtml) { box.innerHTML = '<div class="pv-empty">Scrivi il titolo e il testo: qui vedrai l\'anteprima dell\'articolo.</div>'; return; }
     box.innerHTML =
-      (occh ? `<div class="pv-kicker">${escapeHtml(occh)}</div>` : '') +
       (tit ? `<h1 class="pv-title">${escapeHtml(tit)}</h1>` : '') +
       (lead ? `<p class="pv-lead">${escapeHtml(lead)}</p>` : '') +
       bodyHtml;
@@ -247,40 +254,46 @@
   }
 
   // ---------- Salva bozza ----------
+  // Salva i dati correnti dell'articolo (senza chiudere). Ritorna l'id, o null se manca il titolo.
+  async function persistArticolo() {
+    const titolo = $('f-titolo').value.trim();
+    if (!titolo) { msg('Aggiungi almeno il titolo.', 'err'); return null; }
+    const stats = updateStats();
+    let currentCover = null;
+    if (editingId) { const { data } = await sb.from('articles').select('copertina').eq('id', editingId).single(); currentCover = data && data.copertina; }
+    const coverUrl = await uploadCoverIfNeeded(currentCover);
+    const payload = {
+      titolo,
+      slug: ($('f-slug').value.trim() || slugify(titolo)),
+      lead: $('f-lead').value.trim() || null,
+      estratto: $('f-estratto').value.trim() || null,
+      corpo: $('f-corpo').value,
+      category_id: $('f-etichetta').value || null,
+      copertina: coverUrl,
+      copertina_alt: $('f-alt').value.trim() || null,
+      parole: stats.w,
+      minuti: stats.m
+    };
+    let artId = editingId;
+    if (editingId) {
+      const { error } = await sb.from('articles').update(payload).eq('id', editingId);
+      if (error) throw error;
+    } else {
+      const { data, error } = await sb.from('articles').insert(payload).select('id').single();
+      if (error) throw error; artId = data.id;
+    }
+    const tagIds = await ensureTagIds();
+    await sb.from('article_tags').delete().eq('article_id', artId);
+    if (tagIds.length) await sb.from('article_tags').insert(tagIds.map((tid) => ({ article_id: artId, tag_id: tid })));
+    editingId = artId;
+    return artId;
+  }
+
   async function salvaBozza() {
     const btn = $('f-salva'); btn.disabled = true; msg('Salvataggio…', 'ok');
     try {
-      const titolo = $('f-titolo').value.trim();
-      if (!titolo) { msg('Aggiungi almeno il titolo.', 'err'); btn.disabled = false; return; }
-      const stats = updateStats();
-      let currentCover = null;
-      if (editingId) { const { data } = await sb.from('articles').select('copertina').eq('id', editingId).single(); currentCover = data && data.copertina; }
-      const coverUrl = await uploadCoverIfNeeded(currentCover);
-      const payload = {
-        titolo,
-        slug: ($('f-slug').value.trim() || slugify(titolo)),
-        occhiello: $('f-occhiello').value.trim() || null,
-        lead: $('f-lead').value.trim() || null,
-        estratto: $('f-estratto').value.trim() || null,
-        corpo: $('f-corpo').value,
-        category_id: $('f-etichetta').value || null,
-        copertina: coverUrl,
-        copertina_alt: $('f-alt').value.trim() || null,
-        parole: stats.w,
-        minuti: stats.m
-      };
-      let artId = editingId;
-      if (editingId) {
-        const { error } = await sb.from('articles').update(payload).eq('id', editingId);
-        if (error) throw error;
-      } else {
-        const { data, error } = await sb.from('articles').insert(payload).select('id').single();
-        if (error) throw error; artId = data.id;
-      }
-      const tagIds = await ensureTagIds();
-      await sb.from('article_tags').delete().eq('article_id', artId);
-      if (tagIds.length) await sb.from('article_tags').insert(tagIds.map((tid) => ({ article_id: artId, tag_id: tid })));
-      editingId = artId;
+      const artId = await persistArticolo();
+      if (!artId) { btn.disabled = false; return; }
       await refreshArticoli();
       if (editingStato === 'pubblicato') {
         await triggerRebuild();
@@ -292,32 +305,61 @@
     } catch (e) { msg('Errore nel salvataggio: ' + (e.message || e), 'err'); }
     btn.disabled = false;
   }
+
+  // "Pubblica ora" dall'editor: salva, poi apre il flusso di pubblicazione (con i controlli).
+  async function pubblicaDaEditor() {
+    const btn = $('f-pubblica'); btn.disabled = true; msg('Salvataggio…', 'ok');
+    try {
+      const artId = await persistArticolo();
+      if (!artId) { btn.disabled = false; return; }
+      await refreshArticoli();
+      msg('');
+      const ok = await pubblica(artId);
+      if (ok) hideModal('modal-articolo');
+    } catch (e) { msg('Errore: ' + (e.message || e), 'err'); }
+    btn.disabled = false;
+  }
+
+  // "Programma" dall'editor: salva, chiude l'editor e apre la finestrella data/ora.
+  async function programmaDaEditor() {
+    const btn = $('f-programma'); btn.disabled = true; msg('Salvataggio…', 'ok');
+    try {
+      const artId = await persistArticolo();
+      if (!artId) { btn.disabled = false; return; }
+      await refreshArticoli();
+      const { data } = await sb.from('articles').select('titolo, scheduled_at').eq('id', artId).single();
+      hideModal('modal-articolo');
+      openPrograma(artId, data && data.titolo, data && data.scheduled_at);
+    } catch (e) { msg('Errore: ' + (e.message || e), 'err'); }
+    btn.disabled = false;
+  }
   const msg = (t, k) => { const m = $('f-msg'); m.className = 'a-msg ' + (k || ''); m.textContent = t || ''; };
 
   // ---------- Pubblica / Elimina ----------
   async function pubblica(id) {
     const { data: a } = await sb.from('articles').select('*').eq('id', id).single();
-    if (!a) return;
+    if (!a) return false;
     const problemi = [];
     if (!a.titolo) problemi.push('il titolo');
     if (!a.category_id) problemi.push("l'etichetta");
     if (!a.copertina) problemi.push('la copertina');
     if (!a.copertina_alt) problemi.push("l'alt della copertina");
-    if (problemi.length) { alert('Prima di pubblicare manca: ' + problemi.join(', ') + '.'); return; }
+    if (problemi.length) { alert('Prima di pubblicare manca: ' + problemi.join(', ') + '.'); return false; }
     let proposto = a.numero_editoriale;
     if (!proposto) {
       const { data: mx } = await sb.from('articles').select('numero_editoriale').not('numero_editoriale', 'is', null).order('numero_editoriale', { ascending: false }).limit(1);
       proposto = ((mx && mx[0] && mx[0].numero_editoriale) || 0) + 1;
     }
     const risposta = prompt('Pubblicare «' + a.titolo + '»?\n\nNumero editoriale (proposto: ' + proposto + ') — confermalo o cambialo:', String(proposto));
-    if (risposta === null) return;
+    if (risposta === null) return false;
     const numero = parseInt(risposta, 10);
-    if (!numero || numero < 1) { alert('Numero non valido.'); return; }
+    if (!numero || numero < 1) { alert('Numero non valido.'); return false; }
     const { error } = await sb.from('articles').update({ stato: 'pubblicato', numero_editoriale: numero, published_at: new Date().toISOString() }).eq('id', id);
-    if (error) { alert('Errore: ' + error.message); return; }
+    if (error) { alert('Errore: ' + error.message); return false; }
     await refreshArticoli();
     await triggerRebuild();
     alert('Pubblicato! Numero ' + num3(numero) + '.\n\nSito in ricostruzione (~1-2 min): tra poco sarà online.');
+    return true;
   }
   async function elimina(id) {
     if (!confirm('Eliminare definitivamente questo articolo?')) return;
@@ -340,16 +382,19 @@
     pianif = data || [];
   }
 
+  // "In ritardo": programmato per una data ormai passata ma mai pubblicato → rosso, da recuperare.
+  const isLate = (a) => a.stato === 'programmato' && a.scheduled_at && !a.published_at && new Date(a.scheduled_at) < new Date();
+
   function itemsForMonth(y, m) {
     const map = {};
     pianif.forEach((a) => {
       let d = null, cls = null;
-      if (a.stato === 'programmato' && a.scheduled_at) { d = new Date(a.scheduled_at); cls = 'prog'; }
-      else if (a.stato === 'pubblicato' && a.published_at) { d = new Date(a.published_at); cls = 'pub'; }
+      if (a.stato === 'pubblicato' && a.published_at) { d = new Date(a.published_at); cls = 'pub'; }
+      else if (a.stato === 'programmato' && a.scheduled_at) { d = new Date(a.scheduled_at); cls = isLate(a) ? 'late' : 'prog'; }
       if (!d || isNaN(d.getTime())) return;
       if (d.getFullYear() === y && d.getMonth() === m) {
         const day = d.getDate();
-        (map[day] = map[day] || []).push({ titolo: a.titolo || '(senza titolo)', cls });
+        (map[day] = map[day] || []).push({ id: a.id, titolo: a.titolo || '(senza titolo)', numero: a.numero_editoriale, cls });
       }
     });
     return map;
@@ -374,8 +419,12 @@
     for (let i = 0; i < startDow; i++) cells += '<div class="cal-cell empty"></div>';
     for (let d = 1; d <= daysInMonth; d++) {
       const isToday = today.getFullYear() === y && today.getMonth() === m && today.getDate() === d;
-      const items = (map[d] || []).map((it) => `<span class="cal-item ${it.cls}" title="${escapeHtml(it.titolo)}">${escapeHtml(it.titolo)}</span>`).join('');
-      cells += `<div class="cal-cell${isToday ? ' today' : ''}"><span class="d">${d}</span>${items}</div>`;
+      const dots = (map[d] || []).map((it) => {
+        const n = it.numero ? '#' + String(it.numero).padStart(3, '0') : '•';
+        return `<span class="cal-dot ${it.cls}" data-openart="${it.id}" title="${escapeHtml(it.titolo)}">${escapeHtml(n)}</span>`;
+      }).join('');
+      const dotsWrap = dots ? `<div class="cal-dots">${dots}</div>` : '';
+      cells += `<div class="cal-cell${isToday ? ' today' : ''}"><span class="d">${d}</span>${dotsWrap}</div>`;
     }
     const dow = DOW.map((x) => `<div class="cal-dow">${x}</div>`).join('');
     wrap.innerHTML = `
@@ -388,18 +437,27 @@
         <button class="a-link" id="cal-oggi">Oggi</button>
       </div>
       <div class="cal-grid">${dow}${cells}</div>
-      <div class="cal-legend"><span><i class="prog"></i>Programmato</span><span><i class="pub"></i>Pubblicato</span></div>
+      <div class="cal-legend"><span><i class="prog"></i>Programmato</span><span><i class="pub"></i>Pubblicato</span><span><i class="late"></i>Da recuperare</span></div>
       <div id="pl-listwrap"></div>`;
     $('cal-prev').onclick = () => { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); };
     $('cal-next').onclick = () => { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); };
     $('cal-oggi').onclick = () => { const n = new Date(); calYear = n.getFullYear(); calMonth = n.getMonth(); renderCalendar(); };
+    wrap.querySelectorAll('[data-openart]').forEach((el) => (el.onclick = () => openForm(el.dataset.openart)));
     renderProgrammazioneListe();
   }
 
   function renderProgrammazioneListe() {
     const wrap = $('pl-listwrap'); if (!wrap) return;
-    const prog = pianif.filter((a) => a.stato === 'programmato');
+    const late = pianif.filter(isLate);
+    const prog = pianif.filter((a) => a.stato === 'programmato' && !isLate(a));
     const pronti = pianif.filter((a) => a.stato === 'bozza' || a.stato === 'proposta');
+    const lateHtml = late.map((a) => `<div class="pl-row late">
+        <span class="pl-when">${a.scheduled_at ? fmtWhen(a.scheduled_at) : '—'}</span>
+        <span class="pl-tit">${escapeHtml(a.titolo || '(senza titolo)')}</span>
+        <button class="a-link pub" data-pubnow="${a.id}">Pubblica ora</button>
+        <button class="a-link" data-reprog="${a.id}">Riprogramma</button>
+        <button class="a-link del" data-del="${a.id}">Elimina</button>
+      </div>`).join('');
     const progHtml = prog.length ? prog.map((a) => `<div class="pl-row">
         <span class="pl-when">${a.scheduled_at ? fmtWhen(a.scheduled_at) : '—'}</span>
         <span class="pl-tit">${escapeHtml(a.titolo || '(senza titolo)')}</span>
@@ -411,12 +469,15 @@
         <span class="pl-tit">${escapeHtml(a.titolo || '(senza titolo)')}</span>
         <button class="a-link" data-prog="${a.id}">Programma…</button>
       </div>`).join('') : '<div class="pl-empty">Nessuna bozza pronta. Crea o completa un articolo per programmarlo.</div>';
-    wrap.innerHTML = `<div class="pl-h">Programmati</div><div class="pl-list">${progHtml}</div>
+    wrap.innerHTML =
+      (late.length ? `<div class="pl-h">🔴 Da recuperare — programmati mai pubblicati</div><div class="pl-list">${lateHtml}</div>` : '') +
+      `<div class="pl-h">Programmati</div><div class="pl-list">${progHtml}</div>
       <div class="pl-h">Pronti da programmare</div><div class="pl-list">${prontiHtml}</div>`;
     wrap.querySelectorAll('[data-prog]').forEach((b) => (b.onclick = () => { const a = pianif.find((x) => x.id === b.dataset.prog); openPrograma(a.id, a.titolo, null); }));
     wrap.querySelectorAll('[data-reprog]').forEach((b) => (b.onclick = () => { const a = pianif.find((x) => x.id === b.dataset.reprog); openPrograma(a.id, a.titolo, a.scheduled_at); }));
     wrap.querySelectorAll('[data-unprog]').forEach((b) => (b.onclick = () => annullaProgramma(b.dataset.unprog)));
     wrap.querySelectorAll('[data-pubnow]').forEach((b) => (b.onclick = () => pubblica(b.dataset.pubnow)));
+    wrap.querySelectorAll('[data-del]').forEach((b) => (b.onclick = () => elimina(b.dataset.del)));
   }
 
   // ---------- Programmazione (modale) ----------
@@ -583,11 +644,13 @@
       btnAgg.textContent = t; btnAgg.disabled = false;
     };
     $('f-salva').onclick = salvaBozza;
+    $('f-pubblica').onclick = pubblicaDaEditor;
+    $('f-programma').onclick = programmaDaEditor;
     $('et-add').onclick = addEtichetta;
     $('prog-salva').onclick = salvaProgramma;
     $('idea-salva').onclick = salvaIdea;
     $('f-corpo').addEventListener('input', () => { updateStats(); updatePreview(); });
-    ['f-titolo', 'f-lead', 'f-occhiello'].forEach((k) => $(k).addEventListener('input', updatePreview));
+    ['f-titolo', 'f-lead'].forEach((k) => $(k).addEventListener('input', updatePreview));
     $('f-tag-input').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') { e.preventDefault(); addTagByName($('f-tag-input').value); $('f-tag-input').value = ''; }
     });

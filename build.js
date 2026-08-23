@@ -177,7 +177,6 @@ ${nav('')}
 <main>
   <article class="article read">
     <a class="back" href="archivio.html">← Torna all'archivio</a>
-    ${a.occhiello ? `<span class="kicker">${a.occhiello}</span>` : ''}
     <div class="article-meta"><span class="lab" style="--c:${a.colore}">${a.categoria}</span><span>${a.numero ? num2(a.numero) + ' · ' : ''}${a.minuti} min di lettura · ${AUTHOR}</span></div>
     <h1>${a.titolo}</h1>
     <p class="lead">${a.lead}</p>
@@ -363,7 +362,7 @@ function sitemapXml(arts) {
 function coverSrc(a) { return a.copertina && /^https?:\/\//.test(a.copertina) ? a.copertina : IMG + a.copertina; }
 
 async function fetchArticoli() {
-  const select = 'titolo,slug,occhiello,lead,estratto,corpo,copertina,copertina_alt,minuti,numero_editoriale,published_at,categories(nome,slug,colore),article_tags(tags(name,slug))';
+  const select = 'titolo,slug,lead,estratto,corpo,copertina,copertina_alt,minuti,numero_editoriale,published_at,categories(nome,slug,colore),article_tags(tags(name,slug))';
   const url = `${SUPABASE_URL}/rest/v1/articles?select=${select}&order=published_at.desc`;
   const res = await fetch(url, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
   if (!res.ok) throw new Error('Supabase ' + res.status + ': ' + (await res.text()));
@@ -371,7 +370,6 @@ async function fetchArticoli() {
   return rows.map(r => ({
     titolo: r.titolo || '',
     slug: r.slug,
-    occhiello: r.occhiello || '',
     lead: r.lead || '',
     estratto: r.estratto || '',
     bodyHtml: mdToHtml(r.corpo || ''),
