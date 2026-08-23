@@ -36,6 +36,8 @@
   .a-head-actions{display:flex; gap:10px}
   .a-btn{font-family:var(--sans); font-weight:700; font-size:14px; color:#fff; background:var(--blue); border:none; border-radius:10px; padding:10px 16px; cursor:pointer}
   .a-btn.ghost{background:#fff; color:var(--blue); border:1px solid var(--line)}
+  .a-btn.pub{background:#0b9668}
+  .a-btn.pub:hover{background:#0a855c}
   .a-btn:disabled{opacity:.6; cursor:default}
   .a-empty{border:1px dashed #cdd7e4; border-radius:14px; padding:36px; text-align:center; font-family:var(--sans); color:var(--muted); background:#fbfcfe}
   .a-table{width:100%; border-collapse:collapse; font-family:var(--sans); font-size:14px}
@@ -61,7 +63,7 @@
   .a-dialog-h h2{font-size:20px; font-weight:700}
   .a-x{background:none; border:none; font-size:24px; line-height:1; color:var(--hint); cursor:pointer}
   .a-dialog-body{padding:18px 22px; max-height:70vh; overflow:auto}
-  .a-dialog-f{display:flex; justify-content:flex-end; gap:10px; padding:16px 22px; border-top:1px solid var(--line)}
+  .a-dialog-f{display:flex; flex-wrap:wrap; justify-content:flex-end; gap:10px; padding:16px 22px; border-top:1px solid var(--line)}
   .a-field{margin:12px 0}
   .a-field label{display:block; font-family:var(--sans); font-size:13px; font-weight:600; color:var(--muted); margin-bottom:6px}
   .a-field input, .a-field select, .a-field textarea{width:100%; font-family:var(--sans); font-size:15px; border:1px solid var(--line); border-radius:10px; padding:10px 12px; background:#fff}
@@ -125,23 +127,29 @@
   .cal-title{font-family:var(--sans);font-weight:700;font-size:16px;min-width:150px;text-align:center;text-transform:capitalize}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
   .cal-dow{font-family:var(--sans);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--hint);text-align:center;padding:2px 0}
-  .cal-cell{min-height:74px;border:1px solid var(--line);border-radius:9px;padding:5px 6px;background:#fff}
+  .cal-cell{height:74px;border:1px solid var(--line);border-radius:9px;padding:5px 6px;background:#fff;overflow:hidden}
   .cal-cell.empty{background:#fafbfd;border-color:#f0f3f7}
   .cal-cell.today{border-color:var(--blue);box-shadow:0 0 0 2px var(--tint)}
   .cal-cell .d{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--muted)}
-  .cal-item{display:block;font-family:var(--sans);font-size:11px;line-height:1.2;margin-top:4px;padding:3px 5px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .cal-item.prog{background:#fdf6e6;color:#9a6b12;border:1px solid #f0e2bf}
-  .cal-item.pub{background:#eafaf2;color:#0b7a54;border:1px solid #c9ecdd}
+  .cal-dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
+  .cal-dot{display:inline-flex;align-items:center;font-family:var(--sans);font-size:10px;font-weight:700;line-height:1;padding:2px 5px;border-radius:20px;cursor:pointer;border:1px solid transparent;white-space:nowrap}
+  .cal-dot.prog{background:#fdf6e6;color:#9a6b12;border-color:#f0e2bf}
+  .cal-dot.pub{background:#eafaf2;color:#0b7a54;border-color:#c9ecdd}
+  .cal-dot.late{background:#fdecec;color:#b02525;border-color:#f3c9c9}
+  .cal-dot:hover{box-shadow:0 1px 4px rgba(0,0,0,.14)}
   .cal-legend{display:flex;gap:18px;margin-top:12px;font-family:var(--sans);font-size:12px;color:var(--hint)}
   .cal-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
   .cal-legend i.prog{background:#e6b34d}
   .cal-legend i.pub{background:#2fae7a}
+  .cal-legend i.late{background:#d84a4a}
   .pl-h{font-family:var(--sans);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--hint);margin:20px 0 6px}
   .pl-list{display:flex;flex-direction:column;gap:8px}
   .pl-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-family:var(--sans);font-size:14px}
   .pl-when{font-weight:700;color:var(--blue-deep);white-space:nowrap}
   .pl-tit{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .pl-empty{font-family:var(--sans);font-size:13.5px;color:var(--hint);padding:6px 0}
+  .pl-row.late{border-color:#f3c9c9;background:#fdf0f0}
+  .pl-row.late .pl-when{color:#b02525}
   /* Lavagna idee */
   .idee-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
   .idea{background:#fffdf3;border:1px solid #f0e2bf;border-radius:12px;padding:14px 15px;box-shadow:0 2px 8px rgba(224,169,59,.08);display:flex;flex-direction:column;min-height:130px}
@@ -162,8 +170,8 @@
     .side .hello{display:none}
     .side button{white-space:nowrap}
     .a-row2{grid-template-columns:1fr}
-    .cal-cell{min-height:54px;padding:3px 4px}
-    .cal-item{font-size:10px;padding:2px 4px}
+    .cal-cell{height:60px;padding:3px 4px}
+    .cal-dot{font-size:9px;padding:2px 4px}
     .cal-title{min-width:110px;font-size:14px}
     .pl-row{flex-wrap:wrap;gap:6px 10px}
   }
@@ -312,7 +320,6 @@
         <div id="f-tags-selected" class="a-chips"></div>
         <input type="text" id="f-tag-input" placeholder="Scrivi un tag e premi Invio">
       </div>
-      <div class="a-field"><label>Occhiello (opzionale)</label><input type="text" id="f-occhiello" autocomplete="off"></div>
       <div class="a-field"><label>Frase di apertura (lead)</label><textarea id="f-lead" class="a-sm" rows="2" autocomplete="off"></textarea></div>
       <div class="a-field"><label>Estratto (per le anteprime)</label><textarea id="f-estratto" class="a-sm" rows="2" autocomplete="off"></textarea></div>
       <div class="a-field">
@@ -357,6 +364,8 @@
     <div class="a-dialog-f">
       <button class="a-btn ghost" data-close="modal-articolo">Annulla</button>
       <button class="a-btn" id="f-salva">Salva bozza</button>
+      <button class="a-btn ghost" id="f-programma">Programma…</button>
+      <button class="a-btn pub" id="f-pubblica">Pubblica ora</button>
     </div>
   </div>
 </div>
