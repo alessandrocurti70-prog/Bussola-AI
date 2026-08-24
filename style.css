@@ -326,12 +326,14 @@ tr:last-child td{border-bottom:none}
 .sub-p{font-family:var(--sans);font-size:15px;color:var(--muted);margin-top:8px;max-width:56ch}
 
 /* --- Chi sono --- */
-.chisono{padding:90px 0;background:#fff}
-.chisono-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:56px;align-items:center}
-.chisono-photo img{width:100%;height:auto;display:block;
-  -webkit-mask-image:radial-gradient(116% 122% at 50% 40%, #000 52%, transparent 94%);
-          mask-image:radial-gradient(116% 122% at 50% 40%, #000 52%, transparent 94%)}
-.chisono-body h2{font-family:var(--serif);font-weight:700;font-size:clamp(30px,4vw,50px);line-height:1.1;letter-spacing:-.02em;margin:12px 0 0;color:var(--ink)}
+.chisono{position:relative;min-height:100vh;min-height:100dvh;background:#fff;overflow:hidden}
+.chisono-grid{display:grid;grid-template-columns:42% 58%;align-items:stretch;min-height:100vh;min-height:100dvh}
+.chisono-photo{position:relative;overflow:hidden}
+.chisono-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+.chisono-photo::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg, rgba(255,255,255,0) 56%, #fff 100%), linear-gradient(180deg, rgba(255,255,255,.22), transparent 20%, transparent 82%, rgba(255,255,255,.22))}
+.chisono-body{display:flex;flex-direction:column;justify-content:center;padding:44px 5vw 44px 3.5vw;max-width:780px}
+.chisono-body h2{font-family:var(--serif);font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.1;letter-spacing:-.02em;margin:10px 0 0;color:var(--ink)}
 .chisono-body h2 .accent{background:linear-gradient(92deg,var(--blue) 0%,var(--blue-deep) 58%,var(--gold) 128%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--blue)}
 .btn-cta{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:700;font-size:15.5px;color:#fff;background:var(--blue);padding:14px 26px;border-radius:12px;text-decoration:none;margin-top:6px;box-shadow:0 10px 24px rgba(46,125,246,.28);transition:transform .15s,box-shadow .15s,background .15s}
@@ -340,10 +342,10 @@ tr:last-child td{border-bottom:none}
 .btn-cta:hover span{transform:translateY(3px)}
 .alt-curve{position:absolute;top:0;left:0;right:0;transform:translateY(-99%);line-height:0;z-index:3;pointer-events:none}
 .alt-curve svg{width:100%;height:64px;display:block}
-.lead-2{font-family:var(--serif);font-size:18px;color:var(--muted);line-height:1.55;margin:14px 0 0;max-width:52ch}
-.rotta{list-style:none;margin:30px 0 8px;padding:0;position:relative}
+.lead-2{font-family:var(--serif);font-size:17px;color:var(--muted);line-height:1.5;margin:12px 0 0;max-width:52ch}
+.rotta{list-style:none;margin:22px 0 6px;padding:0;position:relative}
 .rotta::before{content:"";position:absolute;left:50%;top:6px;bottom:10px;width:2px;transform:translateX(-50%);background:repeating-linear-gradient(#bcd4fb 0 6px, transparent 6px 12px)}
-.rotta li{position:relative;width:50%;box-sizing:border-box;padding:0 0 28px;min-height:60px}
+.rotta li{position:relative;width:50%;box-sizing:border-box;padding:0 0 20px;min-height:46px}
 .rotta li:nth-child(odd){margin-left:0;padding-right:40px;text-align:right}
 .rotta li:nth-child(even){margin-left:50%;padding-left:40px;text-align:left}
 .rotta li::after{content:"";position:absolute;top:3px;width:15px;height:15px;border-radius:50%;background:#fff;border:2px solid var(--blue);box-shadow:0 0 0 4px rgba(46,125,246,.12)}
@@ -355,7 +357,7 @@ tr:last-child td{border-bottom:none}
 .rotta li p{font-family:var(--sans);font-size:14.5px;color:var(--muted);line-height:1.5;margin:0}
 
 /* --- Ultimi articoli (sezione BLU, schede bianche) --- */
-.articoli{position:relative;padding:88px 0;color:#fff;background:linear-gradient(180deg,#0c2a5c 0%,#0a2148 100%)}
+.articoli{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:64px 0;color:#fff;background:linear-gradient(180deg,#0c2a5c 0%,#0a2148 100%)}
 .articoli .section-head{margin-bottom:30px}
 .articoli .eyebrow{color:#9fc0f7}
 .articoli .more{color:#9fc0f7}
@@ -366,7 +368,7 @@ tr:last-child td{border-bottom:none}
 .a-empty-note{font-family:var(--sans);color:var(--hint);font-size:15.5px;padding:20px 0}
 
 /* --- Formazioni (home) --- */
-.formazioni-home{position:relative;padding:88px 0;background:#fff}
+.formazioni-home{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:64px 0;background:#fff}
 .formazioni-home .section-head{margin-bottom:30px}
 .formazioni-home h2{font-family:var(--serif);font-size:clamp(26px,3vw,34px);letter-spacing:-.01em;margin-top:6px}
 .form-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:22px}
@@ -385,7 +387,7 @@ tr:last-child td{border-bottom:none}
 .form-main .link-arrow{color:#fff}
 
 /* --- Newsletter immersiva --- */
-.newsletter{position:relative;padding:100px 0;color:#fff;background:#08152e url(immagini/Elementi/bg-newsletter.jpg) center/cover no-repeat}
+.newsletter{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:80px 0;color:#fff;background:#08152e url(immagini/Elementi/bg-newsletter.jpg) center/cover no-repeat}
 .newsletter::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg, transparent 16%, rgba(5,12,26,.22) 48%, rgba(5,12,26,.62) 100%)}
 .newsletter-in{position:relative;z-index:2}
 .newsletter-copy{max-width:600px;margin-left:auto}
@@ -414,9 +416,12 @@ tr:last-child td{border-bottom:none}
 
 /* --- Responsive home --- */
 @media(max-width:860px){
-  .chisono{padding:64px 0}
-  .chisono-grid{grid-template-columns:1fr;gap:30px}
-  .chisono-photo{max-width:340px;margin:0 auto}
+  .chisono{min-height:0;padding:56px 0}
+  .chisono-grid{grid-template-columns:1fr;min-height:0}
+  .chisono-photo{height:auto;aspect-ratio:4/5;max-width:300px;margin:0 auto;border-radius:16px}
+  .chisono-photo img{object-position:center 15%}
+  .chisono-photo::after{background:linear-gradient(180deg,transparent 72%,#fff)}
+  .chisono-body{padding:22px 0;max-width:none}
   .rotta::before{left:6px;transform:none}
   .rotta li,.rotta li:nth-child(odd),.rotta li:nth-child(even){width:100%;margin-left:0;padding:0 0 22px 34px;text-align:left}
   .rotta li::after,.rotta li:nth-child(odd)::after,.rotta li:nth-child(even)::after{left:-1px;right:auto}

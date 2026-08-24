@@ -278,11 +278,11 @@ function homePage(arts) {
 <main>
   <!-- CHI SONO -->
   <section class="chisono" id="chi-sono">
-    <div class="wrap chisono-grid">
+    <div class="chisono-grid">
       <div class="chisono-photo"><img src="${IMG}Elementi/alessandro.jpg" alt="Alessandro Curti, fondatore di Bussola AI"></div>
       <div class="chisono-body">
         <span class="eyebrow">Chi sono</span>
-        <h2 class="chisono-title">Rendo l'intelligenza artificiale <span class="accent">più chiara, pratica e utile.</span></h2>
+        <h2 class="chisono-title">Rendo l'intelligenza artificiale<br><span class="accent">più chiara, pratica e utile.</span></h2>
         <p class="lead-2">Aiuto a comprendere e utilizzare l'intelligenza artificiale in modo concreto, pratico e sostenibile.</p>
         <ol class="rotta">
           <li><span class="rotta-year">2020</span><p>Ottengo il diploma in Amministrazione, Finanza e Marketing.</p></li>
