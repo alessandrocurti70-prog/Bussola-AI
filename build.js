@@ -110,6 +110,14 @@ function authorHtml() {
 // Numero editoriale a due cifre: 1 → #01
 function num2(n) { return '#' + String(n).padStart(2, '0'); }
 
+// Divisore curvo tra sezioni (onda). fill = colore della sezione; dir 'up' | 'down'.
+const curveTop = (fill, dir) => {
+  const p = dir === 'down'
+    ? 'M0,0 C430,64 1010,64 1440,0 L1440,80 L0,80 Z'
+    : 'M0,80 C430,16 1010,16 1440,80 L1440,80 L0,80 Z';
+  return `<div class="alt-curve"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="${p}" fill="${fill}"/></svg></div>`;
+};
+
 function nav(active) {
   const link = (href, label) => `<a href="${href}"${active === href ? ' class="active"' : ''}>${label}</a>`;
   return `<div class="snav-wrap">
@@ -274,7 +282,7 @@ function homePage(arts) {
       <div class="chisono-photo"><img src="${IMG}Elementi/alessandro.jpg" alt="Alessandro Curti, fondatore di Bussola AI"></div>
       <div class="chisono-body">
         <span class="eyebrow">Chi sono</span>
-        <h2>Rendo l'intelligenza artificiale più chiara, pratica e utile.</h2>
+        <h2 class="chisono-title">Rendo l'intelligenza artificiale <span class="accent">più chiara, pratica e utile.</span></h2>
         <p class="lead-2">Aiuto a comprendere e utilizzare l'intelligenza artificiale in modo concreto, pratico e sostenibile.</p>
         <ol class="rotta">
           <li><span class="rotta-year">2020</span><p>Ottengo il diploma in Amministrazione, Finanza e Marketing.</p></li>
@@ -282,13 +290,14 @@ function homePage(arts) {
           <li><span class="rotta-year">2025</span><p>Mi laureo al Master in Innovation Management alla SUPSI e inizio a lavorare come consulente aziendale e responsabile della digitalizzazione.</p></li>
           <li><span class="rotta-year">2026</span><p>Nasce Bussola AI di Alessandro Curti. Oggi sono docente di Economia Aziendale al CPC e guido il progetto come fondatore.</p></li>
         </ol>
-        <a class="link-arrow" href="#iscriviti">Non perdere la rotta della settimana ↓</a>
+        <a class="btn-cta" href="#iscriviti">Non perdere la rotta della settimana <span aria-hidden="true">↓</span></a>
       </div>
     </div>
   </section>
 
   <!-- ULTIMI ARTICOLI -->
   <section class="articoli">
+    ${curveTop('#0c2a5c', 'up')}
     <div class="wrap">
       <div class="section-head">
         <div>
@@ -307,6 +316,7 @@ ${latest}
 
   <!-- FORMAZIONI -->
   <section class="formazioni-home">
+    ${curveTop('#ffffff', 'down')}
     <div class="wrap">
       <div class="section-head">
         <div>
@@ -333,6 +343,7 @@ ${latest}
 
   <!-- NEWSLETTER -->
   <section class="newsletter" id="iscriviti">
+    ${curveTop('#0a1a33', 'up')}
     <div class="wrap newsletter-in">
       <div class="newsletter-copy">
         <span class="eyebrow gold">Newsletter settimanale</span>
