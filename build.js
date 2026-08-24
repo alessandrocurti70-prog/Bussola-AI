@@ -125,7 +125,6 @@ function nav(active) {
     <a class="hbrand" href="index.html"><img src="${LOGO}" alt=""><span>Bussola AI<small>di Alessandro Curti</small></span></a>
     <div class="hnav-links">
       ${link('index.html', 'Home')}
-      <a href="index.html#chi-sono">Chi sono</a>
       ${link('archivio.html', 'Archivio')}
       ${link('formazioni.html', 'Formazioni')}
     </div>
@@ -143,7 +142,6 @@ const FOOTER = `<footer class="footer">
     <nav class="footer-col" aria-label="Navigazione">
       <h4>Naviga</h4>
       <a href="index.html">Home</a>
-      <a href="index.html#chi-sono">Chi sono</a>
       <a href="archivio.html">Archivio</a>
       <a href="formazioni.html">Formazioni</a>
     </nav>
@@ -249,7 +247,6 @@ function homePage(arts) {
       <a class="hbrand" href="index.html"><img src="${LOGO}" alt=""><span>Bussola AI<small>di Alessandro Curti</small></span></a>
       <div class="hnav-links">
         <a href="index.html" class="active">Home</a>
-        <a href="#chi-sono">Chi sono</a>
         <a href="archivio.html">Archivio</a>
         <a href="formazioni.html">Formazioni</a>
       </div>
