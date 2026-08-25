@@ -157,6 +157,28 @@ const FOOTER = `<footer class="footer">
   </div>
 </footer>`;
 
+// Sezione Newsletter riutilizzabile (home, archivio, sotto gli articoli).
+// mode 'home' = slide a schermo intero con curva; 'bottom' = blocco compatto.
+function newsletterSection(mode) {
+  const curve = mode === 'home' ? curveTop('#ffffff', 'down') : '';
+  const cls = mode === 'home' ? 'newsletter nl-slide' : 'newsletter nl-compact';
+  const id = mode === 'home' ? ' id="iscriviti"' : '';
+  return `<section class="${cls}"${id}>
+  ${curve}
+  <div class="nl-fx" aria-hidden="true"></div>
+  <div class="wrap newsletter-in">
+    <span class="eyebrow gold">Newsletter settimanale</span>
+    <h2>Non perdere la rotta della settimana.</h2>
+    <p>Ogni settimana una dose di AI spiegata semplice, con qualcosa di concreto da portarti nel lavoro.</p>
+    <form class="nl-form" onsubmit="return false">
+      <input type="email" placeholder="La tua email" aria-label="La tua email">
+      <button type="submit">Iscriviti alla rotta →</button>
+    </form>
+    <p class="nl-privacy">Niente spam. Una email a settimana, disiscrizione con un clic.</p>
+  </div>
+</section>`;
+}
+
 function head(title, desc) {
   return `<!DOCTYPE html>
 <html lang="it">
@@ -211,16 +233,10 @@ ${nav('')}
       ${a.bodyHtml}
     </div>
     ${(a.tags && a.tags.length) ? `<div class="article-tags"><span class="tags-label">Tag:</span>${a.tags.map(t => `<span class="tg">${t.name}</span>`).join('')}</div>` : ''}
-    <div class="end-cta">
-      <h3>Non perdere la rotta della settimana</h3>
-      <p>Ogni settimana una dose di AI spiegata semplice, con una cosa concreta da fare subito.</p>
-      <form class="subscribe" onsubmit="return false">
-        <input type="email" placeholder="La tua email" aria-label="La tua email">
-        <button type="submit">Iscriviti</button>
-      </form>
-    </div>
   </article>
 </main>
+
+${newsletterSection('bottom')}
 
 <script>
   document.querySelectorAll('.ed-copy').forEach(btn => btn.addEventListener('click', () => {
@@ -288,13 +304,13 @@ ${latest}
 
   <!-- FORMAZIONI -->
   <section class="formazioni-home">
-    ${curveTop('#0c2a5c', 'up')}
+    ${curveTop('#0a1526', 'up')}
     <div class="wrap">
       <div class="section-head">
         <div>
           <span class="eyebrow">Formazioni</span>
           <h2>Non solo notizie: impara a usarla davvero.</h2>
-          <p class="sub-p">Webinar, corsi e percorsi per trasformare la conoscenza in applicazione concreta.</p>
+          <p class="sub-p">Dalla teoria alla pratica, un passo alla volta.</p>
         </div>
         <a class="more" href="formazioni.html">Scopri le formazioni →</a>
       </div>
@@ -331,21 +347,7 @@ ${latest}
   </section>
 
   <!-- NEWSLETTER -->
-  <section class="newsletter" id="iscriviti">
-    ${curveTop('#ffffff', 'down')}
-    <div class="wrap newsletter-in">
-      <div class="newsletter-copy">
-        <span class="eyebrow gold">Newsletter settimanale</span>
-        <h2>Non perdere la rotta della settimana.</h2>
-        <p>Ogni settimana una dose di AI spiegata in modo semplice, con qualcosa di concreto da portarti nel lavoro.</p>
-        <form class="nl-form" onsubmit="return false">
-          <input type="email" placeholder="La tua email" aria-label="La tua email">
-          <button type="submit">Iscriviti alla rotta →</button>
-        </form>
-        <p class="nl-privacy">Niente spam. Una email a settimana, disiscrizione con un clic.</p>
-      </div>
-    </div>
-  </section>
+  ${newsletterSection('home')}
 </main>
 
 ${FOOTER}
@@ -376,9 +378,9 @@ function archivioPage(arts) {
 <main>
   <section class="section" style="border-top:none;padding:46px 0">
     <div class="wrap">
-      <div class="filters">
+      <div class="searchbar">
         <input type="text" id="search" placeholder="Cerca un argomento…">
-        ${chips}
+        <button type="button" class="search-btn">Cerca</button>
       </div>
     </div>
   </section>
@@ -394,42 +396,23 @@ ${cards}
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="end-cta" style="margin:0">
-        <h3>Non perdere la rotta della settimana</h3>
-        <p>Ogni settimana una dose di AI spiegata semplice, con una cosa concreta da fare subito.</p>
-        <form class="subscribe" onsubmit="return false">
-          <input type="email" placeholder="La tua email" aria-label="La tua email">
-          <button type="submit">Iscriviti</button>
-        </form>
-      </div>
-    </div>
-  </section>
+${newsletterSection('bottom')}
 </main>
 
 ${FOOTER}
 
 <script>
   const cards=[...document.querySelectorAll('#archive .card')];
-  const chips=[...document.querySelectorAll('.chip')];
   const search=document.getElementById('search');
   const empty=document.getElementById('empty');
-  let filter='all';
   function apply(){
     const q=search.value.trim().toLowerCase();
     let shown=0;
     cards.forEach(c=>{
-      const okCat=filter==='all'||c.dataset.cat===filter;
-      const okQ=!q||c.dataset.title.includes(q);
-      const vis=okCat&&okQ; c.style.display=vis?'':'none'; if(vis)shown++;
+      const vis=!q||c.dataset.title.includes(q); c.style.display=vis?'':'none'; if(vis)shown++;
     });
     empty.style.display=shown?'none':'';
   }
-  chips.forEach(ch=>ch.addEventListener('click',()=>{
-    chips.forEach(x=>x.classList.remove('active')); ch.classList.add('active');
-    filter=ch.dataset.f; apply();
-  }));
   search.addEventListener('input',apply);
 </script>
 

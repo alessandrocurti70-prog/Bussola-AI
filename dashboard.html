@@ -7,7 +7,7 @@
 <title>Gestione — Bussola AI</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  .layout{max-width:1180px; margin:0 auto; padding:26px 24px; display:grid; grid-template-columns:232px 1fr; gap:30px}
+  .layout{max-width:1180px; margin:0 auto; padding:100px 24px 26px; display:grid; grid-template-columns:232px 1fr; gap:30px}
   .side .hello{font-family:var(--sans); font-size:13px; color:var(--hint); padding:4px 12px 14px}
   .side nav{display:flex; flex-direction:column; gap:4px}
   .side button{display:flex; align-items:center; gap:11px; width:100%; text-align:left; font-family:var(--sans); font-size:15px; color:var(--muted); background:none; border:none; padding:11px 13px; border-radius:10px; cursor:pointer; transition:background .15s ease, color .15s ease}
@@ -190,18 +190,15 @@
   });
 </script>
 
-<header class="nav">
-  <div class="wrap nav-in">
-    <a class="brand" href="index.html"><img class="rose" src="immagini/Elementi/logo-bussola.png" alt="Bussola AI"> Bussola AI</a>
-    <nav class="nav-links">
+<div class="snav-wrap">
+  <nav class="snav" aria-label="Admin">
+    <a class="hbrand" href="index.html"><img src="immagini/Elementi/logo-bussola.png" alt=""><span>Bussola AI<small>Admin Centre</small></span></a>
+    <div class="hnav-links">
       <a href="index.html" target="_blank" rel="noopener">Vedi il sito ↗</a>
-    </nav>
-    <a class="nav-lock" href="#" id="logout" title="Esci">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-      Esci
-    </a>
-  </div>
-</header>
+    </div>
+    <a class="hnav-cta" href="#" id="logout" title="Esci" style="background:transparent;border:1px solid rgba(159,192,247,.35)">Esci</a>
+  </nav>
+</div>
 
 <div class="layout">
 
