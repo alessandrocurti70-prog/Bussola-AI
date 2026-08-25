@@ -426,14 +426,14 @@ tr:last-child td{border-bottom:none}
 .bridge::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg, rgba(6,13,30,.95) 0%, rgba(6,13,30,.82) 34%, rgba(6,13,30,.4) 62%, rgba(6,13,30,.05) 100%)}
 .bridge-in{position:relative;z-index:2;max-width:660px}
 .bridge .eyebrow{margin-bottom:10px}
-.bridge-title{font-family:var(--serif);font-weight:700;color:#fff;font-size:clamp(28px,3.6vw,44px);line-height:1.14;letter-spacing:-.02em;margin:0}
-.bridge-sub{font-family:var(--sans);font-size:clamp(16px,1.7vw,19px);color:rgba(233,240,252,.85);line-height:1.55;margin:18px 0 0;max-width:520px}
+.bridge-title{font-family:var(--serif);font-weight:700;color:#fff;font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
+.bridge-sub{font-family:var(--sans);font-size:15px;color:rgba(233,240,252,.85);line-height:1.6;margin:12px 0 0;max-width:none}
 /* 4 punti N/E/S/O (bussola come architettura del progetto) */
-.rose-text{display:grid;grid-template-columns:1fr 1fr;gap:22px 30px;max-width:620px;margin:clamp(24px,3vw,34px) 0 clamp(26px,3vw,34px)}
+.rose-text{display:grid;grid-template-columns:1fr 1fr;gap:24px 30px;max-width:640px;margin:clamp(24px,3vw,34px) 0 clamp(26px,3vw,34px)}
 .rt{display:flex;gap:14px;align-items:flex-start}
-.rt-k{flex:none;width:26px;font-family:var(--serif);font-weight:700;font-size:30px;line-height:1;color:var(--gold);text-align:center}
-.rt-b h4{font-family:var(--serif);font-weight:700;font-size:17px;color:#fff;margin:0 0 3px;letter-spacing:-.01em}
-.rt-b p{font-family:var(--sans);font-size:13.5px;color:rgba(233,240,252,.82);line-height:1.5;margin:0}
+.rt-k{flex:none;width:26px;font-family:var(--serif);font-weight:600;font-size:30px;line-height:1;color:var(--gold);text-align:center}
+.rt-b h4{font-family:var(--serif);font-weight:700;font-size:22px;color:#fff;margin:0 0 4px;letter-spacing:-.01em}
+.rt-b p{font-family:var(--sans);font-size:15px;color:rgba(233,240,252,.82);line-height:1.55;margin:0}
 .bridge-cta{display:inline-flex;align-items:center;gap:14px;font-family:var(--sans);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#8fbcff}
 .bcta-t{padding-bottom:5px;border-bottom:1px solid rgba(143,188,255,.5)}
 .bridge-arrow{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid rgba(143,188,255,.6);font-size:17px;transition:transform .2s ease,background .2s ease}

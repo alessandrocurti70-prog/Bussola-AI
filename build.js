@@ -213,7 +213,7 @@ ${cards}
   <!-- PONTE VERSO LA FORMAZIONE (blu) -->
   <section class="bridge">
     <div class="wrap bridge-in">
-      <span class="eyebrow gold reveal">Il percorso</span>
+      <span class="eyebrow reveal">Il percorso</span>
       <h2 class="bridge-title reveal">Capire l'intelligenza artificiale è il primo passo. Imparare a usarla <span class="grad-d">fa la differenza.</span></h2>
       <p class="bridge-sub reveal">Percorsi pratici per trasformare conoscenze e strumenti in risultati concreti.</p>
       <div class="rose-text reveal">
