@@ -163,7 +163,7 @@ const FOOTER = `<footer class="footer">
 // Sezione Newsletter riutilizzabile (home, archivio, sotto gli articoli).
 // mode 'home' = slide a schermo intero con curva; 'bottom' = blocco compatto.
 function newsletterSection(mode, blue) {
-  const curve = mode === 'home' ? curveTop('#ffffff', 'up') : '';
+  const curve = '';
   const cls = (mode === 'home' ? 'newsletter nl-slide' : 'newsletter nl-compact') + (blue ? ' nl-blue' : '');
   const id = mode === 'home' ? ' id="iscriviti"' : '';
   return `<section class="${cls}"${id}>
@@ -184,7 +184,6 @@ function newsletterSection(mode, blue) {
 
 // Due sezioni tra Hero e "Ultime uscite": Value proposition (bianca) + Ponte formazione (blu).
 function bridgeSections() {
-  const STAR = '<svg class="orn-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l1.7 8.8L22.5 12l-8.8 1.7L12 22.5l-1.7-8.8L1.5 12l8.8-1.7z"/></svg>';
   const IC = {
     capire: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 5.5 13.6 12 12 18.5 10.4 12Z"/><path d="M5.5 12 12 10.4 18.5 12 12 13.6Z"/></svg>',
     scoprire: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4.2 14.6l10.5-3.8 3 1.1-1 3.6-10.5 3.8z"/><path d="M14.7 10.8l1-2.9 2.7 1-1 2.9"/><path d="M8.3 17.4 6.4 21M12.4 16 14 20"/></svg>',
@@ -192,12 +191,12 @@ function bridgeSections() {
     imparare: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 6.5C10 5.2 7.2 5.2 5 6.2v11c2.2-1 5-1 7 .3"/><path d="M12 6.5c2-1.3 4.8-1.3 7-.3v11c-2.2-1-5-1-7 .3"/><path d="M12 6.5v11.3"/></svg>'
   };
   const items = [
-    ['01', 'Capire', 'Novità e cambiamenti spiegati senza rumore.', IC.capire, ''],
-    ['02', 'Scoprire', "Strumenti, funzionalità e nuovi modi di utilizzare l'AI.", IC.scoprire, ' rev'],
-    ['03', 'Applicare', "Casi d'uso, metodi ed esempi utilizzabili nel lavoro reale.", IC.applicare, ''],
-    ['04', 'Imparare', 'Webinar, workshop e corsi per passare dalla conoscenza alla pratica.', IC.imparare, ' rev']
+    ['01', 'Capire', 'Novità e cambiamenti spiegati senza rumore.', IC.capire],
+    ['02', 'Scoprire', "Strumenti, funzionalità e nuovi modi di utilizzare l'AI.", IC.scoprire],
+    ['03', 'Applicare', "Casi d'uso, metodi ed esempi utilizzabili nel lavoro reale.", IC.applicare],
+    ['04', 'Imparare', 'Webinar, workshop e corsi per passare dalla conoscenza alla pratica.', IC.imparare]
   ];
-  const cards = items.map(([n, t, d, ic, rev], i) => `        <article class="coord-item${rev} reveal" style="transition-delay:${i * 90}ms">
+  const cards = items.map(([n, t, d, ic], i) => `        <article class="coord-item reveal" style="transition-delay:${i * 90}ms">
           <div class="coord-ic">${ic}</div>
           <div class="coord-body">
             <div class="coord-h"><span class="coord-n">${n}</span><span class="coord-t">— ${t}</span></div>
@@ -208,9 +207,9 @@ function bridgeSections() {
   return `  <!-- VALUE PROPOSITION (bianca) -->
   <section class="value">
     <div class="wrap value-in">
-      <div class="sec-ornament"><span class="orn-line"></span>${STAR}<span class="orn-line"></span></div>
-      <h2 class="value-title reveal">Una bussola nel mondo dell'AI</h2>
-      <p class="value-intro reveal">Il problema non è più trovare informazioni sull'intelligenza artificiale. È capire quali contano davvero e come trasformarle in qualcosa di utile.<br>Bussola AI nasce per questo: selezionare, spiegare e trasformare l'AI in conoscenza applicabile.</p>
+      <span class="eyebrow gold reveal">Il progetto</span>
+      <h2 class="value-title reveal">Una bussola nel <span class="tint-grad">mondo dell'AI</span></h2>
+      <p class="value-intro reveal">Il problema non è più trovare informazioni sull'intelligenza artificiale. È capire quali contano davvero e come trasformarle in qualcosa di utile. Bussola AI nasce per questo: selezionare, spiegare e trasformare l'AI in conoscenza applicabile.</p>
       <div class="coord">
 ${cards}
       </div>
@@ -219,14 +218,12 @@ ${cards}
 
   <!-- PONTE VERSO LA FORMAZIONE (blu) -->
   <section class="bridge">
-    ${curveTop('#0a1f44', 'down')}
     <div class="wrap bridge-in">
-      <div class="sec-ornament left">${STAR}<span class="orn-line"></span></div>
-      <h2 class="bridge-title reveal">Capire l'intelligenza artificiale è il primo passo. Imparare a usarla fa la differenza.</h2>
+      <span class="eyebrow gold reveal">Il percorso</span>
+      <h2 class="bridge-title reveal">Capire l'intelligenza artificiale è il primo passo. Imparare a usarla <span class="grad-d">fa la differenza.</span></h2>
       <p class="bridge-sub reveal">Percorsi pratici per trasformare conoscenze e strumenti in risultati concreti.</p>
       <a class="bridge-cta reveal" href="formazioni.html"><span class="bcta-t">Scopri le formazioni</span><span class="bridge-arrow" aria-hidden="true">→</span></a>
     </div>
-    ${curveBottom('#ffffff')}
   </section>
 
   <script>
@@ -369,7 +366,6 @@ ${latest}
 
   <!-- FORMAZIONI -->
   <section class="formazioni-home">
-    ${curveTop('#0a1526', 'down')}
     <div class="wrap">
       <div class="section-head">
         <div>

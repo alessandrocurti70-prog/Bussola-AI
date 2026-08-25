@@ -83,13 +83,12 @@
 
 ---
 
-## 4. Curve della home — regola alternanza
+## 4. Curve della home — regola (decisa da Ale)
 
-Ordine dei divisori curvi in home (devono **alternare** su/giù):
-1. hero → articoli: `.hhero-curve` (bianca, su)
-2. articoli → formazioni: `curveTop('#0a1526','down')` in `homePage`
-3. formazioni → newsletter: `curveTop('#ffffff','up')` in `newsletterSection('home')`
-4. newsletter → footer: `curveTop('#0a1426','down')` nel footer blu (`homePage`)
+**Solo la PRIMA e l'ULTIMA linea sono curve; tutte le altre sono dritte (bordo piatto tra i colori).**
+1. hero → contenuto: `.hhero-curve` (bianca) — **curva, non toccare**
+2. ultima, newsletter → footer: `curveTop('#0a1426','down')` nel footer blu (`homePage`) — **curva, non toccare**
+Tutti i divisori intermedi (value→bridge, bridge→articoli, articoli→formazioni, formazioni→newsletter) sono **dritti**. `curveBottom` e `.alt-curve-b` restano definiti ma inutilizzati.
 
 ---
 
