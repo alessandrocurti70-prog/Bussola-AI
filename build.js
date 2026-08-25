@@ -1,5 +1,6 @@
 /*
   Bussola AI — Generatore del sito
+  >>> MAPPA: vedi PROJECT_MAP.md §2 per l'elenco funzioni. Apri con Grep sul nome, non leggere tutto il file.
   --------------------------------------------------
   Legge i contenuti da /contenuti/articoli/*.md e genera:
     - index.html (home con le ultime uscite)

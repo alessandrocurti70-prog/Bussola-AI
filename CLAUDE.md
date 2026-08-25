@@ -3,6 +3,9 @@
 > File breve, prescrittivo e sempre aggiornato. Il documento completo è in `docs/`.
 > Prima di qualsiasi modifica architetturale, leggi `docs/Bussola_AI_Blueprint_Operativo_v2.1.docx` e `docs/architecture.md`.
 
+## ⚡ Come muoverti nel codice (per risparmiare token)
+**Leggi `PROJECT_MAP.md` PRIMA di aprire i file grandi.** È la mappa: dice a cosa serve ogni file e *dove* sta ogni funzione/sezione. Poi apri **solo** il pezzo che serve (Grep sull'ancora, o Read con offset/limit). **Non** rileggere per intero `build.js`, `style.css`, `dashboard.html`, `admin-articoli.js`: sono grandi e costano token. La mappa basta per orientarsi; il file vero si apre solo alla riga giusta.
+
 ## Cos'è il progetto
 Bussola AI è un blog + newsletter settimanale sull'intelligenza artificiale, spiegata semplice, per il mercato ticinese (Svizzera italiana). Angolo: **semplicità + formazione**. Volto del brand: **Alessandro** (avatar illustrato). Tre sezioni pubbliche — Home, Archivio, Formazioni — più un'area privata (Admin Centre).
 

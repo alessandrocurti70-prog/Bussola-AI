@@ -1,6 +1,8 @@
 /* ============================================================
    Bussola AI — Design System (foglio di stile condiviso)
    Colori, font e componenti riutilizzati da tutte le pagine.
+   >>> MAPPA: vedi PROJECT_MAP.md §3. Apri con Grep sul selettore, non leggere tutto il file.
+   >>> FILE A DUE STRATI: ~1-222 base; dalla ~223 "FASE GRAFICA" che sovrascrive (vince la regola piu in basso).
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
 
