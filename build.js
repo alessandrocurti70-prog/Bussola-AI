@@ -215,8 +215,8 @@ ${cards}
     <div class="wrap">
       <div class="bridge-in">
       <span class="eyebrow gold reveal">Il percorso</span>
-      <h2 class="bridge-title reveal">Quattro direzioni <span class="grad-d">da seguire</span></h2>
-      <p class="bridge-sub reveal">Quattro direzioni per orientarti nell'AI: capire cosa cambia, scoprire gli strumenti giusti, sperimentare sul campo e costruire un metodo.</p>
+      <h2 class="bridge-title reveal">Quattro direzioni per raggiungere <span class="grad-d">la vetta</span></h2>
+      <p class="bridge-sub reveal">Un percorso per orientarti nell'AI: capire cosa cambia, scoprire gli strumenti, sperimentare sul campo e costruire un metodo.</p>
       <div class="rose-text reveal">
         <div class="rt"><span class="rt-k">N</span><div class="rt-b"><h4>Novità</h4><p>Cosa sta cambiando nel mondo AI.</p></div></div>
         <div class="rt"><span class="rt-k">E</span><div class="rt-b"><h4>Esplora</h4><p>Strumenti e funzionalità da conoscere.</p></div></div>
