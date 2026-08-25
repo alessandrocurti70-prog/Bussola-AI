@@ -218,10 +218,10 @@ ${cards}
       <h2 class="bridge-title reveal">4 direzioni per raggiungere <span class="grad-d">la vetta</span></h2>
       <p class="bridge-sub reveal">Un percorso per orientarti nell'AI: capire cosa cambia, scoprire gli strumenti, sperimentare sul campo e costruire un metodo.</p>
       <div class="rose-text reveal">
-        <div class="rt"><span class="rt-k">N</span><div class="rt-b"><h4>Novità</h4><p>Cosa sta cambiando nel mondo AI.</p></div></div>
-        <div class="rt"><span class="rt-k">E</span><div class="rt-b"><h4>Esplora</h4><p>Strumenti e funzionalità da conoscere.</p></div></div>
-        <div class="rt"><span class="rt-k">S</span><div class="rt-b"><h4>Sperimenta</h4><p>Prompt, workflow e casi d'uso concreti.</p></div></div>
-        <div class="rt"><span class="rt-k">O</span><div class="rt-b"><h4>Orientati</h4><p>Metodo, riflessioni e buone pratiche.</p></div></div>
+        <div class="rt"><div class="rt-ic"><img src="${IMG}Elementi/dir-n.jpg" alt="" loading="lazy"></div><div class="rt-b"><h4>Novità</h4><p>Cosa sta cambiando nel mondo AI.</p></div></div>
+        <div class="rt"><div class="rt-ic"><img src="${IMG}Elementi/dir-e.jpg" alt="" loading="lazy"></div><div class="rt-b"><h4>Esplora</h4><p>Strumenti e funzionalità da conoscere.</p></div></div>
+        <div class="rt"><div class="rt-ic"><img src="${IMG}Elementi/dir-s.jpg" alt="" loading="lazy"></div><div class="rt-b"><h4>Sperimenta</h4><p>Prompt, workflow e casi d'uso concreti.</p></div></div>
+        <div class="rt"><div class="rt-ic"><img src="${IMG}Elementi/dir-o.jpg" alt="" loading="lazy"></div><div class="rt-b"><h4>Orientati</h4><p>Metodo, riflessioni e buone pratiche.</p></div></div>
       </div>
       </div>
     </div>
