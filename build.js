@@ -212,9 +212,10 @@ ${cards}
 
   <!-- PONTE VERSO LA FORMAZIONE (blu) -->
   <section class="bridge">
-    <div class="wrap bridge-in">
-      <span class="eyebrow reveal">Il percorso</span>
-      <h2 class="bridge-title reveal">Capire l'intelligenza artificiale è il primo passo. Imparare a usarla <span class="grad-d">fa la differenza.</span></h2>
+    <div class="wrap">
+      <div class="bridge-in">
+      <span class="eyebrow gold reveal">Il percorso</span>
+      <h2 class="bridge-title reveal">Quattro direzioni <span class="grad-d">da seguire</span></h2>
       <p class="bridge-sub reveal">Quattro direzioni per orientarti nell'AI: capire cosa cambia, scoprire gli strumenti giusti, sperimentare sul campo e costruire un metodo.</p>
       <div class="rose-text reveal">
         <div class="rt"><span class="rt-k">N</span><div class="rt-b"><h4>Novità</h4><p>Cosa sta cambiando nel mondo AI.</p></div></div>
@@ -223,6 +224,7 @@ ${cards}
         <div class="rt"><span class="rt-k">O</span><div class="rt-b"><h4>Orientati</h4><p>Metodo, riflessioni e buone pratiche.</p></div></div>
       </div>
       <a class="bridge-cta reveal" href="formazioni.html"><span class="bcta-t">Scopri le formazioni</span><span class="bridge-arrow" aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 

@@ -424,6 +424,7 @@ tr:last-child td{border-bottom:none}
 /* --- Sezione 2: Ponte verso la formazione (blu) --- */
 .bridge{position:relative;color:#fff;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:96px 0;background:#08152e url(immagini/Elementi/bg-ponte.jpg) center right/cover no-repeat}
 .bridge::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg, rgba(6,13,30,.95) 0%, rgba(6,13,30,.82) 34%, rgba(6,13,30,.4) 62%, rgba(6,13,30,.05) 100%)}
+.bridge .wrap{width:100%}
 .bridge-in{position:relative;z-index:2;max-width:660px}
 .bridge .eyebrow{margin-bottom:10px}
 .bridge-title{font-family:var(--serif);font-weight:700;color:#fff;font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
