@@ -160,7 +160,7 @@ const FOOTER = `<footer class="footer">
 // Sezione Newsletter riutilizzabile (home, archivio, sotto gli articoli).
 // mode 'home' = slide a schermo intero con curva; 'bottom' = blocco compatto.
 function newsletterSection(mode) {
-  const curve = mode === 'home' ? curveTop('#0a1a38', 'down') : '';
+  const curve = mode === 'home' ? curveTop('#ffffff', 'up') : '';
   const cls = mode === 'home' ? 'newsletter nl-slide' : 'newsletter nl-compact';
   const id = mode === 'home' ? ' id="iscriviti"' : '';
   return `<section class="${cls}"${id}>
@@ -290,7 +290,7 @@ ${nav('index.html')}
       <div class="section-head">
         <div>
           <span class="eyebrow">Ultime uscite</span>
-          <h2>Gli ultimi articoli per orientarti nell'AI.</h2>
+          <h2>Gli ultimi articoli per <span class="tint-grad">orientarti nell'AI.</span></h2>
         </div>
         <a class="more" href="archivio.html">Vedi tutto l'archivio →</a>
       </div>
@@ -304,7 +304,7 @@ ${latest}
 
   <!-- FORMAZIONI -->
   <section class="formazioni-home">
-    ${curveTop('#e9f1fd', 'down')}
+    ${curveTop('#0a1526', 'down')}
     <div class="wrap">
       <div class="section-head">
         <div>
