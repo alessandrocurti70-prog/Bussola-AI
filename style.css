@@ -427,7 +427,7 @@ tr:last-child td{border-bottom:none}
 .bridge .wrap{width:100%}
 .bridge-in{position:relative;z-index:2;max-width:660px}
 .bridge .eyebrow{margin-bottom:10px}
-.bridge-title{font-family:var(--serif);font-weight:700;color:#fff;font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
+.bridge-title{font-family:var(--serif);font-weight:700;color:#fff;font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0;white-space:nowrap}
 .bridge-sub{font-family:var(--sans);font-size:18px;color:rgba(233,240,252,.85);line-height:1.55;margin:12px 0 0;max-width:640px;text-wrap:balance}
 /* 4 punti N/E/S/O (bussola come architettura del progetto) */
 .rose-text{display:grid;grid-template-columns:1fr 1fr;gap:24px 30px;max-width:640px;margin:clamp(24px,3vw,34px) 0 clamp(26px,3vw,34px)}
@@ -568,7 +568,7 @@ tr:last-child td{border-bottom:none}
   .rotta li,.rotta li:nth-child(odd),.rotta li:nth-child(even){width:100%;margin-left:0;padding:0 0 22px 34px;text-align:left}
   .rotta li::after,.rotta li:nth-child(odd)::after,.rotta li:nth-child(even)::after{left:-1px;right:auto}
   .form-grid,.form3{grid-template-columns:1fr}
-  .articoli h2,.formazioni-home h2,.newsletter h2{white-space:normal}
+  .articoli h2,.formazioni-home h2,.newsletter h2,.bridge-title{white-space:normal}
   .nl-form{flex-direction:column}
   .nl-form button{width:100%}
   .footer .wrap.footer-grid{grid-template-columns:1fr;gap:26px}
