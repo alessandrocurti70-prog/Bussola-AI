@@ -350,7 +350,7 @@ ${latest}
   ${newsletterSection('home')}
 </main>
 
-${FOOTER}
+${FOOTER.replace('<footer class="footer">', `<footer class="footer footer-blue">${curveTop('#0a1426', 'down')}`)}
 </body>
 </html>`;
 }

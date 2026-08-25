@@ -366,7 +366,7 @@ tr:last-child td{border-bottom:none}
 /* --- Ultimi articoli (sezione BIANCA) --- */
 .articoli{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:64px 0;background:#fff}
 .articoli .section-head{margin-bottom:30px}
-.articoli h2{font-family:var(--serif);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin-top:6px}
+.articoli h2{font-family:var(--serif);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin-top:6px;white-space:nowrap}
 .articoli .card{border:1.5px solid var(--blue)}
 .articoli .card:hover{box-shadow:0 12px 28px rgba(46,125,246,.18)}
 .card .card-cover img{transition:transform .35s ease}
@@ -456,6 +456,16 @@ tr:last-child td{border-bottom:none}
 .footer-col a:hover{color:var(--blue)}
 .footer-col span{color:var(--hint)}
 .footer .wrap.footer-legal{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding-top:20px;color:var(--hint)}
+/* Footer blu (solo home) con curva alternata in cima */
+.footer-blue{position:relative;background:#0a1426;color:rgba(255,255,255,.7);border-top:none}
+.footer-blue .footer-brand .hbrand{color:#fff}
+.footer-blue .footer-brand p{color:rgba(255,255,255,.55)}
+.footer-blue .wrap.footer-grid{border-bottom:1px solid rgba(255,255,255,.1)}
+.footer-blue .footer-col h4{color:rgba(255,255,255,.5)}
+.footer-blue .footer-col a{color:rgba(255,255,255,.78)}
+.footer-blue .footer-col a:hover{color:#8fbcff}
+.footer-blue .footer-col span{color:rgba(255,255,255,.5)}
+.footer-blue .wrap.footer-legal{color:rgba(255,255,255,.45)}
 
 /* --- Responsive home --- */
 @media(max-width:860px){
@@ -469,7 +479,7 @@ tr:last-child td{border-bottom:none}
   .rotta li,.rotta li:nth-child(odd),.rotta li:nth-child(even){width:100%;margin-left:0;padding:0 0 22px 34px;text-align:left}
   .rotta li::after,.rotta li:nth-child(odd)::after,.rotta li:nth-child(even)::after{left:-1px;right:auto}
   .form-grid,.form3{grid-template-columns:1fr}
-  .formazioni-home h2,.newsletter h2{white-space:normal}
+  .articoli h2,.formazioni-home h2,.newsletter h2{white-space:normal}
   .nl-form{flex-direction:column}
   .nl-form button{width:100%}
   .footer .wrap.footer-grid{grid-template-columns:1fr;gap:26px}
