@@ -430,6 +430,12 @@ tr:last-child td{border-bottom:none}
 .nl-form button{height:54px;padding:0 24px;border:none;border-radius:12px;background:var(--blue);color:#fff;font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap}
 .nl-form button:hover{background:#1f66d6}
 .newsletter-in p.nl-privacy{font-family:var(--sans);font-size:13px;color:var(--hint);margin:14px auto 0;max-width:none}
+/* Newsletter variante blu full-bleed (fondo archivio) */
+.newsletter.nl-blue{background:#08152e url(immagini/Elementi/bg-newsletter.jpg) center/cover no-repeat;color:#fff;border-top:none;padding:120px 0}
+.newsletter.nl-blue::before{background:linear-gradient(180deg, rgba(6,14,32,.6) 0%, rgba(6,14,32,.4) 50%, rgba(6,14,32,.64) 100%)}
+.newsletter.nl-blue h2{color:#fff}
+.newsletter.nl-blue .newsletter-in > p{color:rgba(233,240,252,.9)}
+.newsletter.nl-blue .newsletter-in p.nl-privacy{color:rgba(233,240,252,.62)}
 /* Animazioni sfondi (stelle + bagliori) */
 @keyframes twinkle{0%,100%{opacity:.5}50%{opacity:1}}
 @keyframes starDrift{from{transform:translateY(0)}to{transform:translateY(-22px)}}
