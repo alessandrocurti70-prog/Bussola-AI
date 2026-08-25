@@ -240,24 +240,19 @@ function homePage(arts) {
     || '<p class="a-empty-note">I primi articoli stanno arrivando. Torna presto per la tua rotta settimanale.</p>';
   return `${head("Bussola AI — La tua direzione nell'intelligenza artificiale", "La tua dose settimanale di AI, spiegata semplice, per capire e usare l'intelligenza artificiale nel tuo lavoro.")}
 
+${nav('index.html')}
+
 <section class="hhero">
   <div class="hhero-stars" aria-hidden="true"></div>
-  <div class="hhero-nav">
-    <nav class="hnav" aria-label="Principale">
-      <a class="hbrand" href="index.html"><img src="${LOGO}" alt=""><span>Bussola AI<small>di Alessandro Curti</small></span></a>
-      <div class="hnav-links">
-        <a href="index.html" class="active">Home</a>
-        <a href="archivio.html">Archivio</a>
-        <a href="formazioni.html">Formazioni</a>
-      </div>
-      <a class="hnav-cta" href="#iscriviti">Iscriviti</a>
-    </nav>
-  </div>
 
   <div class="hhero-in">
     <div class="hhero-copy">
       <h1>Diffondo conoscenza AI,<br>in modo <span class="hadj">pratico, chiaro e utile.</span></h1>
       <p class="hlead">Ogni settimana ti do la rotta nell'intelligenza artificiale: articoli chiari, esempi pratici e formazione per capirla e usarla davvero, senza tecnicismi.</p>
+      <div class="hero-cta">
+        <a class="btn-cta" href="#iscriviti">Iscriviti alla newsletter</a>
+        <a class="btn-ghost" href="archivio.html">Scopri gli articoli</a>
+      </div>
     </div>
     <div class="hhero-visual">
       <div class="hcompass">
@@ -273,28 +268,8 @@ function homePage(arts) {
 </section>
 
 <main>
-  <!-- CHI SONO -->
-  <section class="chisono" id="chi-sono">
-    <div class="chisono-grid">
-      <div class="chisono-photo"><img src="${IMG}Elementi/alessandro.jpg" alt="Alessandro Curti, fondatore di Bussola AI"></div>
-      <div class="chisono-body">
-        <span class="eyebrow">Chi sono</span>
-        <h2 class="chisono-title">Rendo l'intelligenza artificiale<br><span class="accent">più chiara, pratica e utile.</span></h2>
-        <p class="lead-2">Aiuto a comprendere e utilizzare l'intelligenza artificiale in modo concreto, pratico e sostenibile.</p>
-        <ol class="rotta">
-          <li><span class="rotta-year">2020</span><p>Ottengo il diploma in Amministrazione, Finanza e Marketing.</p></li>
-          <li><span class="rotta-year">2023</span><p>Mi laureo in Economia aziendale alla SUPSI e inizio il mio percorso come assistente universitario SUPSI.</p></li>
-          <li><span class="rotta-year">2025</span><p>Mi laureo al Master in Innovation Management alla SUPSI e inizio a lavorare come consulente aziendale e responsabile della digitalizzazione.</p></li>
-          <li><span class="rotta-year">2026</span><p>Nasce Bussola AI di Alessandro Curti. Oggi sono docente di Economia Aziendale al CPC e guido il progetto come fondatore.</p></li>
-        </ol>
-        <a class="btn-cta" href="#iscriviti">Non perdere la rotta della settimana <span aria-hidden="true">↓</span></a>
-      </div>
-    </div>
-  </section>
-
   <!-- ULTIMI ARTICOLI -->
   <section class="articoli">
-    ${curveTop('#0c2a5c', 'up')}
     <div class="wrap">
       <div class="section-head">
         <div>
@@ -313,7 +288,7 @@ ${latest}
 
   <!-- FORMAZIONI -->
   <section class="formazioni-home">
-    ${curveTop('#ffffff', 'down')}
+    ${curveTop('#0c2a5c', 'up')}
     <div class="wrap">
       <div class="section-head">
         <div>
@@ -323,24 +298,41 @@ ${latest}
         </div>
         <a class="more" href="formazioni.html">Scopri le formazioni →</a>
       </div>
-      <div class="form-grid">
-        <a class="form-main" href="formazioni.html">
-          <span class="fbadge">Webinar · Gratis</span>
-          <h3>I primi passi con l'AI</h3>
-          <p>Un'ora dal vivo per capire cos'è l'AI e iniziare a usarla, senza tecnicismi. Ideale se parti da zero.</p>
-          <span class="link-arrow">Scopri il webinar →</span>
-        </a>
-        <div class="form-side">
-          <a class="form-mini" href="formazioni.html"><span class="fbadge">Corso</span><h4>Automatizza il tuo lavoro con l'AI</h4><p>4 moduli pratici per le tue prime automazioni.</p></a>
-          <a class="form-mini" href="formazioni.html"><span class="fbadge">Su misura</span><h4>Formazione per aziende e team</h4><p>Sessioni dedicate, in Ticino o online.</p></a>
-        </div>
+      <div class="form3">
+        <article class="course">
+          <a href="formazioni.html"><div class="course-cover"><img src="${IMG}Riferimenti/01_ritratto-faro.png" alt=""></div></a>
+          <div class="course-body">
+            <span class="badge free">Webinar · Gratis</span>
+            <h3>I primi passi con l'AI</h3>
+            <p>Un'ora dal vivo per capire cos'è l'AI e iniziare a usarla, senza tecnicismi.</p>
+            <div class="course-foot"><span class="price">Gratuito</span><a class="btn" href="formazioni.html">Iscriviti</a></div>
+          </div>
+        </article>
+        <article class="course">
+          <a href="formazioni.html"><div class="course-cover"><img src="${IMG}Riferimenti/06_tavolo-notte.png" alt=""></div></a>
+          <div class="course-body">
+            <span class="badge paid">Workshop · A pagamento</span>
+            <h3>Workshop pratico: l'AI nel tuo lavoro</h3>
+            <p>Mezza giornata hands-on per costruire i tuoi primi flussi con l'AI.</p>
+            <div class="course-foot"><span class="price">CHF 149</span><a class="btn" href="formazioni.html">Scopri</a></div>
+          </div>
+        </article>
+        <article class="course">
+          <a href="formazioni.html"><div class="course-cover"><img src="${IMG}Riferimenti/05_plancia-globo.png" alt=""></div></a>
+          <div class="course-body">
+            <span class="badge paid">Corso · A pagamento</span>
+            <h3>Corso online: Automatizza con l'AI</h3>
+            <p>4 moduli per passare da "confuso" a "capace", al tuo ritmo.</p>
+            <div class="course-foot"><span class="price">CHF 249</span><a class="btn" href="formazioni.html">Scopri</a></div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- NEWSLETTER -->
   <section class="newsletter" id="iscriviti">
-    ${curveTop('#0a1a33', 'up')}
+    ${curveTop('#ffffff', 'down')}
     <div class="wrap newsletter-in">
       <div class="newsletter-copy">
         <span class="eyebrow gold">Newsletter settimanale</span>
