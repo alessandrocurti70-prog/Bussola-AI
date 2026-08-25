@@ -223,7 +223,6 @@ ${cards}
         <div class="rt"><span class="rt-k">S</span><div class="rt-b"><h4>Sperimenta</h4><p>Prompt, workflow e casi d'uso concreti.</p></div></div>
         <div class="rt"><span class="rt-k">O</span><div class="rt-b"><h4>Orientati</h4><p>Metodo, riflessioni e buone pratiche.</p></div></div>
       </div>
-      <a class="bridge-cta reveal" href="formazioni.html"><span class="bcta-t">Scopri le formazioni</span><span class="bridge-arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>

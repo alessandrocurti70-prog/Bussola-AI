@@ -404,7 +404,7 @@ tr:last-child td{border-bottom:none}
     radial-gradient(26% 40% at 30% 62%, rgba(46,125,246,.05), transparent 62%),
     radial-gradient(24% 38% at 68% 40%, rgba(224,169,59,.06), transparent 62%);
   animation:valueDrift 22s ease-in-out infinite alternate}
-.value-in{position:relative;z-index:1}
+.value-in{position:relative;z-index:1;width:100%}
 .value .eyebrow{margin-bottom:8px}
 .value-title{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
 .value-intro{font-family:var(--sans);font-size:15px;color:var(--muted);line-height:1.6;max-width:none;margin:12px 0 0}
