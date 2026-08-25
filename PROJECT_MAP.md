@@ -38,7 +38,8 @@
 
 **Costanti / config:** `SITE` · `LOGO` · `IMG` · `AUTHOR` · `AUTHOR_LINKEDIN` (in `authorHtml`)
 **Componenti condivisi (HTML riusato in più pagine):**
-- `curveTop(fill, dir)` — divisori curvi SVG (`dir` `'up'`/`'down'`). Le curve della home vanno **alternate**.
+- `curveTop(fill, dir)` — divisori curvi SVG (`dir` `'up'`/`'down'`). Le curve della home vanno **alternate**. `curveBottom(fill)` = curva sul bordo inferiore di una sezione.
+- `bridgeSections()` — le due sezioni home tra Hero e Ultime uscite: `.value` (bianca, "Una bussola nel mondo dell'AI" + 4 blocchi coordinate 01-04) e `.bridge` (blu, "Capire… Imparare a usarla fa la differenza" + CTA formazioni). Contiene anche lo script `reveal` (IntersectionObserver).
 - `nav(active)` — navbar flottante (pillola `.snav`). Link Home/Archivio/Formazioni + CTA Iscriviti.
 - `FOOTER` — footer completo (grid). In home diventa **blu** via `.replace(... 'footer footer-blue' + curveTop)`.
 - `newsletterSection(mode, blue)` — sezione newsletter riusabile. `mode`: `'home'` (slide + curva) / `'bottom'` (compatta). `blue=true` → variante blu full-bleed (usata in **fondo archivio**).
@@ -68,6 +69,7 @@
 **Hero:** `.hhero{` · `.hhero h1{` (titolo) · `.hhero h1 .hadj` (parole colorate) · `.hhero-curve` · `.hhero-stars` · `.hcompass`
 **Titoli con parole colorate oro/blu:** `.tint-grad`
 **Header blu Archivio/Formazioni:** `.page-head`
+**Sezioni ponte home (Value bianca + Formazione blu):** `.value` · `.coord` (griglia 2×2 con mirino a coordinate) · `.coord-item`/`.coord-ic`/`.coord-n` · `.bridge` · `.bridge-cta` · `.sec-ornament` · `.alt-curve-b` · animazioni `.reveal`/`.reveal-on`. Sfondi: `bg-value.jpg` (bianca) · `bg-ponte.jpg` (blu montagna/rotta).
 **Ultime uscite (home, bianca):** `.articoli{` · `.articoli .card` (bordino blu) · `.articoli h2`
 **Formazioni home (blu, stelle animate):** `.formazioni-home` · `.formazioni-home::after` (stelle) · `.form3 .course`
 **Newsletter (riusabile):** `.newsletter{` · `.nl-slide` · `.nl-compact` · `.nl-blue` (variante blu archivio) · `.nl-fx` · `.nl-form`
