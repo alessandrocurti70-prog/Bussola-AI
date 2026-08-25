@@ -209,7 +209,7 @@ function bridgeSections() {
     <div class="wrap value-in">
       <span class="eyebrow gold reveal">Il progetto</span>
       <h2 class="value-title reveal">Una bussola nel <span class="tint-grad">mondo dell'AI</span></h2>
-      <p class="value-intro reveal">Il problema non è più trovare informazioni sull'intelligenza artificiale. È capire quali contano davvero e come trasformarle in qualcosa di utile. Bussola AI nasce per questo: selezionare, spiegare e trasformare l'AI in conoscenza applicabile.</p>
+      <p class="value-intro reveal">Oggi il problema non è più trovare informazioni sull'intelligenza artificiale: è capire quali contano davvero e come usarle. Bussola AI nasce per questo: selezionare, spiegare e rendere l'AI conoscenza che puoi applicare subito.</p>
       <div class="coord">
 ${cards}
       </div>
