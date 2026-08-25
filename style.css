@@ -375,6 +375,57 @@ tr:last-child td{border-bottom:none}
 .card:hover .card-cover img{transform:scale(1.05)}
 .a-empty-note{font-family:var(--sans);color:var(--hint);font-size:15.5px;padding:20px 0}
 
+/* ============================================================
+   SEZIONI PONTE (tra Hero e Ultime uscite)
+   1) Value proposition (bianca)  2) Ponte formazione (blu)
+   ============================================================ */
+/* Ornamento oro con stella (condiviso) */
+.sec-ornament{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px}
+.sec-ornament .orn-line{width:64px;height:1px;background:linear-gradient(90deg,transparent,rgba(224,169,59,.9))}
+.sec-ornament .orn-line:last-child{background:linear-gradient(90deg,rgba(224,169,59,.9),transparent)}
+.sec-ornament .orn-star{width:22px;height:22px;fill:var(--gold);flex:none}
+.sec-ornament.left{justify-content:flex-start;gap:14px;margin-bottom:22px}
+
+/* --- Sezione 1: Value proposition (bianca) --- */
+.value{position:relative;background:#f7f9fd url(immagini/Elementi/bg-value.jpg) left top/cover no-repeat;padding:clamp(72px,9vw,116px) 0}
+.value-in{position:relative;z-index:1;max-width:1000px;margin:0 auto;text-align:center}
+.value-title{font-family:var(--serif);font-weight:700;color:var(--blue-deep);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
+.value-intro{font-family:var(--serif);font-size:clamp(16px,1.6vw,19px);color:var(--muted);line-height:1.6;max-width:680px;margin:16px auto 0}
+/* griglia 2x2 con mirino a coordinate */
+.coord{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:40px 72px;max-width:920px;margin:clamp(40px,5vw,62px) auto 0}
+.coord::before{content:"";position:absolute;top:5%;bottom:5%;left:50%;border-left:1px dotted rgba(224,169,59,.55)}
+.coord::after{content:"";position:absolute;left:3%;right:3%;top:50%;border-top:1px dotted rgba(224,169,59,.55)}
+.coord-item{position:relative;z-index:1;display:flex;align-items:flex-start;gap:18px;text-align:left;transition:transform .2s ease}
+.coord-item.rev{flex-direction:row-reverse}
+.coord-ic{flex:none;width:64px;height:64px;border-radius:50%;border:1.5px dashed rgba(224,169,59,.8);display:grid;place-items:center;background:rgba(255,255,255,.55);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.coord-ic svg{width:28px;height:28px;stroke:var(--gold);stroke-width:1.6}
+.coord-body{flex:1;min-width:0}
+.coord-h{display:flex;align-items:baseline;gap:9px;padding-bottom:9px;margin-bottom:10px;border-bottom:1px solid rgba(224,169,59,.45)}
+.coord-n{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--gold);line-height:1}
+.coord-t{font-family:var(--serif);font-weight:700;font-size:22px;color:var(--blue-deep);letter-spacing:-.01em}
+.coord-item p{font-family:var(--sans);font-size:15px;color:var(--muted);line-height:1.55;margin:0}
+.coord-item:hover{transform:translateY(-4px)}
+.coord-item:hover .coord-ic{border-color:var(--gold);box-shadow:0 8px 22px rgba(224,169,59,.28);transform:scale(1.04)}
+
+/* --- Sezione 2: Ponte verso la formazione (blu) --- */
+.bridge{position:relative;color:#fff;padding:clamp(96px,12vw,150px) 0;background:#08152e url(immagini/Elementi/bg-ponte.jpg) center right/cover no-repeat}
+.bridge::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg, rgba(6,13,30,.95) 0%, rgba(6,13,30,.82) 34%, rgba(6,13,30,.4) 62%, rgba(6,13,30,.05) 100%)}
+.bridge-in{position:relative;z-index:2;max-width:660px}
+.bridge-title{font-family:var(--serif);font-weight:700;color:#fff;font-size:clamp(28px,3.6vw,44px);line-height:1.14;letter-spacing:-.02em;margin:0}
+.bridge-sub{font-family:var(--sans);font-size:clamp(16px,1.7vw,19px);color:rgba(233,240,252,.85);line-height:1.55;margin:18px 0 26px;max-width:520px}
+.bridge-cta{display:inline-flex;align-items:center;gap:14px;font-family:var(--sans);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#8fbcff}
+.bcta-t{padding-bottom:5px;border-bottom:1px solid rgba(143,188,255,.5)}
+.bridge-arrow{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid rgba(143,188,255,.6);font-size:17px;transition:transform .2s ease,background .2s ease}
+.bridge-cta:hover .bridge-arrow{transform:translateX(4px);background:rgba(46,125,246,.24)}
+.alt-curve-b{position:absolute;left:0;right:0;bottom:-1px;line-height:0;z-index:3;pointer-events:none}
+.alt-curve-b svg{width:100%;height:60px;display:block}
+
+/* animazioni in ingresso (attive solo con JS: senza JS il contenuto resta visibile) */
+.reveal{transition:opacity .6s ease, transform .6s ease}
+.reveal-on .reveal{opacity:0;transform:translateY(18px)}
+.reveal-on .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal-on .reveal{opacity:1;transform:none}}
+
 /* --- Formazioni (home) --- */
 .formazioni-home{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:64px 0;color:#fff;overflow:hidden;background:#08152e url(immagini/Elementi/bg-newsletter.jpg) center/cover no-repeat}
 .formazioni-home::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg, rgba(6,14,30,.52) 0%, rgba(6,14,30,.34) 50%, rgba(6,14,30,.56) 100%)}
@@ -477,6 +528,12 @@ tr:last-child td{border-bottom:none}
 
 /* --- Responsive home --- */
 @media(max-width:860px){
+  .coord{grid-template-columns:1fr;gap:24px;max-width:460px}
+  .coord::before,.coord::after{display:none}
+  .coord-item.rev{flex-direction:row}
+  .bridge::before{background:linear-gradient(180deg, rgba(6,13,30,.62) 0%, rgba(6,13,30,.86) 78%)}
+  .bridge-in{max-width:none}
+  .sec-ornament .orn-line{width:44px}
   .chisono{min-height:0;padding:56px 0}
   .chisono-grid{grid-template-columns:1fr;min-height:0}
   .chisono-photo{height:auto;aspect-ratio:4/5;max-width:300px;margin:0 auto;border-radius:16px}

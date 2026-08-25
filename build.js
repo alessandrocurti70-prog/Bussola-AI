@@ -118,6 +118,8 @@ const curveTop = (fill, dir) => {
     : 'M0,80 C430,16 1010,16 1440,80 L1440,80 L0,80 Z';
   return `<div class="alt-curve"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="${p}" fill="${fill}"/></svg></div>`;
 };
+// Curva sul BORDO INFERIORE di una sezione (la sezione successiva "risale" con l'onda).
+const curveBottom = (fill) => `<div class="alt-curve-b"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,20 C430,72 1010,72 1440,20 L1440,80 L0,80 Z" fill="${fill}"/></svg></div>`;
 
 function nav(active) {
   const link = (href, label) => `<a href="${href}"${active === href ? ' class="active"' : ''}>${label}</a>`;
@@ -178,6 +180,66 @@ function newsletterSection(mode, blue) {
     <p class="nl-privacy">Niente spam. Una email a settimana, disiscrizione con un clic.</p>
   </div>
 </section>`;
+}
+
+// Due sezioni tra Hero e "Ultime uscite": Value proposition (bianca) + Ponte formazione (blu).
+function bridgeSections() {
+  const STAR = '<svg class="orn-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l1.7 8.8L22.5 12l-8.8 1.7L12 22.5l-1.7-8.8L1.5 12l8.8-1.7z"/></svg>';
+  const IC = {
+    capire: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 5.5 13.6 12 12 18.5 10.4 12Z"/><path d="M5.5 12 12 10.4 18.5 12 12 13.6Z"/></svg>',
+    scoprire: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4.2 14.6l10.5-3.8 3 1.1-1 3.6-10.5 3.8z"/><path d="M14.7 10.8l1-2.9 2.7 1-1 2.9"/><path d="M8.3 17.4 6.4 21M12.4 16 14 20"/></svg>',
+    applicare: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="5.5" cy="18.5" r="1.4"/><path d="M6.7 18.3c3.4-.3 3-4.7 6-5.6" stroke-dasharray="2.4 2.4"/><path d="M16.5 5.2c1.9 0 3.4 1.5 3.4 3.4 0 2.4-3.4 5.6-3.4 5.6s-3.4-3.2-3.4-5.6c0-1.9 1.5-3.4 3.4-3.4z"/><circle cx="16.5" cy="8.6" r="1.1"/></svg>',
+    imparare: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 6.5C10 5.2 7.2 5.2 5 6.2v11c2.2-1 5-1 7 .3"/><path d="M12 6.5c2-1.3 4.8-1.3 7-.3v11c-2.2-1-5-1-7 .3"/><path d="M12 6.5v11.3"/></svg>'
+  };
+  const items = [
+    ['01', 'Capire', 'Novità e cambiamenti spiegati senza rumore.', IC.capire, ''],
+    ['02', 'Scoprire', "Strumenti, funzionalità e nuovi modi di utilizzare l'AI.", IC.scoprire, ' rev'],
+    ['03', 'Applicare', "Casi d'uso, metodi ed esempi utilizzabili nel lavoro reale.", IC.applicare, ''],
+    ['04', 'Imparare', 'Webinar, workshop e corsi per passare dalla conoscenza alla pratica.', IC.imparare, ' rev']
+  ];
+  const cards = items.map(([n, t, d, ic, rev], i) => `        <article class="coord-item${rev} reveal" style="transition-delay:${i * 90}ms">
+          <div class="coord-ic">${ic}</div>
+          <div class="coord-body">
+            <div class="coord-h"><span class="coord-n">${n}</span><span class="coord-t">— ${t}</span></div>
+            <p>${d}</p>
+          </div>
+        </article>`).join('\n');
+
+  return `  <!-- VALUE PROPOSITION (bianca) -->
+  <section class="value">
+    <div class="wrap value-in">
+      <div class="sec-ornament"><span class="orn-line"></span>${STAR}<span class="orn-line"></span></div>
+      <h2 class="value-title reveal">Una bussola nel mondo dell'AI</h2>
+      <p class="value-intro reveal">Il problema non è più trovare informazioni sull'intelligenza artificiale. È capire quali contano davvero e come trasformarle in qualcosa di utile.<br>Bussola AI nasce per questo: selezionare, spiegare e trasformare l'AI in conoscenza applicabile.</p>
+      <div class="coord">
+${cards}
+      </div>
+    </div>
+  </section>
+
+  <!-- PONTE VERSO LA FORMAZIONE (blu) -->
+  <section class="bridge">
+    ${curveTop('#0a1f44', 'down')}
+    <div class="wrap bridge-in">
+      <div class="sec-ornament left">${STAR}<span class="orn-line"></span></div>
+      <h2 class="bridge-title reveal">Capire l'intelligenza artificiale è il primo passo. Imparare a usarla fa la differenza.</h2>
+      <p class="bridge-sub reveal">Percorsi pratici per trasformare conoscenze e strumenti in risultati concreti.</p>
+      <a class="bridge-cta reveal" href="formazioni.html"><span class="bcta-t">Scopri le formazioni</span><span class="bridge-arrow" aria-hidden="true">→</span></a>
+    </div>
+    ${curveBottom('#ffffff')}
+  </section>
+
+  <script>
+  (function(){
+    var els=[].slice.call(document.querySelectorAll('.reveal'));
+    if(!els.length) return;
+    document.documentElement.classList.add('reveal-on');
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:.14});
+    els.forEach(function(e){io.observe(e);});
+  })();
+  </script>
+`;
 }
 
 function head(title, desc) {
@@ -285,6 +347,7 @@ ${nav('index.html')}
 </section>
 
 <main>
+${bridgeSections()}
   <!-- ULTIMI ARTICOLI -->
   <section class="articoli">
     <div class="wrap">
