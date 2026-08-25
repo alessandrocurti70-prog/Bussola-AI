@@ -7,7 +7,7 @@
 <title>Accesso — Bussola AI</title>
 <link rel="stylesheet" href="style.css">
 <style>
-  .login-wrap{max-width:440px;margin:60px auto;padding:0 24px}
+  .login-wrap{max-width:440px;margin:120px auto 60px;padding:0 24px}
   .login-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px 28px;box-shadow:0 10px 40px rgba(8,17,31,.06)}
   .login-card h1{font-size:26px;margin-bottom:4px}
   .login-card .sub{font-family:var(--sans);font-size:14px;color:var(--hint);margin-bottom:22px;line-height:1.5}
@@ -27,14 +27,12 @@
 </head>
 <body>
 
-<header class="nav">
-  <div class="wrap nav-in">
-    <a class="brand" href="index.html"><img class="rose" src="immagini/Elementi/logo-bussola.png" alt="Bussola AI"> Bussola AI</a>
-    <nav class="nav-links">
-      <a href="index.html">← Torna al sito</a>
-    </nav>
-  </div>
-</header>
+<div class="snav-wrap">
+  <nav class="snav" aria-label="Area riservata">
+    <a class="hbrand" href="index.html"><img src="immagini/Elementi/logo-bussola.png" alt=""><span>Bussola AI<small>Area riservata</small></span></a>
+    <a class="hnav-cta" href="index.html" style="margin-left:auto;background:transparent;border:1px solid rgba(159,192,247,.35)">← Torna al sito</a>
+  </nav>
+</div>
 
 <main>
   <div class="login-wrap">
