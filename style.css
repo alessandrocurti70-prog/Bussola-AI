@@ -427,7 +427,7 @@ tr:last-child td{border-bottom:none}
 .bridge-in{position:relative;z-index:2;max-width:660px}
 .bridge .eyebrow{margin-bottom:10px}
 .bridge-title{font-family:var(--serif);font-weight:700;color:#fff;font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
-.bridge-sub{font-family:var(--sans);font-size:15px;color:rgba(233,240,252,.85);line-height:1.6;margin:12px 0 0;max-width:none}
+.bridge-sub{font-family:var(--sans);font-size:15px;color:rgba(233,240,252,.85);line-height:1.6;margin:12px 0 0;max-width:560px;text-wrap:balance}
 /* 4 punti N/E/S/O (bussola come architettura del progetto) */
 .rose-text{display:grid;grid-template-columns:1fr 1fr;gap:24px 30px;max-width:640px;margin:clamp(24px,3vw,34px) 0 clamp(26px,3vw,34px)}
 .rt{display:flex;gap:14px;align-items:flex-start}

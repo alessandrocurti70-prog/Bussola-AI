@@ -215,7 +215,7 @@ ${cards}
     <div class="wrap bridge-in">
       <span class="eyebrow reveal">Il percorso</span>
       <h2 class="bridge-title reveal">Capire l'intelligenza artificiale è il primo passo. Imparare a usarla <span class="grad-d">fa la differenza.</span></h2>
-      <p class="bridge-sub reveal">Percorsi pratici per trasformare conoscenze e strumenti in risultati concreti.</p>
+      <p class="bridge-sub reveal">Quattro direzioni per orientarti nell'AI: capire cosa cambia, scoprire gli strumenti giusti, sperimentare sul campo e costruire un metodo.</p>
       <div class="rose-text reveal">
         <div class="rt"><span class="rt-k">N</span><div class="rt-b"><h4>Novità</h4><p>Cosa sta cambiando nel mondo AI.</p></div></div>
         <div class="rt"><span class="rt-k">E</span><div class="rt-b"><h4>Esplora</h4><p>Strumenti e funzionalità da conoscere.</p></div></div>
