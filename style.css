@@ -287,7 +287,7 @@ tr:last-child td{border-bottom:none}
 .hlead{font-family:var(--serif);font-size:clamp(18px,1.7vw,22px);color:rgba(233,240,252,.88);line-height:1.55;max-width:560px;margin:18px 0 0}
 
 .hhero-visual{position:relative;display:flex;justify-content:center}
-.hcompass{position:relative;width:min(88%,40vh,320px);aspect-ratio:1;margin:0 auto}
+.hcompass{position:relative;width:min(80%,36vh,288px);aspect-ratio:1;margin:0 auto;transform:translateX(-10%)}
 .hcompass-glow{position:absolute;inset:-26%;z-index:0;pointer-events:none;filter:blur(14px);
   background:radial-gradient(circle at 50% 48%,rgba(46,125,246,.5),rgba(224,169,59,.16) 38%,transparent 62%)}
 .hcompass img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:2;
@@ -312,7 +312,7 @@ tr:last-child td{border-bottom:none}
   .hhero-in{grid-template-columns:1fr;gap:18px;padding-top:92px;text-align:center}
   .hkicker{margin:0 auto}
   .hlead{margin-left:auto;margin-right:auto}
-  .hcompass{width:min(84vw,420px)}
+  .hcompass{width:min(84vw,420px);transform:none}
   .hhero h1{white-space:normal;font-size:clamp(26px,7vw,40px)}
   .hnav-links{display:none}
 }
