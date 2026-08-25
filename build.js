@@ -160,7 +160,7 @@ const FOOTER = `<footer class="footer">
 // Sezione Newsletter riutilizzabile (home, archivio, sotto gli articoli).
 // mode 'home' = slide a schermo intero con curva; 'bottom' = blocco compatto.
 function newsletterSection(mode) {
-  const curve = mode === 'home' ? curveTop('#ffffff', 'down') : '';
+  const curve = mode === 'home' ? curveTop('#0a1a38', 'down') : '';
   const cls = mode === 'home' ? 'newsletter nl-slide' : 'newsletter nl-compact';
   const id = mode === 'home' ? ' id="iscriviti"' : '';
   return `<section class="${cls}"${id}>
@@ -263,7 +263,7 @@ ${nav('index.html')}
 
   <div class="hhero-in">
     <div class="hhero-copy">
-      <h1>Diffondo conoscenza AI,<br>in modo <span class="hadj">pratico, chiaro e utile.</span></h1>
+      <h1>Diffondo la conoscenza dell'AI in modo <span class="hadj">pratico, chiaro e utile.</span></h1>
       <p class="hlead">Ogni settimana ti do la rotta nell'intelligenza artificiale: articoli chiari, esempi pratici e formazione per capirla e usarla davvero, senza tecnicismi.</p>
       <div class="hero-cta">
         <a class="btn-cta" href="#iscriviti">Iscriviti alla newsletter</a>
@@ -304,13 +304,13 @@ ${latest}
 
   <!-- FORMAZIONI -->
   <section class="formazioni-home">
-    ${curveTop('#0a1526', 'up')}
+    ${curveTop('#e9f1fd', 'down')}
     <div class="wrap">
       <div class="section-head">
         <div>
           <span class="eyebrow">Formazioni</span>
-          <h2>Non solo notizie: impara a usarla davvero.</h2>
-          <p class="sub-p">Dalla teoria alla pratica, un passo alla volta.</p>
+          <h2>Non solo teoria: impara a usarla.</h2>
+          <p class="sub-p">Webinar gratuiti e corsi pratici, pensati per chi parte da zero e vuole risultati concreti da portare subito nel proprio lavoro.</p>
         </div>
         <a class="more" href="formazioni.html">Scopri le formazioni →</a>
       </div>
