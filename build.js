@@ -331,12 +331,6 @@ ${nav('index.html')}
         <a class="btn-ghost" href="formazioni.html">Scopri le formazioni</a>
       </div>
     </div>
-    <div class="hhero-visual">
-      <div class="hcompass">
-        <div class="hcompass-glow" aria-hidden="true"></div>
-        <img src="${IMG}Elementi/compass-hero.png" alt="Bussola AI — rosa dei venti">
-      </div>
-    </div>
   </div>
 
   <div class="hhero-curve" aria-hidden="true">
