@@ -390,8 +390,20 @@ tr:last-child td{border-bottom:none}
 .sec-ornament.left{justify-content:flex-start;gap:14px;margin-bottom:22px}
 
 /* --- Sezione 1: Value proposition (bianca) --- */
-.value{position:relative;overflow:hidden;background:#f7f9fd url(immagini/Elementi/bg-value.jpg) center right/cover no-repeat;padding:clamp(72px,9vw,116px) 0}
-.value::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg, rgba(247,249,253,.62) 0%, rgba(247,249,253,.36) 55%, rgba(247,249,253,.08) 100%)}
+.value{position:relative;overflow:hidden;background:#ffffff;padding:clamp(72px,9vw,116px) 0}
+/* sfumature morbide blu/oro che "respirano" */
+.value::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(38% 52% at 14% 20%, rgba(46,125,246,.08), transparent 62%),
+    radial-gradient(34% 48% at 86% 80%, rgba(224,169,59,.09), transparent 60%),
+    radial-gradient(30% 42% at 82% 22%, rgba(46,125,246,.06), transparent 60%);
+  animation:glowBreath 11s ease-in-out infinite}
+/* secondo strato che deriva lentamente, per un movimento vivo ma discreto */
+.value::after{content:"";position:absolute;inset:-8%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(26% 40% at 30% 62%, rgba(46,125,246,.05), transparent 62%),
+    radial-gradient(24% 38% at 68% 40%, rgba(224,169,59,.06), transparent 62%);
+  animation:valueDrift 22s ease-in-out infinite alternate}
 .value-in{position:relative;z-index:1}
 .value .eyebrow{margin-bottom:8px}
 .value-title{font-family:var(--serif);font-weight:700;color:var(--blue-deep);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
@@ -496,8 +508,9 @@ tr:last-child td{border-bottom:none}
 @keyframes twinkle{0%,100%{opacity:.5}50%{opacity:1}}
 @keyframes starDrift{from{transform:translateY(0)}to{transform:translateY(-22px)}}
 @keyframes glowBreath{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+@keyframes valueDrift{from{transform:translate3d(-16px,-10px,0)}to{transform:translate3d(16px,10px,0)}}
 @media (prefers-reduced-motion:reduce){
-  .formazioni-home::after,.newsletter .nl-fx,.hhero-stars{animation:none!important}
+  .formazioni-home::after,.newsletter .nl-fx,.hhero-stars,.value::before,.value::after{animation:none!important}
 }
 /* Barra di ricerca unificata (archivio + formazioni) */
 .searchbar{display:flex;gap:10px;max-width:640px}
