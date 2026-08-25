@@ -292,6 +292,7 @@ ${nav('index.html')}
         <div>
           <span class="eyebrow">Ultime uscite</span>
           <h2>Gli ultimi articoli per <span class="tint-grad">orientarti nell'AI.</span></h2>
+          <p class="sub-p">Idee, strumenti e riflessioni per capire meglio l'intelligenza artificiale e seguirne l'evoluzione. Contenuti pratici e accessibili, pensati per portarti ogni volta qualcosa di utile da applicare.</p>
         </div>
         <a class="more" href="archivio.html">Vedi tutto l'archivio →</a>
       </div>
@@ -310,8 +311,8 @@ ${latest}
       <div class="section-head">
         <div>
           <span class="eyebrow">Formazioni</span>
-          <h2>Non solo teoria: impara a usarla.</h2>
-          <p class="sub-p">Webinar gratuiti e corsi pratici, pensati per chi parte da zero e vuole risultati concreti da portare subito nel proprio lavoro.</p>
+          <h2>Non solo teoria: impara a <span class="tint-grad">usare l'AI</span></h2>
+          <p class="sub-p">Capire l'intelligenza artificiale è il primo passo. Imparare a usarla fa la differenza. Percorsi pratici per trasformare conoscenze e strumenti in risultati concreti.</p>
         </div>
         <a class="more" href="formazioni.html">Scopri le formazioni →</a>
       </div>
