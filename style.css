@@ -409,17 +409,17 @@ tr:last-child td{border-bottom:none}
 .value-title{font-family:var(--serif);font-weight:700;color:var(--blue-deep);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
 .value-intro{font-family:var(--serif);font-size:clamp(15.5px,1.5vw,17.5px);color:var(--muted);line-height:1.55;max-width:none;margin:14px 0 0}
 /* griglia 2x2, icone a sinistra, a tutta larghezza (fino alla navbar) */
-.coord{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:40px 80px;max-width:none;margin:clamp(40px,5vw,58px) 0 0}
+.coord{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:40px 56px;max-width:none;margin:clamp(40px,5vw,58px) 0 0}
 .coord-item{position:relative;z-index:1;display:flex;align-items:flex-start;gap:18px;text-align:left;transition:transform .2s ease}
-.coord-ic{flex:none;width:64px;height:64px;border-radius:50%;border:1.5px dashed rgba(224,169,59,.8);display:grid;place-items:center;background:rgba(255,255,255,.55);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
-.coord-ic svg{width:28px;height:28px;stroke:var(--gold);stroke-width:1.6}
+.coord-ic{flex:none;width:72px;height:72px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 8px 20px rgba(11,61,145,.12);transition:transform .2s ease,box-shadow .2s ease}
+.coord-ic img{width:100%;height:100%;object-fit:cover;display:block}
 .coord-body{flex:1;min-width:0}
 .coord-h{display:flex;align-items:baseline;gap:9px;padding-bottom:9px;margin-bottom:10px;border-bottom:1px solid rgba(224,169,59,.45)}
 .coord-n{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--gold);line-height:1}
 .coord-t{font-family:var(--serif);font-weight:700;font-size:22px;color:var(--blue-deep);letter-spacing:-.01em}
 .coord-item p{font-family:var(--sans);font-size:15px;color:var(--muted);line-height:1.55;margin:0}
 .coord-item:hover{transform:translateY(-4px)}
-.coord-item:hover .coord-ic{border-color:var(--gold);box-shadow:0 8px 22px rgba(224,169,59,.28);transform:scale(1.04)}
+.coord-item:hover .coord-ic{box-shadow:0 12px 26px rgba(11,61,145,.2);transform:scale(1.04)}
 
 /* --- Sezione 2: Ponte verso la formazione (blu) --- */
 .bridge{position:relative;color:#fff;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:96px 0;background:#08152e url(immagini/Elementi/bg-ponte.jpg) center right/cover no-repeat}

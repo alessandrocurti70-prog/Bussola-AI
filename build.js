@@ -184,20 +184,14 @@ function newsletterSection(mode, blue) {
 
 // Due sezioni tra Hero e "Ultime uscite": Value proposition (bianca) + Ponte formazione (blu).
 function bridgeSections() {
-  const IC = {
-    capire: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 5.5 13.6 12 12 18.5 10.4 12Z"/><path d="M5.5 12 12 10.4 18.5 12 12 13.6Z"/></svg>',
-    scoprire: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4.2 14.6l10.5-3.8 3 1.1-1 3.6-10.5 3.8z"/><path d="M14.7 10.8l1-2.9 2.7 1-1 2.9"/><path d="M8.3 17.4 6.4 21M12.4 16 14 20"/></svg>',
-    applicare: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="5.5" cy="18.5" r="1.4"/><path d="M6.7 18.3c3.4-.3 3-4.7 6-5.6" stroke-dasharray="2.4 2.4"/><path d="M16.5 5.2c1.9 0 3.4 1.5 3.4 3.4 0 2.4-3.4 5.6-3.4 5.6s-3.4-3.2-3.4-5.6c0-1.9 1.5-3.4 3.4-3.4z"/><circle cx="16.5" cy="8.6" r="1.1"/></svg>',
-    imparare: '<svg viewBox="0 0 24 24" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 6.5C10 5.2 7.2 5.2 5 6.2v11c2.2-1 5-1 7 .3"/><path d="M12 6.5c2-1.3 4.8-1.3 7-.3v11c-2.2-1-5-1-7 .3"/><path d="M12 6.5v11.3"/></svg>'
-  };
   const items = [
-    ['01', 'Capire', 'Novità e cambiamenti spiegati senza rumore.', IC.capire],
-    ['02', 'Scoprire', "Strumenti, funzionalità e nuovi modi di utilizzare l'AI.", IC.scoprire],
-    ['03', 'Applicare', "Casi d'uso, metodi ed esempi utilizzabili nel lavoro reale.", IC.applicare],
-    ['04', 'Imparare', 'Webinar, workshop e corsi per passare dalla conoscenza alla pratica.', IC.imparare]
+    ['01', 'Capire', 'Novità e cambiamenti spiegati senza rumore.', 'punto-capire.jpg'],
+    ['02', 'Scoprire', "Strumenti, funzionalità e nuovi modi di utilizzare l'AI.", 'punto-scoprire.jpg'],
+    ['03', 'Applicare', "Casi d'uso, metodi ed esempi utilizzabili nel lavoro reale.", 'punto-applicare.jpg'],
+    ['04', 'Imparare', 'Webinar, workshop e corsi: dalla conoscenza alla pratica.', 'punto-imparare.jpg']
   ];
-  const cards = items.map(([n, t, d, ic], i) => `        <article class="coord-item reveal" style="transition-delay:${i * 90}ms">
-          <div class="coord-ic">${ic}</div>
+  const cards = items.map(([n, t, d, img], i) => `        <article class="coord-item reveal" style="transition-delay:${i * 90}ms">
+          <div class="coord-ic"><img src="${IMG}Elementi/${img}" alt="" loading="lazy"></div>
           <div class="coord-body">
             <div class="coord-h"><span class="coord-n">${n}</span><span class="coord-t">— ${t}</span></div>
             <p>${d}</p>
@@ -209,7 +203,7 @@ function bridgeSections() {
     <div class="wrap value-in">
       <span class="eyebrow gold reveal">Il progetto</span>
       <h2 class="value-title reveal">Una bussola nel <span class="tint-grad">mondo dell'AI</span></h2>
-      <p class="value-intro reveal">Oggi il problema non è più trovare informazioni sull'intelligenza artificiale: è capire quali contano davvero e come usarle. Bussola AI nasce per questo: selezionare, spiegare e rendere l'AI conoscenza che puoi applicare subito.</p>
+      <p class="value-intro reveal">Oggi il problema non è più trovare informazioni sull'intelligenza artificiale: è capire quali contano davvero e come usarle.<br>Bussola AI nasce per questo: selezionare, spiegare e rendere l'AI conoscenza che puoi applicare subito.</p>
       <div class="coord">
 ${cards}
       </div>
