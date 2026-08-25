@@ -324,7 +324,7 @@ ${nav('index.html')}
 
   <div class="hhero-in">
     <div class="hhero-copy">
-      <h1>Diffondo conoscenza AI, in modo <span class="hadj">pratico, chiaro e utile.</span></h1>
+      <h1>Diffondo conoscenza AI,<br>in modo <span class="hadj">pratico, chiaro e utile.</span></h1>
       <p class="hlead">Articoli, strumenti, casi d'uso e percorsi formativi per capire l'intelligenza artificiale e imparare a usarla concretamente nel lavoro e nella quotidianità.</p>
       <div class="hero-cta">
         <a class="btn-cta" href="archivio.html">Esplora gli articoli</a>

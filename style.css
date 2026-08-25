@@ -277,7 +277,7 @@ tr:last-child td{border-bottom:none}
   max-width:var(--wrap);margin:0 auto;width:100%;padding:96px 24px 84px;position:relative;z-index:5}
 .hkicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:600;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#bcd4fb;background:rgba(159,192,247,.08);border:1px solid rgba(159,192,247,.2);padding:7px 14px;border-radius:999px}
 .hkdot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
-.hhero h1{font-family:var(--serif);font-weight:700;font-size:clamp(40px,6.2vw,74px);line-height:1.08;letter-spacing:-.02em;color:#fff;margin:0;max-width:28ch;text-wrap:balance}
+.hhero h1{font-family:var(--serif);font-weight:700;font-size:clamp(38px,5.6vw,64px);line-height:1.1;letter-spacing:-.02em;color:#fff;margin:0;max-width:none}
 .hhero h1 .hadj{
   background:linear-gradient(92deg,#8fbcff 0%,#cfe0ff 42%,#f4cf82 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#bcd4fb}
