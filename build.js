@@ -201,7 +201,7 @@ function bridgeSections() {
   return `  <!-- VALUE PROPOSITION (bianca) -->
   <section class="value">
     <div class="wrap value-in">
-      <span class="eyebrow gold reveal">Il progetto</span>
+      <span class="eyebrow reveal">Il progetto</span>
       <h2 class="value-title reveal">Una bussola nel <span class="tint-grad">mondo dell'AI</span></h2>
       <p class="value-intro reveal">Oggi il problema non è più trovare informazioni sull'intelligenza artificiale: è capire quali contano davvero e come usarle.<br>Bussola AI nasce per questo: selezionare, spiegare e rendere l'AI conoscenza che puoi applicare subito.</p>
       <div class="coord">
