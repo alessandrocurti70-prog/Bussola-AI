@@ -216,12 +216,12 @@ ${cards}
       <div class="bridge-in">
       <span class="eyebrow gold reveal">Il percorso</span>
       <h2 class="bridge-title reveal">4 direzioni per raggiungere <span class="grad-d">la vetta</span></h2>
-      <p class="bridge-sub reveal">Un percorso per orientarti nel mondo dell'intelligenza artificiale.</p>
+      <p class="bridge-sub reveal">Un percorso per orientarti nell'AI, seguire la direzione giusta e trasformare strumenti, idee e sperimentazione in un metodo pratico e concreto.</p>
       <div class="rose-text reveal">
-        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Nord</span> · <span class="dir-name">Novità</span></h4><p class="dir-desc">Cosa sta cambiando nel mondo AI.</p></div>
-        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Est</span> · <span class="dir-name">Esplora</span></h4><p class="dir-desc">Strumenti e funzionalità da conoscere.</p></div>
-        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Sud</span> · <span class="dir-name">Sperimenta</span></h4><p class="dir-desc">Prompt, workflow e casi d'uso concreti.</p></div>
-        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Ovest</span> · <span class="dir-name">Orientati</span></h4><p class="dir-desc">Metodo, riflessioni e buone pratiche.</p></div>
+        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Nord</span> · <span class="dir-name"><span class="grad-d">N</span>ovità</span></h4><p class="dir-desc">Cosa sta cambiando nel mondo AI.</p></div>
+        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Est</span> · <span class="dir-name"><span class="grad-d">E</span>splora</span></h4><p class="dir-desc">Strumenti e funzionalità da conoscere.</p></div>
+        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Sud</span> · <span class="dir-name"><span class="grad-d">S</span>perimenta</span></h4><p class="dir-desc">Prompt, workflow e casi d'uso concreti.</p></div>
+        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Ovest</span> · <span class="dir-name"><span class="grad-d">O</span>rientati</span></h4><p class="dir-desc">Metodo, riflessioni e buone pratiche.</p></div>
       </div>
       </div>
     </div>
