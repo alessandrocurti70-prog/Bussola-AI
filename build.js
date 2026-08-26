@@ -170,8 +170,8 @@ function newsletterSection(mode, blue) {
   ${curve}
   <div class="nl-fx" aria-hidden="true"></div>
   <div class="wrap newsletter-in">
-    <span class="eyebrow gold">Newsletter settimanale</span>
-    <h2>Non perdere la rotta della settimana</h2>
+    <span class="eyebrow">Newsletter settimanale</span>
+    <h2>Non perdere la rotta <span class="tint-grad">della settimana</span></h2>
     <p>Ogni settimana una dose di AI spiegata semplice, con qualcosa di concreto da portarti nel lavoro.</p>
     <form class="nl-form" onsubmit="return false">
       <input type="email" placeholder="La tua email" aria-label="La tua email">
