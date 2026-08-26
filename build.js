@@ -218,10 +218,10 @@ ${cards}
       <h2 class="bridge-title reveal">4 direzioni per raggiungere <span class="grad-d">la vetta</span></h2>
       <p class="bridge-sub reveal">Un percorso per orientarti nell'AI: capire cosa cambia, scoprire gli strumenti, sperimentare sul campo e costruire un metodo.</p>
       <div class="rose-text reveal">
-        <div class="rt"><div class="rt-ic"><img src="${IMG}Elementi/dir-n.jpg" alt="" loading="lazy"></div><div class="rt-b"><span class="rt-name">Novità</span><span class="rt-desc">Cosa sta cambiando nel mondo AI.</span></div></div>
-        <div class="rt"><div class="rt-ic"><img src="${IMG}Elementi/dir-e.jpg" alt="" loading="lazy"></div><div class="rt-b"><span class="rt-name">Esplora</span><span class="rt-desc">Strumenti e funzionalità da conoscere.</span></div></div>
-        <div class="rt"><div class="rt-ic"><img src="${IMG}Elementi/dir-s.jpg" alt="" loading="lazy"></div><div class="rt-b"><span class="rt-name">Sperimenta</span><span class="rt-desc">Prompt, workflow e casi d'uso concreti.</span></div></div>
-        <div class="rt"><div class="rt-ic"><img src="${IMG}Elementi/dir-o.jpg" alt="" loading="lazy"></div><div class="rt-b"><span class="rt-name">Orientati</span><span class="rt-desc">Metodo, riflessioni e buone pratiche.</span></div></div>
+        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Nord</span> · <span class="dir-name">Novità</span></h4><p class="dir-desc">Cosa sta cambiando nel mondo AI.</p></div>
+        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Est</span> · <span class="dir-name">Esplora</span></h4><p class="dir-desc">Strumenti e funzionalità da conoscere.</p></div>
+        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Sud</span> · <span class="dir-name">Sperimenta</span></h4><p class="dir-desc">Prompt, workflow e casi d'uso concreti.</p></div>
+        <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Ovest</span> · <span class="dir-name">Orientati</span></h4><p class="dir-desc">Metodo, riflessioni e buone pratiche.</p></div>
       </div>
       </div>
     </div>
