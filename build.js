@@ -185,10 +185,10 @@ function newsletterSection(mode, blue) {
 // Due sezioni tra Hero e "Ultime uscite": Value proposition (bianca) + Ponte formazione (blu).
 function bridgeSections() {
   const items = [
-    ['01', 'Capire', 'Novità e cambiamenti spiegati senza rumore.', 'punto-capire.jpg'],
-    ['02', 'Scoprire', "Strumenti, funzionalità e nuovi modi di utilizzare l'AI.", 'punto-scoprire.jpg'],
-    ['03', 'Applicare', "Casi d'uso, metodi ed esempi utilizzabili nel lavoro reale.", 'punto-applicare.jpg'],
-    ['04', 'Imparare', 'Webinar, workshop e corsi: dalla conoscenza alla pratica.', 'punto-imparare.jpg']
+    ['01', 'Capire', 'Novità e cambiamenti spiegati senza rumore e tecnicismi.', 'punto-capire.jpg'],
+    ['02', 'Scoprire', "Strumenti, funzionalità e nuovi modi di conoscere, applicare e utilizzare l'AI.", 'punto-scoprire.jpg'],
+    ['03', 'Applicare', "Casi d'uso, metodi ed esempi utilizzabili nel lavoro reale e nella vita quotidiana.", 'punto-applicare.jpg'],
+    ['04', 'Imparare', "Webinar, workshop e corsi: dalla conoscenza all'applicazione pratica.", 'punto-imparare.jpg']
   ];
   const cards = items.map(([n, t, d, img], i) => `        <article class="coord-item reveal" style="transition-delay:${i * 90}ms">
           <div class="coord-ic"><img src="${IMG}Elementi/${img}" alt="" loading="lazy"></div>
