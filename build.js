@@ -171,7 +171,7 @@ function newsletterSection(mode, blue) {
   <div class="nl-fx" aria-hidden="true"></div>
   <div class="wrap newsletter-in">
     <span class="eyebrow gold">Newsletter settimanale</span>
-    <h2>Non perdere la rotta della settimana.</h2>
+    <h2>Non perdere la rotta della settimana</h2>
     <p>Ogni settimana una dose di AI spiegata semplice, con qualcosa di concreto da portarti nel lavoro.</p>
     <form class="nl-form" onsubmit="return false">
       <input type="email" placeholder="La tua email" aria-label="La tua email">
@@ -216,7 +216,7 @@ ${cards}
       <div class="bridge-in">
       <span class="eyebrow gold reveal">Il percorso</span>
       <h2 class="bridge-title reveal">4 direzioni per raggiungere <span class="grad-d">la vetta</span></h2>
-      <p class="bridge-sub reveal">Un percorso per orientarti nell'AI: capire cosa cambia, scoprire gli strumenti, sperimentare sul campo e costruire un metodo.</p>
+      <p class="bridge-sub reveal">Un percorso per orientarti nel mondo dell'intelligenza artificiale.</p>
       <div class="rose-text reveal">
         <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Nord</span> · <span class="dir-name">Novità</span></h4><p class="dir-desc">Cosa sta cambiando nel mondo AI.</p></div>
         <div class="dir-row"><h4 class="dir-title"><span class="dir-card">Est</span> · <span class="dir-name">Esplora</span></h4><p class="dir-desc">Strumenti e funzionalità da conoscere.</p></div>
@@ -324,7 +324,7 @@ ${nav('index.html')}
 
   <div class="hhero-in">
     <div class="hhero-copy">
-      <h1>Diffondo conoscenza AI,<br>in modo <span class="hadj">pratico, chiaro e utile.</span></h1>
+      <h1>Diffondo conoscenza AI,<br>in modo <span class="hadj">pratico, chiaro e utile</span></h1>
       <p class="hlead">Articoli, strumenti, casi d'uso e percorsi formativi per capire l'intelligenza artificiale e imparare a usarla concretamente nel lavoro e nella quotidianità.</p>
       <div class="hero-cta">
         <a class="btn-cta" href="archivio.html">Esplora gli articoli</a>
@@ -346,7 +346,7 @@ ${bridgeSections()}
       <div class="section-head">
         <div>
           <span class="eyebrow">Ultime uscite</span>
-          <h2>Gli ultimi articoli per <span class="tint-grad">orientarti nell'AI.</span></h2>
+          <h2>Gli ultimi articoli per <span class="tint-grad">orientarti nell'AI</span></h2>
         </div>
         <a class="more" href="archivio.html">Vedi tutto l'archivio →</a>
       </div>

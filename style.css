@@ -331,7 +331,7 @@ tr:last-child td{border-bottom:none}
 .more{font-family:var(--sans);font-weight:600;font-size:14px;color:var(--blue);white-space:nowrap}
 .section-head > div{max-width:640px}
 .section-head .eyebrow{margin-bottom:8px}
-.sub-p{font-family:var(--sans);font-size:18px;color:var(--muted);line-height:1.5;margin:-16px 0 24px;max-width:960px;text-wrap:balance}
+.sub-p{font-family:var(--sans);font-size:21px;color:var(--muted);line-height:1.5;margin:-16px 0 24px;max-width:1040px;text-wrap:balance}
 
 /* --- Chi sono --- */
 .chisono{position:relative;min-height:100vh;min-height:100dvh;background:#fff;overflow:hidden}
@@ -407,7 +407,7 @@ tr:last-child td{border-bottom:none}
 .value-in{position:relative;z-index:1;width:100%}
 .value .eyebrow{margin-bottom:8px}
 .value-title{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0}
-.value-intro{font-family:var(--sans);font-size:16.5px;color:var(--muted);line-height:1.6;max-width:none;margin:12px 0 0}
+.value-intro{font-family:var(--sans);font-size:19px;color:var(--muted);line-height:1.55;max-width:none;margin:12px 0 0}
 /* griglia 2x2, icone a sinistra, a tutta larghezza (fino alla navbar) */
 .coord{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:40px 56px;max-width:none;margin:clamp(40px,5vw,58px) 0 0}
 .coord-item{position:relative;z-index:1;display:flex;align-items:flex-start;gap:18px;text-align:left;transition:transform .2s ease}
@@ -428,7 +428,7 @@ tr:last-child td{border-bottom:none}
 .bridge-in{position:relative;z-index:2;max-width:660px}
 .bridge .eyebrow{margin-bottom:10px}
 .bridge-title{font-family:var(--serif);font-weight:700;color:#fff;font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:0;white-space:nowrap}
-.bridge-sub{font-family:var(--sans);font-size:18px;color:rgba(233,240,252,.85);line-height:1.55;margin:12px 0 0;max-width:640px;text-wrap:balance}
+.bridge-sub{font-family:var(--sans);font-size:21px;color:rgba(233,240,252,.85);line-height:1.5;margin:12px 0 0;max-width:640px;text-wrap:balance}
 /* 4 punti N/E/S/O (bussola come architettura del progetto) */
 .rose-text{max-width:660px;margin:clamp(22px,3vw,32px) 0 clamp(24px,3vw,32px);border-bottom:1px solid rgba(255,255,255,.14)}
 .dir-row{padding:18px 2px;border-top:1px solid rgba(255,255,255,.14);transition:padding-left .2s ease}
@@ -467,7 +467,7 @@ tr:last-child td{border-bottom:none}
 .formazioni-home .eyebrow{color:var(--gold);font-size:13.5px}
 .formazioni-home .more{color:#9fc0f7}
 .formazioni-home h2{font-family:var(--serif);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin-top:8px;color:#fff;white-space:nowrap}
-.formazioni-home .sub-p{color:rgba(233,240,252,.85);font-size:18px}
+.formazioni-home .sub-p{color:rgba(233,240,252,.85);font-size:21px}
 .form3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .form3 .course{background:#fff}
 .form-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:22px}
@@ -499,7 +499,7 @@ tr:last-child td{border-bottom:none}
 .newsletter-in{position:relative;z-index:2;max-width:1000px;margin:0 auto;text-align:center;padding:0 24px}
 .newsletter .eyebrow{margin-bottom:6px}
 .newsletter h2{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin:6px 0 0;white-space:nowrap}
-.newsletter-in > p{font-family:var(--serif);font-size:clamp(17px,1.7vw,21px);color:var(--muted);line-height:1.55;margin:14px auto 26px;max-width:56ch}
+.newsletter-in > p{font-family:var(--serif);font-size:clamp(20px,2vw,24px);color:var(--muted);line-height:1.5;margin:14px auto 26px;max-width:56ch}
 .nl-form{display:flex;gap:10px;max-width:540px;margin:0 auto;font-family:var(--sans)}
 .nl-form input{flex:1;height:54px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:0 18px;font-size:15.5px}
 .nl-form input::placeholder{color:var(--hint)}
