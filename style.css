@@ -369,7 +369,7 @@ tr:last-child td{border-bottom:none}
 .rotta li p{font-family:var(--sans);font-size:13px;color:var(--muted);line-height:1.4;margin:0}
 
 /* --- Ultimi articoli (sezione BIANCA) --- */
-.articoli{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:64px 0;background:#fff}
+.articoli{position:relative;display:flex;align-items:center;padding:72px 0;background:#fff}
 .articoli .section-head{margin-bottom:30px}
 .articoli h2{font-family:var(--serif);font-size:clamp(30px,3.8vw,46px);line-height:1.1;letter-spacing:-.02em;margin-top:6px;white-space:nowrap}
 .articoli .card{border:1.5px solid var(--blue)}
@@ -390,7 +390,7 @@ tr:last-child td{border-bottom:none}
 .sec-ornament.left{justify-content:flex-start;gap:14px;margin-bottom:22px}
 
 /* --- Sezione 1: Value proposition (bianca) --- */
-.value{position:relative;overflow:hidden;background:#ffffff;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:88px 0}
+.value{position:relative;overflow:hidden;background:#ffffff;display:flex;align-items:center;padding:72px 0}
 /* sfumature morbide blu/oro che "respirano" */
 .value::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
   background:
@@ -422,7 +422,7 @@ tr:last-child td{border-bottom:none}
 .coord-item:hover .coord-ic{box-shadow:0 12px 26px rgba(46,125,246,.22);transform:scale(1.06)}
 
 /* --- Sezione 2: Ponte verso la formazione (blu) --- */
-.bridge{position:relative;color:#fff;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:96px 0;background:#08152e url(immagini/Elementi/bg-ponte.jpg) center right/cover no-repeat}
+.bridge{position:relative;color:#fff;display:flex;align-items:center;padding:76px 0;background:#08152e url(immagini/Elementi/bg-ponte.jpg) center right/cover no-repeat}
 .bridge::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg, rgba(6,13,30,.95) 0%, rgba(6,13,30,.86) 45%, rgba(6,13,30,.62) 75%, rgba(6,13,30,.28) 100%)}
 .bridge .wrap{width:100%}
 .bridge-in{position:relative;z-index:2;max-width:960px}
@@ -451,7 +451,7 @@ tr:last-child td{border-bottom:none}
 @media (prefers-reduced-motion:reduce){.reveal-on .reveal{opacity:1;transform:none}}
 
 /* --- Formazioni (home) --- */
-.formazioni-home{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:64px 0;color:#fff;overflow:hidden;background:#08152e url(immagini/Elementi/bg-newsletter.jpg) center/cover no-repeat}
+.formazioni-home{position:relative;display:flex;align-items:center;padding:72px 0;color:#fff;overflow:hidden;background:#08152e url(immagini/Elementi/bg-newsletter.jpg) center/cover no-repeat}
 .formazioni-home::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg, rgba(6,14,30,.52) 0%, rgba(6,14,30,.34) 50%, rgba(6,14,30,.56) 100%)}
 .formazioni-home::after{content:"";position:absolute;inset:-6% 0;z-index:1;pointer-events:none;background-image:
   radial-gradient(1.7px 1.7px at 12% 22%, rgba(255,255,255,.9), transparent 60%),
@@ -473,9 +473,17 @@ tr:last-child td{border-bottom:none}
 /* Formazioni home — invito "su misura" (sostituisce le 3 card) */
 .form-center{max-width:760px;margin:0 auto;text-align:center}
 .form-center h2{font-family:var(--serif);font-size:clamp(32px,4.4vw,52px);line-height:1.08;letter-spacing:-.02em;margin:10px 0 0;color:#fff;white-space:normal}
-.form-center .sub-p{color:rgba(233,240,252,.9);font-size:clamp(17px,1.4vw,21px);margin:18px auto 0;max-width:640px}
-.form-offer{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:26px 0 30px;padding:0}
-.form-offer li{font-family:var(--sans);font-weight:600;font-size:14px;color:#dbe7fb;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);padding:9px 16px;border-radius:999px}
+.form-center .sub-p{color:rgba(233,240,252,.9);font-size:clamp(17px,1.4vw,21px);margin:18px auto 0;max-width:none;white-space:nowrap}
+@media (max-width:820px){.form-center .sub-p{white-space:normal;max-width:560px}}
+.form-imgs{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:30px 0 34px}
+.form-img{margin:0}
+.form-img img{width:100%;height:auto;display:block;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.form-img figcaption{font-family:var(--sans);font-weight:600;font-size:13.5px;color:rgba(216,228,248,.85);text-align:center;margin-top:11px}
+@media (max-width:760px){.form-imgs{grid-template-columns:1fr;gap:16px}}
+/* Rifiniture trasversali: focus visibile e scorrimento morbido */
+html{scroll-behavior:smooth}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .btn-cta-gold{background:var(--gold);color:#4a2e05;box-shadow:0 10px 24px rgba(214,165,74,.3)}
 .btn-cta-gold:hover{background:var(--gold);filter:brightness(1.08);box-shadow:0 14px 30px rgba(214,165,74,.42)}
 /* Pagina Formazioni — offerta + form richiesta */
@@ -518,7 +526,7 @@ tr:last-child td{border-bottom:none}
 /* --- Newsletter immersiva --- */
 .newsletter{position:relative;color:var(--ink);background:#f7faff url(immagini/Elementi/bg-articoli.jpg) center/cover no-repeat;overflow:hidden}
 .newsletter::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg, rgba(255,255,255,.74) 0%, rgba(255,255,255,.52) 50%, rgba(255,255,255,.76) 100%)}
-.nl-slide{min-height:100vh;min-height:100dvh;display:flex;align-items:center}
+.nl-slide{display:flex;align-items:center;padding:76px 0}
 .nl-compact{padding:78px 0;border-top:1px solid var(--line)}
 .nl-fx{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:

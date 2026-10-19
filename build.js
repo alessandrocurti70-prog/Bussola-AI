@@ -193,7 +193,7 @@ function bridgeSections() {
   const cards = items.map(([n, t, d, img], i) => `        <article class="coord-item reveal" style="transition-delay:${i * 90}ms">
           <div class="coord-ic"><img src="${IMG}Elementi/${img}" alt="" loading="lazy"></div>
           <div class="coord-body">
-            <div class="coord-h"><span class="coord-n">${n}</span><span class="coord-t">— ${t}</span></div>
+            <div class="coord-h"><span class="coord-n">${n}</span><span class="coord-t">${t}</span></div>
             <p>${d}</p>
           </div>
         </article>`).join('\n');
@@ -362,14 +362,19 @@ ${latest}
   <!-- FORMAZIONI -->
   <section class="formazioni-home">
     <div class="wrap form-center">
-      <span class="eyebrow">Formazioni & Consulenza</span>
+      <span class="eyebrow gold">Formazioni & Consulenza</span>
       <h2>Non solo teoria: impara a <span class="tint-grad">usare l'AI</span></h2>
-      <p class="sub-p">Workshop, formazioni aziendali e consulenza 1:1 sull'intelligenza artificiale, costruiti sulle tue esigenze reali — per te, il tuo team o la tua azienda.</p>
-      <ul class="form-offer">
-        <li>Formazioni aziendali</li>
-        <li>Workshop pratici</li>
-        <li>Consulenza 1:1</li>
-      </ul>
+      <p class="sub-p">Formazioni, workshop e consulenza 1:1 su misura per te o la tua azienda.</p>
+      <div class="form-imgs">
+        <figure class="form-img">
+          <img src="${IMG}Formazioni/formazioni-aziendali.webp" alt="Formazioni e workshop sull'AI per team e aziende" loading="lazy">
+          <figcaption>Formazioni aziendali &amp; workshop</figcaption>
+        </figure>
+        <figure class="form-img">
+          <img src="${IMG}Formazioni/consulenza.webp" alt="Consulenza 1:1 sull'AI su misura" loading="lazy">
+          <figcaption>Consulenza 1:1 su misura</figcaption>
+        </figure>
+      </div>
       <a class="btn-cta btn-cta-gold" href="formazioni.html#richiedi">Richiedi una proposta su misura <span>→</span></a>
     </div>
   </section>
