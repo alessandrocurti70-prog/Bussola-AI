@@ -21,9 +21,9 @@
     </nav>
   </div>
   <div class="wrap page-head-in">
-    <span class="kicker">Formazioni</span>
+    <span class="kicker">Formazioni & Consulenza</span>
     <h1>Impara a usare l'AI, davvero</h1>
-    <p class="lead" style="max-width:680px">Dalla teoria alla pratica, un passo alla volta.</p>
+    <p class="lead" style="max-width:680px">Formazioni, workshop e consulenza su misura — per te, il tuo team o la tua azienda.</p>
   </div>
   <div class="hhero-curve" aria-hidden="true">
     <svg viewBox="0 0 1440 72" preserveAspectRatio="none"><path d="M0,72 C430,18 1010,18 1440,72 Z" fill="#ffffff"/></svg>
@@ -31,49 +31,47 @@
 </section>
 
 <main>
-  <section class="section" style="border-top:none;padding:46px 0">
+  <section class="section" style="border-top:none;padding:54px 0 72px">
     <div class="wrap">
-      <div class="searchbar">
-        <input type="text" id="search-form" placeholder="Cerca una formazione…">
-        <button type="button" class="search-btn">Cerca</button>
-      </div>
-    </div>
-  </section>
+      <div class="offer-wrap" id="richiedi">
 
-  <section class="section" style="padding-top:38px">
-    <div class="wrap">
+        <div class="offer-intro">
+          <h2>Formazioni e consulenza su misura</h2>
+          <p>Ogni realtà ha esigenze diverse: per questo non trovi corsi preconfezionati. Costruiamo insieme il percorso più utile — dalla prima introduzione all'AI fino all'automazione dei processi di lavoro.</p>
+          <ul class="offer-list">
+            <li><b>Formazioni aziendali</b>Sessioni su misura per team e aziende, in presenza o online.</li>
+            <li><b>Workshop pratici</b>Incontri hands-on per imparare usando strumenti reali.</li>
+            <li><b>Consulenza 1:1</b>Affianco te o la tua impresa per applicare l'AI al lavoro di tutti i giorni.</li>
+          </ul>
+        </div>
 
-      <div class="grid" id="corsi" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))">
-
-        <article class="course">
-          <div class="course-cover"><img src="immagini/Riferimenti/01_ritratto-faro.png" alt=""></div>
-          <div class="course-body">
-            <span class="badge free">Webinar · Gratis</span>
-            <h3>I primi passi con l'AI</h3>
-            <p>Un'ora dal vivo per capire cos'è l'AI e iniziare a usarla, senza tecnicismi.</p>
-            <div class="course-foot"><span class="price">Gratuito</span><button class="btn">Iscriviti</button></div>
+        <div class="offer-form-col">
+          <form class="lead-form" id="richiesta-form" novalidate>
+            <h3>Richiedi una proposta</h3>
+            <p class="form-hint">Raccontami cosa ti serve: ti rispondo con una proposta su misura, senza impegno.</p>
+            <div class="field">
+              <label for="rf-nome">Nome e cognome *</label>
+              <input type="text" id="rf-nome" name="nome" required maxlength="200" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="rf-email">Email *</label>
+              <input type="email" id="rf-email" name="email" required maxlength="320" autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="rf-azienda">Azienda / organizzazione</label>
+              <input type="text" id="rf-azienda" name="azienda" maxlength="200" autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="rf-messaggio">Di cosa hai bisogno? *</label>
+              <textarea id="rf-messaggio" name="messaggio" required maxlength="5000" placeholder="Es. Formazione introduttiva sull'AI per un team di 8 persone…"></textarea>
+            </div>
+            <button type="submit" class="btn-submit" id="rf-submit">Invia la richiesta</button>
+            <p class="form-err" id="rf-err" hidden></p>
+          </form>
+          <div class="form-ok" id="richiesta-ok" hidden>
+            <strong>Grazie!</strong><br>Ho ricevuto la tua richiesta. Ti ricontatto al più presto via email.
           </div>
-        </article>
-
-        <article class="course">
-          <div class="course-cover"><img src="immagini/Riferimenti/06_tavolo-notte.png" alt=""></div>
-          <div class="course-body">
-            <span class="badge paid">Workshop · A pagamento</span>
-            <h3>Workshop pratico: l'AI nel tuo lavoro</h3>
-            <p>Mezza giornata hands-on per costruire i tuoi primi flussi con l'AI.</p>
-            <div class="course-foot"><span class="price">CHF 149</span><button class="btn">Scopri</button></div>
-          </div>
-        </article>
-
-        <article class="course">
-          <div class="course-cover"><img src="immagini/Riferimenti/05_plancia-globo.png" alt=""></div>
-          <div class="course-body">
-            <span class="badge paid">Corso · A pagamento</span>
-            <h3>Corso online: Automatizza con l'AI</h3>
-            <p>4 moduli per passare da "confuso" a "capace", al tuo ritmo.</p>
-            <div class="course-foot"><span class="price">CHF 249</span><button class="btn">Scopri</button></div>
-          </div>
-        </article>
+        </div>
 
       </div>
     </div>
@@ -105,14 +103,37 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
 <script>
   (function(){
-    var q=document.getElementById('search-form');
-    if(!q) return;
-    var cards=[].slice.call(document.querySelectorAll('#corsi .course'));
-    q.addEventListener('input', function(){
-      var v=q.value.trim().toLowerCase();
-      cards.forEach(function(c){ c.style.display=(!v||c.textContent.toLowerCase().indexOf(v)>-1)?'':'none'; });
+    var form=document.getElementById('richiesta-form');
+    if(!form) return;
+    var btn=document.getElementById('rf-submit');
+    var err=document.getElementById('rf-err');
+    var ok=document.getElementById('richiesta-ok');
+    function showErr(m){ err.textContent=m; err.hidden=false; }
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      err.hidden=true;
+      var nome=form.nome.value.trim();
+      var email=form.email.value.trim();
+      var azienda=form.azienda.value.trim();
+      var messaggio=form.messaggio.value.trim();
+      if(!nome||!email||!messaggio){ showErr('Compila i campi obbligatori: nome, email e messaggio.'); return; }
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ showErr('Controlla l\'indirizzo email.'); return; }
+      btn.disabled=true; btn.textContent='Invio in corso…';
+      try{
+        var res=await sb.from('richieste_formazione').insert({
+          nome:nome, email:email, azienda:azienda||null, messaggio:messaggio, origine:'formazioni'
+        });
+        if(res.error) throw res.error;
+        form.hidden=true; ok.hidden=false;
+        ok.scrollIntoView({behavior:'smooth', block:'center'});
+      }catch(ex){
+        btn.disabled=false; btn.textContent='Invia la richiesta';
+        showErr('Ops, invio non riuscito. Riprova tra poco, oppure scrivimi direttamente via email.');
+      }
     });
   })();
 </script>

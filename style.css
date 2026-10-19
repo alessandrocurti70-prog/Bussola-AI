@@ -470,6 +470,36 @@ tr:last-child td{border-bottom:none}
 .formazioni-home .sub-p{color:rgba(233,240,252,.85);font-size:21px}
 .form3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .form3 .course{background:#fff}
+/* Formazioni home — invito "su misura" (sostituisce le 3 card) */
+.form-center{max-width:760px;margin:0 auto;text-align:center}
+.form-center h2{font-family:var(--serif);font-size:clamp(32px,4.4vw,52px);line-height:1.08;letter-spacing:-.02em;margin:10px 0 0;color:#fff;white-space:normal}
+.form-center .sub-p{color:rgba(233,240,252,.9);font-size:clamp(17px,1.4vw,21px);margin:18px auto 0;max-width:640px}
+.form-offer{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:26px 0 30px;padding:0}
+.form-offer li{font-family:var(--sans);font-weight:600;font-size:14px;color:#dbe7fb;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);padding:9px 16px;border-radius:999px}
+.btn-cta-gold{background:var(--gold);color:#4a2e05;box-shadow:0 10px 24px rgba(214,165,74,.3)}
+.btn-cta-gold:hover{background:var(--gold);filter:brightness(1.08);box-shadow:0 14px 30px rgba(214,165,74,.42)}
+/* Pagina Formazioni — offerta + form richiesta */
+.offer-wrap{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:start}
+.offer-intro h2{font-family:var(--serif);font-size:clamp(26px,3vw,36px);line-height:1.12;letter-spacing:-.02em;color:var(--ink);margin:0 0 14px}
+.offer-intro p{color:var(--muted);font-size:17px;line-height:1.6;margin:0 0 22px}
+.offer-list{list-style:none;padding:0;margin:0;display:grid;gap:16px}
+.offer-list li{position:relative;padding-left:30px;font-family:var(--sans);color:var(--muted);font-size:15px;line-height:1.5}
+.offer-list li::before{content:"";position:absolute;left:0;top:3px;width:18px;height:18px;border-radius:50%;background:var(--tint);border:1.5px solid var(--blue)}
+.offer-list li b{display:block;font-weight:700;color:var(--ink);font-size:15.5px;margin-bottom:2px}
+.lead-form{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 12px 30px rgba(10,20,40,.06)}
+.lead-form h3{font-family:var(--serif);font-size:22px;margin:0 0 6px;color:var(--ink)}
+.lead-form .form-hint{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 18px}
+.lead-form label{display:block;font-family:var(--sans);font-weight:600;font-size:13.5px;color:var(--ink);margin:0 0 6px}
+.lead-form .field{margin-bottom:15px}
+.lead-form input,.lead-form textarea{width:100%;font-family:var(--sans);font-size:15px;color:var(--ink);padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;box-sizing:border-box}
+.lead-form input:focus,.lead-form textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(46,125,246,.12)}
+.lead-form textarea{min-height:120px;resize:vertical}
+.lead-form .btn-submit{width:100%;font-family:var(--sans);font-weight:700;font-size:15px;color:#fff;background:var(--blue);border:none;padding:13px;border-radius:11px;cursor:pointer;box-shadow:0 10px 24px rgba(46,125,246,.26);transition:background .15s,transform .15s}
+.lead-form .btn-submit:hover{background:#1f66d6;transform:translateY(-1px)}
+.lead-form .btn-submit:disabled{opacity:.6;cursor:default;transform:none}
+.form-ok{background:#e6f7ee;border:1px solid #bfe6cf;color:#0f7a4d;border-radius:14px;padding:26px 22px;font-family:var(--sans);font-size:16px;line-height:1.5;text-align:center}
+.form-err{color:#c0392b;font-size:13.5px;margin-top:10px;font-family:var(--sans)}
+@media (max-width:860px){.offer-wrap{grid-template-columns:1fr;gap:28px}}
 .form-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:22px}
 .form-main{display:flex;flex-direction:column;justify-content:flex-end;min-height:300px;border-radius:18px;padding:32px;color:#fff;text-decoration:none;overflow:hidden;
   background:radial-gradient(120% 130% at 82% 8%, rgba(46,125,246,.5), transparent 58%), linear-gradient(160deg,#0b3d91,#08111f);transition:transform .18s ease,box-shadow .18s}

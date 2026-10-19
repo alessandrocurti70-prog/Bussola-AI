@@ -361,44 +361,16 @@ ${latest}
 
   <!-- FORMAZIONI -->
   <section class="formazioni-home">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">Formazioni</span>
-          <h2>Non solo teoria: impara a <span class="tint-grad">usare l'AI</span></h2>
-        </div>
-        <a class="more" href="formazioni.html">Scopri le formazioni →</a>
-      </div>
-      <p class="sub-p">Capire l'intelligenza artificiale è il primo passo. Imparare a usarla fa la differenza. Percorsi pratici per trasformare conoscenze e strumenti in risultati concreti.</p>
-      <div class="form3">
-        <article class="course">
-          <a href="formazioni.html"><div class="course-cover"><img src="${IMG}Riferimenti/01_ritratto-faro.png" alt=""></div></a>
-          <div class="course-body">
-            <span class="badge free">Webinar · Gratis</span>
-            <h3>I primi passi con l'AI</h3>
-            <p>Un'ora dal vivo per capire cos'è l'AI e iniziare a usarla, senza tecnicismi.</p>
-            <div class="course-foot"><span class="price">Gratuito</span><a class="btn" href="formazioni.html">Iscriviti</a></div>
-          </div>
-        </article>
-        <article class="course">
-          <a href="formazioni.html"><div class="course-cover"><img src="${IMG}Riferimenti/06_tavolo-notte.png" alt=""></div></a>
-          <div class="course-body">
-            <span class="badge paid">Workshop · A pagamento</span>
-            <h3>Workshop pratico: l'AI nel tuo lavoro</h3>
-            <p>Mezza giornata hands-on per costruire i tuoi primi flussi con l'AI.</p>
-            <div class="course-foot"><span class="price">CHF 149</span><a class="btn" href="formazioni.html">Scopri</a></div>
-          </div>
-        </article>
-        <article class="course">
-          <a href="formazioni.html"><div class="course-cover"><img src="${IMG}Riferimenti/05_plancia-globo.png" alt=""></div></a>
-          <div class="course-body">
-            <span class="badge paid">Corso · A pagamento</span>
-            <h3>Corso online: Automatizza con l'AI</h3>
-            <p>4 moduli per passare da "confuso" a "capace", al tuo ritmo.</p>
-            <div class="course-foot"><span class="price">CHF 249</span><a class="btn" href="formazioni.html">Scopri</a></div>
-          </div>
-        </article>
-      </div>
+    <div class="wrap form-center">
+      <span class="eyebrow">Formazioni & Consulenza</span>
+      <h2>Non solo teoria: impara a <span class="tint-grad">usare l'AI</span></h2>
+      <p class="sub-p">Workshop, formazioni aziendali e consulenza 1:1 sull'intelligenza artificiale, costruiti sulle tue esigenze reali — per te, il tuo team o la tua azienda.</p>
+      <ul class="form-offer">
+        <li>Formazioni aziendali</li>
+        <li>Workshop pratici</li>
+        <li>Consulenza 1:1</li>
+      </ul>
+      <a class="btn-cta btn-cta-gold" href="formazioni.html#richiedi">Richiedi una proposta su misura <span>→</span></a>
     </div>
   </section>
 
